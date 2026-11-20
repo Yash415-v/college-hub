@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yash | DY Patil College of Engineering (IT) Hub</title>
+  <title>Yash | DY Patil College of Engineering (IT) Hub & Portfolio</title>
   <link rel="stylesheet" href="style.css">
   <!-- Google Fonts & Font Awesome Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,14 +16,17 @@
   <!-- Navigation -->
   <header class="navbar">
     <div class="nav-container">
-      <a href="#home" class="logo">
+      <a href="#about" class="logo">
         <span class="logo-badge">Y</span>
         <span class="logo-text">Yash<span>.dev</span></span>
       </a>
       <nav class="nav-links">
         <a href="#about"><i class="fa-solid fa-user"></i> About</a>
         <a href="#learning"><i class="fa-solid fa-bolt"></i> Learning</a>
-        <a href="#notes"><i class="fa-solid fa-book-bookmark"></i> Notes & Assignments</a>
+        <a href="#study-hub"><i class="fa-solid fa-stopwatch-20"></i> Study Hub</a>
+        <a href="#attendance"><i class="fa-solid fa-clipboard-user"></i> Attendance</a>
+        <a href="#calculator"><i class="fa-solid fa-calculator"></i> CGPA Calc</a>
+        <a href="#notes"><i class="fa-solid fa-book-bookmark"></i> Notes Hub</a>
         <a href="#contact" class="btn-sm"><i class="fa-solid fa-envelope"></i> Connect</a>
       </nav>
     </div>
@@ -45,13 +48,11 @@
         <p class="hero-bio">
           Welcome to my digital space! I am currently pursuing Information Technology (IT) in my first year. 
           Here, I document everything I am actively learning—from <strong>Python</strong> and <strong>Web Development</strong> to <strong>Artificial Intelligence</strong>—along 
-          with all my college subject notes, assignments, and lab records.
+          with an interactive <strong>Attendance Tracker</strong>, <strong>CGPA Calculator</strong>, and curated college subject notes & assignments organized into dedicated subject sections.
         </p>
 
-        <div class="social-links">
-          <a href="https://github.com" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i> GitHub</a>
-          <a href="https://linkedin.com" target="_blank" class="social-btn"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
-          <a href="mailto:yash@example.com" class="social-btn"><i class="fa-solid fa-paper-plane"></i> Email Me</a>
+        <div class="social-links" id="heroSocialLinks">
+          <!-- Populated dynamically by JS -->
         </div>
       </div>
 
@@ -70,23 +71,31 @@
           <div class="profile-stats">
             <div class="stat-box">
               <span class="stat-num" id="totalNotesCount">0</span>
-              <span class="stat-label">Notes & Docs</span>
+              <span class="stat-label">Total PDFs</span>
             </div>
             <div class="stat-box">
-              <span class="stat-num">3</span>
-              <span class="stat-label">Active Focus Areas</span>
+              <span class="stat-num" id="heroAttendanceStat">--%</span>
+              <span class="stat-label">Avg Attendance</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" id="heroSgpaStat">--</span>
+              <span class="stat-label">Est. SGPA</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">32</span>
+              <span class="stat-label">WPM Typing</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Currently Learning Section -->
+    <!-- Currently Learning & Benchmarks Section -->
     <section id="learning" class="section">
       <div class="section-header">
-        <span class="tag">Active Tech Focus</span>
-        <h2><i class="fa-solid fa-fire"></i> What I Am Currently Learning</h2>
-        <p>Skills, languages, and technologies I am actively studying alongside my college curriculum.</p>
+        <span class="tag">Active Tech Focus & Benchmarks</span>
+        <h2><i class="fa-solid fa-fire"></i> What I Am Learning & Practicing</h2>
+        <p>Skills, languages, technologies, and speed benchmarks I am actively tracking alongside my college curriculum.</p>
       </div>
 
       <div class="learning-grid">
@@ -122,55 +131,399 @@
           </div>
           <span class="progress-text">45% • Exploring & Experimenting</span>
         </div>
+
+        <!-- Card 4: Typing Speed Benchmark -->
+        <div class="learning-card typing-card">
+          <div class="card-icon typing"><i class="fa-solid fa-keyboard"></i></div>
+          <div class="typing-header-row">
+            <h3>Typing Benchmark</h3>
+            <span class="benchmark-pill"><i class="fa-solid fa-check"></i> MonkeyType</span>
+          </div>
+          <p>Verified typing speed and accuracy test for high-efficiency programming and coursework documentation.</p>
+          <div class="typing-stats-row">
+            <div class="mini-stat">
+              <span class="val">32</span>
+              <span class="lbl">WPM</span>
+            </div>
+            <div class="mini-stat">
+              <span class="val">86%</span>
+              <span class="lbl">Accuracy</span>
+            </div>
+            <div class="mini-stat">
+              <span class="val">35</span>
+              <span class="lbl">Raw</span>
+            </div>
+            <div class="mini-stat">
+              <span class="val">68%</span>
+              <span class="lbl">Consistency</span>
+            </div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width: 86%;"></div>
+          </div>
+          <span class="progress-text">162 Correct Keystrokes • 1:00 Test</span>
+        </div>
       </div>
     </section>
 
-    <!-- College Notes & Assignments Hub -->
-    <section id="notes" class="section">
+    <!-- Study Hub: Pomodoro Timer & Formula Cheat Sheets -->
+    <section id="study-hub" class="section">
       <div class="section-header">
-        <span class="tag">First Year IT Hub</span>
-        <h2><i class="fa-solid fa-folder-open"></i> College Notes & Assignments</h2>
-        <p>Curated 1st-year engineering notes, assignments, question banks, and lab solutions for DY Patil Akurdi.</p>
+        <span class="tag">Productivity & Quick Revision</span>
+        <h2><i class="fa-solid fa-stopwatch-20"></i> Pomodoro Timer & Formula Cheat Sheets</h2>
+        <p>Boost your study focus with interval timer sessions and quickly look up core 1st-year formulas and code syntax.</p>
       </div>
 
-      <!-- Controls: Search & Category Filter -->
-      <div class="hub-controls">
-        <div class="search-and-add">
-          <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Search by topic, subject, or keyword (e.g. Python, Laser, Maths)...">
+      <div class="study-tools-layout">
+        <!-- Left: Pomodoro Focus Timer -->
+        <div class="pomodoro-card">
+          <div class="pomo-header">
+            <h3><i class="fa-solid fa-brain"></i> Focus Study Timer</h3>
+            <div class="pomo-session-pill">
+              <span id="pomoSessionCount">0</span> Pomodoros Done
+            </div>
           </div>
-          <button id="openAddModalBtn" class="btn-add-note">
-            <i class="fa-solid fa-circle-plus"></i> Add Note
+
+          <!-- Mode Selector Tabs -->
+          <div class="pomo-modes">
+            <button class="pomo-mode-btn active" data-mode="pomodoro">
+              <i class="fa-solid fa-fire"></i> Focus (25m)
+            </button>
+            <button class="pomo-mode-btn" data-mode="shortBreak">
+              <i class="fa-solid fa-mug-hot"></i> Short (5m)
+            </button>
+            <button class="pomo-mode-btn" data-mode="longBreak">
+              <i class="fa-solid fa-couch"></i> Long (15m)
+            </button>
+          </div>
+
+          <!-- Circular Timer Display -->
+          <div class="pomo-timer-display">
+            <div class="pomo-circle-wrap">
+              <svg class="pomo-svg" viewBox="0 0 200 200">
+                <circle class="pomo-circle-bg" cx="100" cy="100" r="86" />
+                <circle class="pomo-circle-fill" id="pomoCircleFill" cx="100" cy="100" r="86" />
+              </svg>
+              <div class="pomo-center-content">
+                <span class="pomo-time" id="pomoTimeDisplay">25:00</span>
+                <span class="pomo-phase-label" id="pomoPhaseLabel">Focus Session</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subject & Task Input for Focus Session -->
+          <div class="pomo-task-box">
+            <div class="pomo-subject-select-wrap">
+              <label><i class="fa-solid fa-book-open"></i> Studying Subject:</label>
+              <select id="pomoSubjectSelect">
+                <option value="Physics">Engineering Physics</option>
+                <option value="Python" selected>Programming with Python</option>
+                <option value="Maths-I">Engineering Mathematics-I</option>
+                <option value="BEE">Basic Electrical & Electronics (BEE)</option>
+                <option value="SME">Systems in Mechanical Engg (SME)</option>
+              </select>
+            </div>
+            <input type="text" id="pomoTaskInput" placeholder="Current study goal (e.g. He-Ne laser working or matrix rank)...">
+          </div>
+
+          <!-- Timer Action Controls -->
+          <div class="pomo-controls">
+            <button id="pomoStartBtn" class="btn-pomo-primary">
+              <i class="fa-solid fa-play" id="pomoStartIcon"></i> <span id="pomoStartText">Start Focus</span>
+            </button>
+            <button id="pomoResetBtn" class="btn-pomo-secondary" title="Reset Timer">
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+            <button id="pomoSoundBtn" class="btn-pomo-secondary" title="Toggle Chime Sound">
+              <i class="fa-solid fa-volume-high" id="pomoSoundIcon"></i> Sound ON
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Formula & Syntax Quick Cheat Sheets -->
+        <div class="cheatsheet-card">
+          <div class="cheatsheet-header">
+            <div>
+              <h3><i class="fa-solid fa-bolt"></i> Quick Formula & Syntax Reference</h3>
+              <p>Key formulas, theorems, and code templates for fast SPPU exam revision.</p>
+            </div>
+            <div class="cheatsheet-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="cheatSearchInput" placeholder="Search formula (e.g. Rank, Laser, Lambda, KVL)...">
+            </div>
+          </div>
+
+          <!-- Subject Tabs for Cheat Sheets -->
+          <div class="cheat-subject-tabs" id="cheatTabs">
+            <button class="cheat-tab-btn active" data-subject="maths">
+              <i class="fa-solid fa-square-root-variable"></i> Maths-I
+            </button>
+            <button class="cheat-tab-btn" data-subject="physics">
+              <i class="fa-solid fa-atom"></i> Physics
+            </button>
+            <button class="cheat-tab-btn" data-subject="python">
+              <i class="fa-brands fa-python"></i> Python Syntax
+            </button>
+            <button class="cheat-tab-btn" data-subject="bee">
+              <i class="fa-solid fa-bolt-lightning"></i> BEE
+            </button>
+          </div>
+
+          <!-- Formula List Container (Populated dynamically & filterable) -->
+          <div class="cheat-items-list" id="cheatItemsList">
+            <!-- Dynamic formula cards injected by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attendance Tracker Section -->
+    <section id="attendance" class="section">
+      <div class="section-header">
+        <span class="tag">Academic Planner</span>
+        <h2><i class="fa-solid fa-clipboard-user"></i> College Attendance Tracker</h2>
+        <p>Monitor your subject-wise presence, stay safely above the mandatory 75% criteria, and know exactly how many bunks you have left.</p>
+      </div>
+
+      <!-- Attendance Overview Dashboard -->
+      <div class="attendance-dashboard">
+        <div class="attendance-summary-card">
+          <div class="summary-left">
+            <div class="radial-gauge-container">
+              <svg class="radial-gauge" viewBox="0 0 100 100">
+                <circle class="gauge-bg" cx="50" cy="50" r="42" />
+                <circle class="gauge-fill" id="overallGaugeFill" cx="50" cy="50" r="42" />
+              </svg>
+              <div class="gauge-text">
+                <span class="gauge-pct" id="overallPercentage">0%</span>
+                <span class="gauge-sub">Overall</span>
+              </div>
+            </div>
+            <div class="summary-details">
+              <h3>Overall Attendance Status</h3>
+              <p id="overallClassesCount">0 of 0 Classes Attended</p>
+              <div id="overallStatusBadge" class="status-badge-pill safe">
+                <i class="fa-solid fa-shield-check"></i> Safe: Above 75%
+              </div>
+            </div>
+          </div>
+          <div class="summary-actions">
+            <button id="openAddSubjectBtn" class="btn-action-primary">
+              <i class="fa-solid fa-circle-plus"></i> Add Subject
+            </button>
+            <button id="resetAttendanceBtn" class="btn-action-secondary">
+              <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+            </button>
+          </div>
+        </div>
+
+        <!-- Subject Cards Grid -->
+        <div class="attendance-grid" id="attendanceGrid">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CGPA & Marks Calculator Section -->
+    <section id="calculator" class="section">
+      <div class="section-header">
+        <span class="tag">Grades & Marks</span>
+        <h2><i class="fa-solid fa-calculator"></i> CGPA & SGPA Calculator</h2>
+        <p>Calculate your semester SGPA with SPPU credit points, estimate marks to grade conversion, and track cumulative CGPA.</p>
+      </div>
+
+      <!-- Calculator Tabs -->
+      <div class="calc-tabs">
+        <button class="calc-tab-btn active" id="tabSgpaBtn" data-tab="sgpaTab">
+          <i class="fa-solid fa-graduation-cap"></i> Semester SGPA & Marks
+        </button>
+        <button class="calc-tab-btn" id="tabCgpaBtn" data-tab="cgpaTab">
+          <i class="fa-solid fa-chart-line"></i> Cumulative CGPA (Multi-Sem)
+        </button>
+      </div>
+
+      <!-- SGPA Tab Content -->
+      <div id="sgpaTab" class="calc-tab-content active">
+        <div class="calc-layout">
+          <div class="calc-table-card">
+            <div class="calc-table-header">
+              <span>Course / Subject</span>
+              <span>Credits</span>
+              <span>Grade (Score)</span>
+              <span>Points</span>
+              <span>Action</span>
+            </div>
+            <div id="sgpaRowsList" class="calc-rows-list">
+              <!-- Dynamically populated rows -->
+            </div>
+            <div class="calc-actions-footer">
+              <button id="addSgpaRowBtn" class="btn-action-primary">
+                <i class="fa-solid fa-plus"></i> Add Subject
+              </button>
+              <button id="resetSgpaBtn" class="btn-action-secondary">
+                <i class="fa-solid fa-rotate-left"></i> Reset Semester
+              </button>
+            </div>
+          </div>
+
+          <!-- SGPA Summary Result Card -->
+          <div class="calc-summary-card">
+            <span class="result-label">Semester 1 SGPA</span>
+            <div class="result-number-container">
+              <span class="result-number" id="calculatedSgpa">0.00</span>
+              <span class="result-scale">/ 10.0</span>
+            </div>
+            <div class="result-class-badge" id="sgpaClassBadge">First Class with Distinction</div>
+
+            <div class="result-stats-list">
+              <div class="res-stat-item">
+                <span>Total Semester Credits</span>
+                <strong id="totalCreditsDisplay">0</strong>
+              </div>
+              <div class="res-stat-item">
+                <span>Total Grade Points</span>
+                <strong id="totalPointsDisplay">0</strong>
+              </div>
+              <div class="res-stat-item">
+                <span>Estimated Percentage</span>
+                <strong id="equivalentPercentageDisplay">0%</strong>
+              </div>
+            </div>
+
+            <div class="grade-help-box">
+              <p><strong><i class="fa-solid fa-circle-info"></i> SPPU Grade Scale:</strong></p>
+              <p>O: 10 (90-100) • A+: 9 (80-89) • A: 8 (70-79)</p>
+              <p>B+: 7 (60-69) • B: 6 (50-59) • C: 5 (40-49) • P: 4 (Pass)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CGPA Tab Content -->
+      <div id="cgpaTab" class="calc-tab-content">
+        <div class="calc-layout">
+          <div class="calc-table-card">
+            <div class="calc-table-header cgpa-header">
+              <span>Semester</span>
+              <span>SGPA</span>
+              <span>Credits</span>
+              <span>Grade Points</span>
+              <span>Action</span>
+            </div>
+            <div id="cgpaRowsList" class="calc-rows-list">
+              <!-- Dynamically populated rows -->
+            </div>
+            <div class="calc-actions-footer">
+              <button id="addCgpaRowBtn" class="btn-action-primary">
+                <i class="fa-solid fa-plus"></i> Add Semester
+              </button>
+              <button id="resetCgpaBtn" class="btn-action-secondary">
+                <i class="fa-solid fa-rotate-left"></i> Reset Semesters
+              </button>
+            </div>
+          </div>
+
+          <!-- CGPA Summary Result Card -->
+          <div class="calc-summary-card">
+            <span class="result-label">Cumulative CGPA</span>
+            <div class="result-number-container">
+              <span class="result-number" id="calculatedCgpa">0.00</span>
+              <span class="result-scale">/ 10.0</span>
+            </div>
+            <div class="result-class-badge" id="cgpaClassBadge">Distinction</div>
+
+            <div class="result-stats-list">
+              <div class="res-stat-item">
+                <span>Total Semesters</span>
+                <strong id="totalSemestersDisplay">0</strong>
+              </div>
+              <div class="res-stat-item">
+                <span>Total Degree Credits</span>
+                <strong id="totalCgpaCreditsDisplay">0</strong>
+              </div>
+              <div class="res-stat-item">
+                <span>Approx. Degree %</span>
+                <strong id="cgpaPercentageDisplay">0%</strong>
+              </div>
+            </div>
+
+            <div class="grade-help-box">
+              <p><strong><i class="fa-solid fa-graduation-cap"></i> Degree Evaluation:</strong></p>
+              <p>CGPA &ge; 7.75: First Class with Distinction</p>
+              <p>CGPA 6.75 - 7.74: First Class</p>
+              <p>CGPA 5.75 - 6.74: Higher Second Class</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- College Notes Hub (Separated Subject Sections with Easy Owner Add System) -->
+    <section id="notes" class="section">
+      <div class="section-header-row">
+        <div class="section-header" style="margin-bottom: 0;">
+          <span class="tag">Subject-Wise Study Hub</span>
+          <h2><i class="fa-solid fa-folder-tree"></i> College Notes & PDF Library</h2>
+          <p>Curated notes, assignments, and lab manuals organized into separate subject sections.</p>
+        </div>
+        <div class="owner-access-controls">
+          <button id="toggleOwnerBtn" class="btn-owner-toggle" title="Owner Access: Add or manage PDFs">
+            <i class="fa-solid fa-lock"></i> <span id="ownerBtnText">Owner Login</span>
           </button>
         </div>
-        <div class="filter-pills" id="filterPills">
-          <button class="filter-btn active" data-filter="all">All Materials</button>
-          <button class="filter-btn" data-filter="Notes">Notes</button>
-          <button class="filter-btn" data-filter="Assignment">Assignments</button>
-          <button class="filter-btn" data-filter="Lab">Lab Manuals</button>
+      </div>
+
+      <!-- Owner Active Toolbar (Visible when Yash logs in) -->
+      <div id="ownerToolbar" class="owner-toolbar" style="display: none;">
+        <div class="owner-status">
+          <span class="owner-badge"><i class="fa-solid fa-shield-halved"></i> Owner Mode Active</span>
+          <span class="owner-tip">You can now add PDFs to any subject section, edit, delete, or export code.</span>
+        </div>
+        <div class="owner-actions">
+          <button id="openAddPdfGlobalBtn" class="btn-action-primary">
+            <i class="fa-solid fa-file-circle-plus"></i> Add PDF to Section
+          </button>
+          <button id="openAddSectionBtn" class="btn-action-secondary">
+            <i class="fa-solid fa-folder-plus"></i> New Subject Section
+          </button>
+          <button id="openEditSocialBtn" class="btn-action-secondary">
+            <i class="fa-solid fa-share-nodes"></i> Edit Social Links
+          </button>
+          <button id="exportCodeBtn" class="btn-action-secondary">
+            <i class="fa-solid fa-code"></i> Export for app.js
+          </button>
+          <button id="lockOwnerBtn" class="btn-action-secondary" style="color: #f87171;">
+            <i class="fa-solid fa-lock"></i> Lock
+          </button>
         </div>
       </div>
 
-      <!-- Notes Grid (Dynamically Populated by JavaScript) -->
-      <div class="notes-grid" id="notesGrid">
-        <!-- Javascript will inject cards here -->
-      </div>
-    </section>
+      <!-- Search and Section Jump Filters -->
+      <div class="hub-controls">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Search by topic, keyword, or subject (e.g. Laser, Pattern, Matrices, BEE)...">
+        </div>
+        
+        <!-- Subject Section Selector Tabs -->
+        <div class="section-tabs-container">
+          <div class="filter-pills" id="subjectPills">
+            <!-- Dynamically populated subject tabs -->
+          </div>
+        </div>
 
-    <!-- How to Add Files Guide Box -->
-    <section class="section" style="padding-top: 1rem;">
-      <div style="background: rgba(99, 102, 241, 0.08); border: 1px dashed rgba(99, 102, 241, 0.4); border-radius: 16px; padding: 1.8rem;">
-        <h3 style="color: #818cf8; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-circle-info"></i> How to add new notes or files?
-        </h3>
-        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 0.6rem;">
-          You can add files in two ways:
-        </p>
-        <ul style="color: #94a3b8; font-size: 0.9rem; padding-left: 1.2rem; line-height: 1.8;">
-          <li><strong>Directly in project folder:</strong> Put your PDF in the <code>files/</code> folder inside this project, and link it in <code>app.js</code> as <code>files/your-file-name.pdf</code>.</li>
-          <li><strong>Using Google Drive:</strong> Upload your PDF to Google Drive, get the share link ("Anyone with link can view"), and paste it in <code>app.js</code>.</li>
-        </ul>
+        <!-- Material Category Filters -->
+        <div class="filter-pills type-pills" id="typePills">
+          <button class="filter-btn active" data-type="all">All Document Types</button>
+          <button class="filter-btn" data-type="Notes"><i class="fa-solid fa-book"></i> Notes</button>
+          <button class="filter-btn" data-type="Assignment"><i class="fa-solid fa-pen-to-square"></i> Assignments</button>
+          <button class="filter-btn" data-type="Lab"><i class="fa-solid fa-flask"></i> Lab Manuals</button>
+        </div>
+      </div>
+
+      <!-- Subject Sections Container (Holds separate sections for each subject) -->
+      <div id="notesSectionsContainer" class="notes-sections-wrapper">
+        <!-- Javascript will inject subject shelves here -->
       </div>
     </section>
 
@@ -190,43 +543,215 @@
     <p>© 2026 Yash • Department of IT, DY Patil College of Engineering, Akurdi</p>
   </footer>
 
-  <!-- Modal for Adding Notes -->
-  <div id="noteModal" class="modal-overlay">
+  <!-- ============================================================== -->
+  <!-- MODALS -->
+  <!-- ============================================================== -->
+
+  <!-- Modal 1: Add Subject to Attendance Tracker -->
+  <div id="subjectModal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-file-circle-plus"></i> Add New Note / Document</h3>
-        <button id="closeModalBtn" class="modal-close">&times;</button>
+        <h3><i class="fa-solid fa-book-medical"></i> Add Subject to Attendance Tracker</h3>
+        <button id="closeSubjectModalBtn" class="modal-close">&times;</button>
       </div>
-      <form id="addNoteForm" class="modal-form">
+      <form id="addSubjectForm" class="modal-form">
         <div class="form-group">
-          <label>Title of the Document</label>
-          <input type="text" id="formTitle" placeholder="e.g. He-Ne Laser Notes" required>
+          <label>Subject / Lab Name</label>
+          <input type="text" id="newSubjectName" placeholder="e.g. Data Structures / Mechanics" required>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Subject</label>
-            <input type="text" id="formSubject" placeholder="e.g. Physics / Python" required>
+            <label>Classes Attended</label>
+            <input type="number" id="newSubjectAttended" min="0" value="0" required>
           </div>
           <div class="form-group">
-            <label>Type</label>
-            <select id="formType">
-              <option value="Notes">Notes</option>
-              <option value="Assignment">Assignment</option>
-              <option value="Lab">Lab Manual</option>
+            <label>Total Classes Held</label>
+            <input type="number" id="newSubjectTotal" min="0" value="0" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-plus"></i> Save Subject
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add PDF to Specific Subject Section (Owner Mode) -->
+  <div id="addPdfModal" class="modal-overlay">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-circle-plus"></i> Add PDF to Notes Section</h3>
+        <button id="closeAddPdfModalBtn" class="modal-close">&times;</button>
+      </div>
+      <form id="addPdfForm" class="modal-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Target Subject Section *</label>
+            <select id="pdfSubjectSelect" required>
+              <!-- Dynamically populated subjects -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Document Type *</label>
+            <select id="pdfTypeSelect" required>
+              <option value="Notes">Notes (Handout / Theory)</option>
+              <option value="Assignment">Assignment (Questions & Solutions)</option>
+              <option value="Lab">Lab Manual / Practical Record</option>
+              <option value="PYQ">Question Paper / PYQ</option>
             </select>
           </div>
         </div>
+
         <div class="form-group">
-          <label>File Name or Link</label>
-          <input type="text" id="formLink" placeholder="e.g. files/HeNe_Laser_Notes.pdf or Google Drive link" required>
-          <small style="color: #94a3b8; font-size: 0.8rem;">If file is inside the <code>files/</code> folder, type <code>files/your-file-name.pdf</code></small>
+          <label>Document Title *</label>
+          <input type="text" id="pdfTitleInput" placeholder="e.g. Unit 2 - Lasers & Fiber Optics Notes" required>
         </div>
+
+        <!-- Easy Local PDF Upload or Cloud Link Picker -->
+        <div class="form-group">
+          <label>PDF File / Link *</label>
+          <div class="file-pick-helper">
+            <input type="file" id="pdfLocalFileInput" accept=".pdf,application/pdf" style="display: none;">
+            <button type="button" id="triggerFilePickBtn" class="btn-action-secondary" style="margin-bottom: 0.5rem; width: 100%; justify-content: center;">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Choose PDF From Your Computer
+            </button>
+            <input type="text" id="pdfLinkInput" placeholder="e.g. files/your_file.pdf or Google Drive link" required>
+            <small style="color: #94a3b8; font-size: 0.8rem; margin-top: 0.3rem; display: block;">
+              💡 <em>Tip:</em> Put your PDF in the <code>files/</code> folder and enter <code>files/your_filename.pdf</code>, or select it directly from your computer above.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Semester / Term</label>
+            <input type="text" id="pdfSemesterInput" value="Semester 1" placeholder="e.g. Semester 1">
+          </div>
+          <div class="form-group">
+            <label>Date Tag</label>
+            <input type="text" id="pdfDateInput" value="Nov 2026" placeholder="e.g. Nov 2026">
+          </div>
+        </div>
+
         <div class="form-group">
           <label>Short Description</label>
-          <textarea id="formDesc" rows="2" placeholder="Brief summary of topics covered..."></textarea>
+          <textarea id="pdfDescInput" rows="2" placeholder="Brief summary of concepts, formulas, or questions covered..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-check"></i> Add PDF to This Section
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Create New Subject Section -->
+  <div id="addSectionModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-folder-plus"></i> Create New Subject Section</h3>
+        <button id="closeAddSectionModalBtn" class="modal-close">&times;</button>
+      </div>
+      <form id="addSectionForm" class="modal-form">
+        <div class="form-group">
+          <label>Subject Name *</label>
+          <input type="text" id="newSectionName" placeholder="e.g. Data Structures & Algorithms" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Subject Code / Key *</label>
+            <input type="text" id="newSectionKey" placeholder="e.g. DSA" required>
+          </div>
+          <div class="form-group">
+            <label>Theme Color</label>
+            <select id="newSectionColor">
+              <option value="#38bdf8">Sky Blue</option>
+              <option value="#a855f7">Purple</option>
+              <option value="#f59e0b">Amber</option>
+              <option value="#10b981">Emerald</option>
+              <option value="#ec4899">Pink</option>
+              <option value="#6366f1">Indigo</option>
+            </select>
+          </div>
         </div>
         <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          <i class="fa-solid fa-check"></i> Add to Website
+          <i class="fa-solid fa-plus"></i> Create Subject Section
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: In-Page PDF Reader / Previewer Modal -->
+  <div id="pdfViewerModal" class="modal-overlay">
+    <div class="modal-content modal-viewer">
+      <div class="modal-header">
+        <h3 id="pdfViewerTitle"><i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> Document Viewer</h3>
+        <div class="viewer-controls">
+          <a id="pdfViewerExternalBtn" href="#" target="_blank" class="btn-sm" style="font-size: 0.8rem; padding: 0.35rem 0.8rem;">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Tab
+          </a>
+          <button id="closePdfViewerBtn" class="modal-close" style="font-size: 1.6rem; margin-left: 0.8rem;">&times;</button>
+        </div>
+      </div>
+      <div class="pdf-viewer-frame-wrap">
+        <iframe id="pdfViewerFrame" src="about:blank" title="PDF Document Viewer"></iframe>
+        <div id="pdfFallbackNotice" style="display: none; padding: 2.5rem; text-align: center;">
+          <p style="margin-bottom: 1rem; color: #cbd5e1;">This link cannot be embedded directly in an iframe (e.g. external repository or cloud viewer).</p>
+          <a id="pdfFallbackLink" href="#" target="_blank" class="btn-primary">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in New Tab
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Export Code for app.js (For permanent GitHub/Vercel deployment) -->
+  <div id="exportModal" class="modal-overlay">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-code"></i> Export Curated Code for app.js</h3>
+        <button id="closeExportModalBtn" class="modal-close">&times;</button>
+      </div>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">
+        Copy this code and replace the <code>collegeMaterials</code> array in <code>app.js</code> whenever you want to commit your newly added PDFs permanently to GitHub Pages or Vercel:
+      </p>
+      <div class="code-export-box">
+        <textarea id="exportCodeTextarea" rows="12" readonly style="width: 100%; background: #070a13; border: 1px solid var(--border-color); color: #a5b4fc; font-family: monospace; font-size: 0.85rem; padding: 1rem; border-radius: 8px; resize: vertical;"></textarea>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1rem;">
+        <button id="copyExportCodeBtn" class="btn-action-primary">
+          <i class="fa-solid fa-copy"></i> Copy to Clipboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Edit Social Handles (Owner Only) -->
+  <div id="socialModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-share-nodes"></i> Edit Your Social Links</h3>
+        <button id="closeSocialModalBtn" class="modal-close">&times;</button>
+      </div>
+      <form id="editSocialForm" class="modal-form">
+        <div class="form-group">
+          <label><i class="fa-brands fa-github"></i> GitHub URL or Username</label>
+          <input type="text" id="socialGithubInput" placeholder="e.g. https://github.com/your-username or your-username">
+        </div>
+        <div class="form-group">
+          <label><i class="fa-brands fa-linkedin" style="color: #38bdf8;"></i> LinkedIn Profile URL</label>
+          <input type="text" id="socialLinkedinInput" placeholder="e.g. https://linkedin.com/in/your-profile">
+        </div>
+        <div class="form-group">
+          <label><i class="fa-brands fa-instagram" style="color: #ec4899;"></i> Instagram Handle or Link</label>
+          <input type="text" id="socialInstagramInput" placeholder="e.g. @your_instagram or https://instagram.com/your_handle">
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-envelope"></i> Contact Email</label>
+          <input type="email" id="socialEmailInput" placeholder="e.g. yash@example.com">
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-floppy-disk"></i> Save Social Links
         </button>
       </form>
     </div>
