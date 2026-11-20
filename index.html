@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yash | DY Patil College of Engineering (IT) Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#home" class="logo">
+        <span class="logo-badge">Y</span>
+        <span class="logo-text">Yash<span>.dev</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#about"><i class="fa-solid fa-user"></i> About</a>
+        <a href="#learning"><i class="fa-solid fa-bolt"></i> Learning</a>
+        <a href="#notes"><i class="fa-solid fa-book-bookmark"></i> Notes & Assignments</a>
+        <a href="#contact" class="btn-sm"><i class="fa-solid fa-envelope"></i> Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero / About Me Section -->
+    <section id="about" class="hero-section">
+      <div class="hero-content">
+        <div class="status-pill">
+          <span class="pulse-dot"></span> First Year IT • Open for Tech Collaborations
+        </div>
+        <h1 class="hero-title">
+          Hey, I'm <span class="gradient-text">Yash</span> 👋
+        </h1>
+        <p class="hero-subtitle">
+          First Year IT Student @ <strong>DY Patil College of Engineering, Akurdi</strong>
+        </p>
+        <p class="hero-bio">
+          Welcome to my digital space! I am currently pursuing Information Technology (IT) in my first year. 
+          Here, I document everything I am actively learning—from <strong>Python</strong> and <strong>Web Development</strong> to <strong>Artificial Intelligence</strong>—along 
+          with all my college subject notes, assignments, and lab records.
+        </p>
+
+        <div class="social-links">
+          <a href="https://github.com" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="https://linkedin.com" target="_blank" class="social-btn"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+          <a href="mailto:yash@example.com" class="social-btn"><i class="fa-solid fa-paper-plane"></i> Email Me</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="profile-card">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <h3>Yash</h3>
+          <p class="student-info">
+            <i class="fa-solid fa-building-columns"></i> DY Patil College of Engineering, Akurdi<br>
+            <span style="display:inline-block; margin-top: 0.3rem; color: #a855f7; font-weight: 600;">
+              <i class="fa-solid fa-laptop-code"></i> Department of Information Technology (IT) • 1st Year
+            </span>
+          </p>
+          <div class="profile-stats">
+            <div class="stat-box">
+              <span class="stat-num" id="totalNotesCount">0</span>
+              <span class="stat-label">Notes & Docs</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">3</span>
+              <span class="stat-label">Active Focus Areas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Currently Learning Section -->
+    <section id="learning" class="section">
+      <div class="section-header">
+        <span class="tag">Active Tech Focus</span>
+        <h2><i class="fa-solid fa-fire"></i> What I Am Currently Learning</h2>
+        <p>Skills, languages, and technologies I am actively studying alongside my college curriculum.</p>
+      </div>
+
+      <div class="learning-grid">
+        <!-- Card 1: Python -->
+        <div class="learning-card">
+          <div class="card-icon dsa"><i class="fa-brands fa-python"></i></div>
+          <h3>Python Programming</h3>
+          <p>Core programming fundamentals, data structures (lists, tuples, dicts), file handling, OOP, and problem-solving.</p>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width: 65%;"></div>
+          </div>
+          <span class="progress-text">65% • Actively Practicing</span>
+        </div>
+
+        <!-- Card 2: Web Development -->
+        <div class="learning-card">
+          <div class="card-icon web"><i class="fa-brands fa-html5"></i></div>
+          <h3>Web Development</h3>
+          <p>Building clean, responsive, modern websites using HTML5, modern CSS (Flexbox/Grid), and interactive JavaScript.</p>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width: 60%;"></div>
+          </div>
+          <span class="progress-text">60% • Building Projects</span>
+        </div>
+
+        <!-- Card 3: AI -->
+        <div class="learning-card">
+          <div class="card-icon db"><i class="fa-solid fa-brain"></i></div>
+          <h3>Artificial Intelligence (AI)</h3>
+          <p>Exploring foundational AI concepts, modern LLMs, prompt engineering, AI development workflows, and automated tools.</p>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width: 45%;"></div>
+          </div>
+          <span class="progress-text">45% • Exploring & Experimenting</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- College Notes & Assignments Hub -->
+    <section id="notes" class="section">
+      <div class="section-header">
+        <span class="tag">First Year IT Hub</span>
+        <h2><i class="fa-solid fa-folder-open"></i> College Notes & Assignments</h2>
+        <p>Curated 1st-year engineering notes, assignments, question banks, and lab solutions for DY Patil Akurdi.</p>
+      </div>
+
+      <!-- Controls: Search & Category Filter -->
+      <div class="hub-controls">
+        <div class="search-and-add">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search by topic, subject, or keyword (e.g. Python, Laser, Maths)...">
+          </div>
+          <button id="openAddModalBtn" class="btn-add-note">
+            <i class="fa-solid fa-circle-plus"></i> Add Note
+          </button>
+        </div>
+        <div class="filter-pills" id="filterPills">
+          <button class="filter-btn active" data-filter="all">All Materials</button>
+          <button class="filter-btn" data-filter="Notes">Notes</button>
+          <button class="filter-btn" data-filter="Assignment">Assignments</button>
+          <button class="filter-btn" data-filter="Lab">Lab Manuals</button>
+        </div>
+      </div>
+
+      <!-- Notes Grid (Dynamically Populated by JavaScript) -->
+      <div class="notes-grid" id="notesGrid">
+        <!-- Javascript will inject cards here -->
+      </div>
+    </section>
+
+    <!-- How to Add Files Guide Box -->
+    <section class="section" style="padding-top: 1rem;">
+      <div style="background: rgba(99, 102, 241, 0.08); border: 1px dashed rgba(99, 102, 241, 0.4); border-radius: 16px; padding: 1.8rem;">
+        <h3 style="color: #818cf8; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-circle-info"></i> How to add new notes or files?
+        </h3>
+        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 0.6rem;">
+          You can add files in two ways:
+        </p>
+        <ul style="color: #94a3b8; font-size: 0.9rem; padding-left: 1.2rem; line-height: 1.8;">
+          <li><strong>Directly in project folder:</strong> Put your PDF in the <code>files/</code> folder inside this project, and link it in <code>app.js</code> as <code>files/your-file-name.pdf</code>.</li>
+          <li><strong>Using Google Drive:</strong> Upload your PDF to Google Drive, get the share link ("Anyone with link can view"), and paste it in <code>app.js</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact & Footer Section -->
+    <section id="contact" class="section contact-section">
+      <div class="contact-box">
+        <h2>Let's Connect & Study Together! 🚀</h2>
+        <p>Fellow student at DY Patil or tech enthusiast? Let's discuss Python, Web Dev, AI, or collaborate on projects.</p>
+        <a href="mailto:yash@example.com" class="btn-primary">
+          <i class="fa-solid fa-envelope"></i> Send an Email
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Yash • Department of IT, DY Patil College of Engineering, Akurdi</p>
+  </footer>
+
+  <!-- Modal for Adding Notes -->
+  <div id="noteModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-circle-plus"></i> Add New Note / Document</h3>
+        <button id="closeModalBtn" class="modal-close">&times;</button>
+      </div>
+      <form id="addNoteForm" class="modal-form">
+        <div class="form-group">
+          <label>Title of the Document</label>
+          <input type="text" id="formTitle" placeholder="e.g. He-Ne Laser Notes" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" id="formSubject" placeholder="e.g. Physics / Python" required>
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="formType">
+              <option value="Notes">Notes</option>
+              <option value="Assignment">Assignment</option>
+              <option value="Lab">Lab Manual</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>File Name or Link</label>
+          <input type="text" id="formLink" placeholder="e.g. files/HeNe_Laser_Notes.pdf or Google Drive link" required>
+          <small style="color: #94a3b8; font-size: 0.8rem;">If file is inside the <code>files/</code> folder, type <code>files/your-file-name.pdf</code></small>
+        </div>
+        <div class="form-group">
+          <label>Short Description</label>
+          <textarea id="formDesc" rows="2" placeholder="Brief summary of topics covered..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-check"></i> Add to Website
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
