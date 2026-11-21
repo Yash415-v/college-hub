@@ -1,90 +1,136 @@
-# Yash's College Hub & Portfolio
+# Yash's Futuristic Student Portfolio & College Hub ⚡
 **Department of Information Technology (IT) • DY Patil College of Engineering, Akurdi**
 
-A modern, responsive, and feature-rich portfolio and student companion web app with subject-wise PDF notes shelves, a Pomodoro study focus timer, engineering formula cheat sheets, college attendance tracking, SPPU CGPA calculation, and an owner-controlled social media profile manager.
+A bold, cyber-themed student portfolio and academic operating system with a dark futuristic aesthetic, neon accents (electric cyan, hot pink, and lime), glassmorphism cards, interactive background particles, animated custom cursor, and comprehensive academic tools.
 
 ---
 
-## ✨ Features
+## 🚀 Sections Overview
 
-1. **🔗 Owner-Controlled Social Media Manager (Instagram, LinkedIn, GitHub, Email)**:
-   - **Owner-Only Customization:** Only the authenticated website owner (using the Owner Login passcode) can edit or configure the profile links.
-   - **Supports Multiple Platforms:**
-     - 📸 **Instagram:** Handle (`@username`) or direct URL.
-     - 💼 **LinkedIn:** Full profile URL or username.
-     - 🐙 **GitHub:** Repository profile link or username.
-     - ✉️ **Contact Email:** Address for the "Email Me" button.
-   - **Smart URL Normalizer:** Type `@your_handle` or just your username and the system automatically converts it into a full clickable link (`https://instagram.com/your_handle`).
-   - Regular visitors see your active, branded buttons with smooth hover effects.
+1. **👨‍💻 Portfolio (Hero, About Me, Skills, Projects, Contact)**:
+   - **Animated Cyber Typewriter:** Dynamic title cycling ("Hi, I'm Yash · Student · Developer", "First Year IT @ DY Patil Akurdi", etc.).
+   - **Hologram Profile Visual:** Interactive 3D tilt card with live stats (Total Notes, Attendance %, Current SGPA, and verified MonkeyType 32 WPM benchmark).
+   - **Interactive Terminal Bio:** Bash terminal shell (`cat bio.txt`, `./check_interests.sh`) documenting IT coursework, languages, and benchmarks.
+   - **Core Skills Arsenal:** Animated neon progress bars (Python 75%, Web Dev 70%, AI Workflows 65%, Engineering 80%) plus glowing technology chips.
+   - **Project Grid with Hover Previews:** Cards for College Hub OS, Smart Attendance & Bunk Advisor, Engineering Focus Timer, and Python Practical Repository with live demo and GitHub buttons.
+   - **Connect & Social Profiles:** Dynamic links with owner-controlled profile editor.
 
-2. **🍅 Pomodoro Study Timer & Engineering Formula Cheat Sheets**:
-   - **Focus Timer**: 25m Focus, 5m Short Break, and 15m Long Break intervals with an animated circular progress ring.
-   - **Synthesized Melodic Chime**: Offline Web Audio API bell alert when the timer ends.
-   - **Session Goal Tracking**: Select the subject you are studying (e.g. *Python, Physics, Maths*) and set your goal.
-   - **Formula & Syntax Cheat Sheets**:
-     - 📐 **Maths-I**: Rank of matrix, system of equations ($AX=B$), Cayley-Hamilton theorem, eigenvalues, Euler's theorem, and maxima/minima.
-     - ⚛️ **Physics**: He-Ne laser parameters, Einstein coefficients, thin-film interference, Newton's rings, de Broglie wavelength, and uncertainty principle.
-     - 🐍 **Python**: List/dict comprehensions, slicing tricks, lambda/filter/map, safe file I/O, and OOP class templates.
-     - ⚡ **BEE**: KVL/KCL, Thevenin theorem, maximum power transfer, R-L-C AC resonance, and transformer formulas.
-   - Instant live search and 1-click **Copy Formula** buttons.
+2. **🧮 SGPA & Cumulative CGPA Calculator**:
+   - **Semester 1 SGPA Table:** Real-time credit-weighted calculation using SPPU grading scale ($O: 10, A+: 9, A: 8, B+: 7, B: 6, C: 5, P: 4, F: 0$).
+   - **Animated Result Counter:** Numbers smoothly count up into position.
+   - **Color-Coded Badges:** Distinction (Neon Lime), First Class (Cyan), Higher Second (Amber), Pass (Slate), and ATKT Alert (Hot Pink).
+   - **Instant Percentage Conversion:** $\text{Percentage} = (\text{SGPA} - 0.75) \times 10$.
+   - **Cumulative CGPA (Multi-Sem):** Weighted grade point accumulation across degree semesters.
+   - **Auto-Persisted:** Saved automatically in `localStorage`.
 
-3. **Subject-Wise PDF Notes Shelves & Curated Library**:
-   - Each college subject has its own dedicated shelf section:
-     - ⚛️ **Engineering Physics**
-     - 🐍 **Programming with Python**
-     - 📐 **Engineering Mathematics-I**
-     - ⚡ **Basic Electrical & Electronics (BEE)**
-     - ⚙️ **Systems in Mechanical Engg (SME)**
-     - 💻 **Web Development & AI**
-     - 🧪 **Lab Manuals & Practical Records**
-   - In-page **PDF Viewer Modal** for fast preview without leaving the site.
-   - Jump directly to any subject using the top filter pills, or filter by document type (Notes, Assignments, Lab Manuals, PYQs).
+3. **📊 College Attendance Tracker & Bunk Advisor**:
+   - **Circular SVG Progress Ring:** Smooth animated stroke showing overall academic percentage.
+   - **Threshold Warning:** Visual alerts if below the university 75% threshold.
+   - **Smart Mathematical Bunk Advisory:**
+     - Safe: Shows exact number of classes you can safely miss while remaining $\ge 75\%$.
+     - Shortage: Shows exact number of consecutive classes required to recover to $75\%$.
+   - **Quick Actions:** `+ Present`, `+ Absent`, and `Undo` (decrement).
+   - **Add / Remove Subjects:** Full management with data saved to `localStorage`.
 
-4. **Easy Owner PDF Adder System (Protected & Separate)**:
-   - **Discreet Owner Mode:** Click **"Owner Login"** (Passcode: `yash123`) to unlock management controls.
-   - **Dedicated `+ Add PDF to this Section` button** on every subject shelf.
-   - **One-Click File Picker:** Pick any PDF from your computer; title and path auto-fill.
-   - **Add New Subject Sections:** Easily create new shelves for electives or future semesters.
-   - **Export for `app.js`:** 1-click button to copy the updated JavaScript data array for permanent GitHub/Vercel deployment.
-   - Public visitors only see clean, read-only PDF shelves with preview & download.
+4. **📚 Subject-Wise College Notes & PDF Shelf (11 Authentic PDFs Included)**:
+   - Shelves for **Engineering Physics**, **Programming with Python**, **Maths-I**, **BEE**, **SME**, **Web Dev**, and **Lab Manuals**.
+   - Includes 11 authentic academic lecture note PDFs and manuals downloaded directly from university repositories into `files/`:
+     - **Engineering Mathematics-I:** `Maths1_Matrices_Calculus_Notes.pdf` (Matrices, rank, linear systems, eigenvalues, Taylor series, Euler's theorem).
+     - **Engineering Physics:** `Engineering_Physics_Comprehensive_Notes.pdf`, `HeNe_Laser_Notes.pdf`, and `Laser_Lecture1_Revision.pdf`.
+     - **Basic Electrical Engineering:** `BEE_Circuits_and_Theorems_Notes.pdf` (KVL, KCL, Thevenin, Norton, single-phase transformers).
+     - **Systems in Mechanical Engg:** `SME_Thermodynamics_Notes.pdf` (Laws of thermodynamics, Otto/Diesel cycles, 2/4-stroke IC engines).
+     - **Programming with Python:** `The Ultimate Python Handbook.pdf` (51MB complete handbook) and `Python_Programming_Lab_Manual.pdf`.
+     - **Web Technologies:** `Web_Technologies_Complete_Notes.pdf` (HTML5 semantic markup, CSS3 Grid/Flexbox, ES6+ JS).
+   - In-page **PDF Viewer Modal**: Click "View PDF" on any card to read directly on-page, or open in a new tab.
+   - Filter pills by Subject and Material Type (Notes, Assignments, Lab Manuals, PYQs) with live instant search.
+   - **Owner Mode (`Passcode: yash123`):** Add new PDFs, create subject shelves, edit social links, and export data.
 
-5. **College Attendance Tracker**:
-   - Subject-wise attendance tracking (Classes attended vs. held).
-   - Radial gauge and overall status indicator.
-   - **Smart Bunk & Shortage Advisory:** Instantly calculates how many classes you can safely miss while staying above 75%, or how many consecutive classes you must attend to overcome a shortage.
-   - Quick `+ Present`, `+ Absent`, and `Undo` buttons.
-   - Saves progress automatically in your browser's local storage.
+5. **🧪 Labs & Practical Hub (With Direct PDF Manual Previews)**:
+   - Dedicated practical cards with experiment title, course name, date, and notes.
+   - **1-Click In-Page PDF Manual Preview:** Each lab card features a **"View PDF"** button connecting directly to the corresponding lab manual:
+     - `Python_Programming_Lab_Manual.pdf` for Python coding experiments.
+     - `Physics_Lab_Manual_Experiments.pdf` for Newton's rings & He-Ne laser wavelength experiments.
+     - `Basic_Electrical_Lab_Manual.pdf` for Thevenin's theorem & transformer tests.
+     - `SME_Thermodynamics_Notes.pdf` for IC engine cut-section practicals.
+   - **Interactive Status Toggle:** 1-click toggle between **Done** (Neon Lime) and **Pending** (Hot Pink).
+   - **Filter Pills:** Filter by All Labs, Completed (Done), or Pending.
+   - Add new lab practicals and link submission repositories or PDF records.
 
-6. **SGPA & Cumulative CGPA Calculator**:
-   - **Semester SGPA**: Credit-weighted calculation using SPPU grading ($O: 10, A+: 9, A: 8, B+: 7, B: 6, C: 5, P: 4, F: 0$).
-   - Real-time percentage conversion: $\text{Percentage} = (\text{SGPA} - 0.75) \times 10$.
-   - **Cumulative CGPA (Multi-Sem)**: Weighted average across multiple semesters.
+6. **⚡ Live 30-Second Cyber Typing Battle Arena**:
+   - Challenge visitors to beat Yash's verified MonkeyType record (32 WPM)!
+   - Real-time countdown timer, dynamic WPM calculation, and accuracy percentage tracking.
+   - Interactive character highlight (green for correct, red with shake for mistakes).
+   - Instant cyber rank badge generation: Cyber Legend (60+ WPM), Code Ninja (45+ WPM), Yash Slayer (>32 WPM), or Terminal Apprentice.
 
-7. **Personal Portfolio & Speed Benchmarks**:
-   - Verified **MonkeyType Benchmark**: 32 WPM, 86% Accuracy, 35 Raw WPM, 68% Consistency.
+7. **🍅 Study Hub & Engineering Formula Vault**:
+   - **Pomodoro Timer:** 25m Focus, 5m Short Break, and 15m Long Break intervals with SVG progress circle.
+   - **Melodic Synth Chime:** Offline Web Audio API bell alert when interval finishes.
+   - **Formula & Syntax Cheat Sheets:** Quick reference for Maths-I, Physics, Python, and BEE with 1-click copy buttons.
+
+8. **🎧 Offline Binaural & Focus Audio Engine (Web Audio API)**:
+   - 100% offline procedural ambient audio generator — zero external audio files or MP3 downloads needed.
+   - **40Hz Gamma Focus Wave:** Binaural beat (200Hz carrier + 240Hz right ear) for hyper-focus and memory retention.
+   - **Cyber Rain:** Filtered procedural noise generator simulating steady rain on glass.
+   - **Deep Brown Noise:** Low-pass acoustic masking for blocking background distractions.
+   - **Cosmic Synth Drone:** Dual detuned oscillators with harmonic resonance.
+   - Master volume slider and interactive animated sound equalizer bars.
 
 ---
 
-## 🔒 How to Edit Your Social Links (Owner Only)
+## 🎨 How to Customize
 
-1. Open **`index.html`** in your browser.
-2. Scroll to the **College Notes** section and click **"Owner Login"** on the right (Passcode: `yash123`).
-3. You can edit your social profiles in two ways:
-   * Click **"Edit Social Links"** in the green Owner Toolbar.
-   * Or look at the top hero section: an inline **"✏️ Edit Links"** button is now visible next to your profile buttons.
-4. Enter your Instagram handle (e.g. `@your_insta`), LinkedIn URL, GitHub username, and Email.
-5. Click **"Save Social Links"** — they update instantly across the entire website!
+All files use plain HTML, CSS, and JavaScript with **zero build tools** required.
+
+### 1. Customize Colors & Visual Theme
+Open **`style.css`** and find the root variables at the top:
+```css
+:root {
+  /* Neon Accent Palette */
+  --neon-cyan: #00f3ff;    /* Change main accent */
+  --neon-pink: #ff007f;    /* Change secondary highlight */
+  --neon-lime: #39ff14;    /* Change success/done color */
+  --neon-purple: #9d4edd;  /* Change tertiary accent */
+  --neon-amber: #ffaa00;   /* Change warning color */
+
+  /* Cyber Backgrounds */
+  --bg-space: #060913;     /* Main background */
+  --bg-card: rgba(14, 22, 43, 0.72); /* Glass card background */
+}
+```
+
+### 2. Customize Name, College, and Typing Phrases
+Open **`script.js`** and modify the `PORTFOLIO_CONFIG` block at lines 12–30:
+```javascript
+const PORTFOLIO_CONFIG = {
+  name: "Yash",
+  role: "Student · Developer",
+  college: "DY Patil College of Engineering, Akurdi",
+  department: "Department of Information Technology (IT) • 1st Year",
+  email: "yash@example.com",
+  
+  // Hero Typing Animation Phrases (Add or edit phrases here)
+  typingPhrases: [
+    "Hi, I'm Yash · Student · Developer",
+    "First Year IT @ DY Patil Akurdi",
+    "Python Enthusiast & Web Developer",
+    "Building Cool Student Tech & AI Tools"
+  ],
+
+  // Passcode for Owner Mode
+  ownerPasscode: "yash123"
+};
+```
+
+### 3. Customize Projects
+In **`index.html`**, scroll to `<div class="projects-grid" id="projectsGrid">` (around line 240) to edit project titles, descriptions, tags, and GitHub links.
 
 ---
 
-## 🌐 How to Publish Online for FREE
+## 🌐 How to Run & Deploy
 
-### Option 1: GitHub Pages (Recommended)
-1. Go to [GitHub.com](https://github.com) and create a repository named `college-hub`.
-2. Push or upload `index.html`, `style.css`, `app.js`, and the `files/` folder.
-3. Go to **Settings** > **Pages** > Select `main` branch and click **Save**.
-4. Your site will be live at `https://<your-username>.github.io/college-hub/`!
-
-### Option 2: Vercel
-1. Go to [Vercel.com](https://vercel.com) and drag-and-drop the `college-hub` folder.
-2. Click **Deploy** for an instant custom URL.
+1. **Run Locally:** Simply double-click **`index.html`** or open it in any modern browser (Chrome, Edge, Firefox, Safari).
+2. **Deploy on GitHub Pages for Free:**
+   - Create a repository named `college-hub` on [GitHub](https://github.com).
+   - Push `index.html`, `style.css`, `script.js`, and the `files/` folder.
+   - In repository settings: **Settings > Pages > Branch: main > Save**.
+   - Your website will be live at `https://<your-username>.github.io/college-hub/`.

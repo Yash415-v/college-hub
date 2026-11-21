@@ -3,258 +3,970 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yash | DY Patil College of Engineering (IT) Hub & Portfolio</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Google Fonts & Font Awesome Icons -->
+  <title>Yash | Futuristic Student Portfolio & College Hub</title>
+  
+  <!-- Google Fonts: Space Grotesk, Orbitron, Plus Jakarta Sans, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="cyber-theme">
 
-  <!-- Navigation -->
-  <header class="navbar">
+  <!-- Custom Animated Cursor Elements -->
+  <div class="custom-cursor-dot" id="cursorDot"></div>
+  <div class="custom-cursor-ring" id="cursorRing"></div>
+
+  <!-- Interactive Background Canvas (Subtle Floating Particles & Cyber Grid) -->
+  <canvas id="cyberCanvas"></canvas>
+
+  <!-- Background Moving Ambient Neon Glows -->
+  <div class="ambient-glow glow-cyan"></div>
+  <div class="ambient-glow glow-pink"></div>
+  <div class="ambient-glow glow-lime"></div>
+
+  <!-- Sticky Top Navbar -->
+  <header class="navbar" id="mainNavbar">
     <div class="nav-container">
-      <a href="#about" class="logo">
-        <span class="logo-badge">Y</span>
-        <span class="logo-text">Yash<span>.dev</span></span>
+      <a href="#hero" class="logo">
+        <span class="logo-box">
+          <span class="logo-char">Y</span>
+          <span class="logo-glitch"></span>
+        </span>
+        <span class="logo-text">Yash<span class="neon-accent">.dev</span></span>
       </a>
-      <nav class="nav-links">
-        <a href="#about"><i class="fa-solid fa-user"></i> About</a>
-        <a href="#learning"><i class="fa-solid fa-bolt"></i> Learning</a>
-        <a href="#study-hub"><i class="fa-solid fa-stopwatch-20"></i> Study Hub</a>
-        <a href="#attendance"><i class="fa-solid fa-clipboard-user"></i> Attendance</a>
-        <a href="#calculator"><i class="fa-solid fa-calculator"></i> CGPA Calc</a>
-        <a href="#notes"><i class="fa-solid fa-book-bookmark"></i> Notes Hub</a>
-        <a href="#contact" class="btn-sm"><i class="fa-solid fa-envelope"></i> Connect</a>
+
+      <!-- Desktop Nav Links with Animated Underline -->
+      <nav class="nav-links" id="desktopNav">
+        <a href="#hero" class="nav-item active"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#about" class="nav-item"><i class="fa-solid fa-user-astronaut"></i> About</a>
+        <a href="#typingArena" class="nav-item"><i class="fa-solid fa-keyboard"></i> Typing Battle</a>
+        <a href="#projects" class="nav-item"><i class="fa-solid fa-code"></i> Projects</a>
+        <a href="#calculator" class="nav-item"><i class="fa-solid fa-calculator"></i> SGPA / CGPA</a>
+        <a href="#attendance" class="nav-item"><i class="fa-solid fa-clipboard-check"></i> Attendance</a>
+        <a href="#notes" class="nav-item"><i class="fa-solid fa-book-bookmark"></i> Notes</a>
+        <a href="#labs" class="nav-item"><i class="fa-solid fa-flask-vial"></i> Labs</a>
+        <a href="#study-hub" class="nav-item"><i class="fa-solid fa-headphones"></i> Focus Hub</a>
+        <a href="#contact" class="btn-connect"><i class="fa-solid fa-paper-plane"></i> Connect</a>
       </nav>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle Navigation Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer Navigation -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <div class="drawer-header">
+        <span class="drawer-title">CYBER NAVIGATION</span>
+        <button class="drawer-close" id="drawerCloseBtn">&times;</button>
+      </div>
+      <nav class="mobile-nav-links">
+        <a href="#hero" class="mobile-nav-item"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#about" class="mobile-nav-item"><i class="fa-solid fa-user-astronaut"></i> About & Skills</a>
+        <a href="#typingArena" class="mobile-nav-item"><i class="fa-solid fa-keyboard"></i> Typing Battle Arena</a>
+        <a href="#projects" class="mobile-nav-item"><i class="fa-solid fa-code"></i> Projects</a>
+        <a href="#calculator" class="mobile-nav-item"><i class="fa-solid fa-calculator"></i> SGPA / CGPA Calculator</a>
+        <a href="#attendance" class="mobile-nav-item"><i class="fa-solid fa-clipboard-check"></i> Attendance Tracker</a>
+        <a href="#notes" class="mobile-nav-item"><i class="fa-solid fa-book-bookmark"></i> College Notes</a>
+        <a href="#labs" class="mobile-nav-item"><i class="fa-solid fa-flask-vial"></i> Labs Practical Hub</a>
+        <a href="#study-hub" class="mobile-nav-item"><i class="fa-solid fa-headphones"></i> Focus Timer & Audio Engine</a>
+        <a href="#contact" class="mobile-nav-item"><i class="fa-solid fa-paper-plane"></i> Connect With Me</a>
+      </nav>
+      <div class="drawer-footer">
+        <span class="status-indicator"></span> DY Patil College of Engg • IT Dept
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <!-- Hero / About Me Section -->
-    <section id="about" class="hero-section">
+  <main class="page-container">
+
+    <!-- ============================================================== -->
+    <!-- 1. HERO / PORTFOLIO INTRO -->
+    <!-- ============================================================== -->
+    <section id="hero" class="section hero-section reveal">
       <div class="hero-content">
-        <div class="status-pill">
-          <span class="pulse-dot"></span> First Year IT • Open for Tech Collaborations
+        <div class="cyber-badge">
+          <span class="pulse-beacon"></span>
+          <span class="badge-text">FIRST YEAR IT • DY PATIL COLLEGE OF ENGINEERING, AKURDI</span>
         </div>
-        <h1 class="hero-title">
-          Hey, I'm <span class="gradient-text">Yash</span> 👋
+
+        <h1 class="hero-headline">
+          <span class="headline-prefix">HELLO WORLD,</span>
+          <span class="typing-container">
+            <span id="typingTarget" class="neon-gradient-text">Hi, I'm Yash · Student · Developer</span>
+            <span class="cursor-blink">|</span>
+          </span>
         </h1>
-        <p class="hero-subtitle">
-          First Year IT Student @ <strong>DY Patil College of Engineering, Akurdi</strong>
-        </p>
-        <p class="hero-bio">
-          Welcome to my digital space! I am currently pursuing Information Technology (IT) in my first year. 
-          Here, I document everything I am actively learning—from <strong>Python</strong> and <strong>Web Development</strong> to <strong>Artificial Intelligence</strong>—along 
-          with an interactive <strong>Attendance Tracker</strong>, <strong>CGPA Calculator</strong>, and curated college subject notes & assignments organized into dedicated subject sections.
+
+        <p class="hero-subtext">
+          First Year Information Technology undergraduate passionate about crafting bold digital experiences, exploring 
+          <strong>Python</strong>, <strong>AI workflows</strong>, and <strong>full-stack development</strong>, while engineering practical tools for college academics.
         </p>
 
-        <div class="social-links" id="heroSocialLinks">
-          <!-- Populated dynamically by JS -->
+        <!-- Hero Actions -->
+        <div class="hero-cta-group">
+          <a href="#projects" class="cyber-btn cyber-btn-primary">
+            <i class="fa-solid fa-rocket"></i> View Projects
+            <span class="btn-glow"></span>
+          </a>
+          <a href="#typingArena" class="cyber-btn cyber-btn-secondary">
+            <i class="fa-solid fa-keyboard"></i> Typing Challenge
+          </a>
+          <a href="#calculator" class="cyber-btn cyber-btn-ghost">
+            <i class="fa-solid fa-calculator"></i> SGPA Calc
+          </a>
+          <a href="#notes" class="cyber-btn cyber-btn-ghost">
+            <i class="fa-solid fa-file-pdf"></i> College Notes
+          </a>
+        </div>
+
+        <!-- Social Profiles Bar (Owner editable) -->
+        <div class="hero-social-bar" id="heroSocialLinks">
+          <!-- Populated dynamically by script.js -->
         </div>
       </div>
 
-      <div class="hero-card">
-        <div class="profile-card">
-          <div class="avatar-circle">
-            <i class="fa-solid fa-user-graduate"></i>
+      <!-- Hero Cyber Hologram Profile Card -->
+      <div class="hero-visual">
+        <div class="hologram-card tilt-card" id="profileHoloCard">
+          <div class="card-glass-glow"></div>
+          <div class="holo-header">
+            <div class="status-dot-group">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <span class="holo-tag">ID: YASH-IT-2026</span>
           </div>
-          <h3>Yash</h3>
-          <p class="student-info">
-            <i class="fa-solid fa-building-columns"></i> DY Patil College of Engineering, Akurdi<br>
-            <span style="display:inline-block; margin-top: 0.3rem; color: #a855f7; font-weight: 600;">
-              <i class="fa-solid fa-laptop-code"></i> Department of Information Technology (IT) • 1st Year
-            </span>
+
+          <div class="avatar-wrapper">
+            <div class="avatar-ring"></div>
+            <div class="avatar-inner">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div class="avatar-tech-badge">
+              <i class="fa-brands fa-python"></i>
+            </div>
+          </div>
+
+          <h3 class="holo-name">Yash</h3>
+          <p class="holo-role">B.E. Information Technology</p>
+          <p class="holo-institution">
+            <i class="fa-solid fa-building-columns"></i> DY Patil College of Engineering, Akurdi
           </p>
-          <div class="profile-stats">
-            <div class="stat-box">
-              <span class="stat-num" id="totalNotesCount">0</span>
-              <span class="stat-label">Total PDFs</span>
+
+          <!-- Quick Cyber Stats Grid -->
+          <div class="holo-stats-grid">
+            <div class="stat-cell">
+              <span class="stat-number" id="heroNotesCount">0</span>
+              <span class="stat-label">PDF Notes</span>
             </div>
-            <div class="stat-box">
-              <span class="stat-num" id="heroAttendanceStat">--%</span>
-              <span class="stat-label">Avg Attendance</span>
+            <div class="stat-cell">
+              <span class="stat-number" id="heroAttendanceStat">--%</span>
+              <span class="stat-label">Attendance</span>
             </div>
-            <div class="stat-box">
-              <span class="stat-num" id="heroSgpaStat">--</span>
-              <span class="stat-label">Est. SGPA</span>
+            <div class="stat-cell">
+              <span class="stat-number" id="heroSgpaStat">--</span>
+              <span class="stat-label">Current SGPA</span>
             </div>
-            <div class="stat-box">
-              <span class="stat-num">32</span>
+            <div class="stat-cell">
+              <span class="stat-number">32</span>
               <span class="stat-label">WPM Typing</span>
             </div>
           </div>
+
+          <div class="holo-footer">
+            <span class="holo-ping"><i class="fa-solid fa-bolt"></i> OPEN FOR TECH COLLABS</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Currently Learning & Benchmarks Section -->
-    <section id="learning" class="section">
-      <div class="section-header">
-        <span class="tag">Active Tech Focus & Benchmarks</span>
-        <h2><i class="fa-solid fa-fire"></i> What I Am Learning & Practicing</h2>
-        <p>Skills, languages, technologies, and speed benchmarks I am actively tracking alongside my college curriculum.</p>
+    <!-- ============================================================== -->
+    <!-- 2. ABOUT ME, SKILLS & INTERACTIVE TYPING ARENA -->
+    <!-- ============================================================== -->
+    <section id="about" class="section about-section reveal">
+      <div class="section-title-wrap">
+        <div class="section-pill"><i class="fa-solid fa-terminal"></i> BIO & ARSENAL</div>
+        <h2 class="section-title">About Me & <span class="neon-gradient-text">Core Skills</span></h2>
+        <p class="section-desc">My engineering journey, developer toolkit, active proficiencies, and live speed benchmark challenge.</p>
       </div>
 
-      <div class="learning-grid">
-        <!-- Card 1: Python -->
-        <div class="learning-card">
-          <div class="card-icon dsa"><i class="fa-brands fa-python"></i></div>
-          <h3>Python Programming</h3>
-          <p>Core programming fundamentals, data structures (lists, tuples, dicts), file handling, OOP, and problem-solving.</p>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" style="width: 65%;"></div>
+      <div class="about-grid">
+        <!-- Interactive Terminal Bio Card -->
+        <div class="terminal-card tilt-card">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <span class="btn-circle red"></span>
+              <span class="btn-circle yellow"></span>
+              <span class="btn-circle green"></span>
+            </div>
+            <span class="terminal-title">yash@dy-patil-it: ~/profile.sh</span>
+            <span class="terminal-icon"><i class="fa-solid fa-code-branch"></i> main</span>
           </div>
-          <span class="progress-text">65% • Actively Practicing</span>
+          <div class="terminal-body">
+            <div class="term-line">
+              <span class="term-prompt">$</span> <span class="term-cmd">cat bio.txt</span>
+            </div>
+            <p class="term-output">
+              "Hey there! I am Yash, a 1st Year Information Technology engineering student at DY Patil College of Engineering, Akurdi (Pune).
+              I love turning ideas into sleek, interactive applications. When I am not solving coding problems in Python, you will find me optimizing
+              calculators, organizing semester study materials, or testing artificial intelligence models."
+            </p>
+            <div class="term-line">
+              <span class="term-prompt">$</span> <span class="term-cmd">./check_interests.sh</span>
+            </div>
+            <ul class="term-list">
+              <li><i class="fa-solid fa-check neon-lime"></i> Python Programming & Object Oriented Design</li>
+              <li><i class="fa-solid fa-check neon-cyan"></i> Modern Responsive Frontend & UI Micro-Interactions</li>
+              <li><i class="fa-solid fa-check neon-pink"></i> SPPU IT Engineering Coursework & Lab Practicals</li>
+              <li><i class="fa-solid fa-check neon-purple"></i> AI Tools, Prompt Engineering & Smart Workflows</li>
+            </ul>
+            <div class="term-line">
+              <span class="term-prompt">$</span> <span class="term-cmd">typing_speed --verified</span>
+            </div>
+            <div class="term-badge-row">
+              <span class="typing-chip"><i class="fa-solid fa-keyboard"></i> 32 WPM</span>
+              <span class="typing-chip"><i class="fa-solid fa-bullseye"></i> 86% Accuracy</span>
+              <span class="typing-chip"><i class="fa-solid fa-gauge-high"></i> 35 Raw</span>
+              <span class="typing-chip"><i class="fa-solid fa-chart-line"></i> 68% Consistency</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Card 2: Web Development -->
-        <div class="learning-card">
-          <div class="card-icon web"><i class="fa-brands fa-html5"></i></div>
-          <h3>Web Development</h3>
-          <p>Building clean, responsive, modern websites using HTML5, modern CSS (Flexbox/Grid), and interactive JavaScript.</p>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" style="width: 60%;"></div>
-          </div>
-          <span class="progress-text">60% • Building Projects</span>
-        </div>
+        <!-- Skills Bars & Chips -->
+        <div class="skills-card">
+          <h3 class="card-inner-title"><i class="fa-solid fa-fire neon-pink"></i> Technical Proficiency</h3>
 
-        <!-- Card 3: AI -->
-        <div class="learning-card">
-          <div class="card-icon db"><i class="fa-solid fa-brain"></i></div>
-          <h3>Artificial Intelligence (AI)</h3>
-          <p>Exploring foundational AI concepts, modern LLMs, prompt engineering, AI development workflows, and automated tools.</p>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" style="width: 45%;"></div>
-          </div>
-          <span class="progress-text">45% • Exploring & Experimenting</span>
-        </div>
-
-        <!-- Card 4: Typing Speed Benchmark -->
-        <div class="learning-card typing-card">
-          <div class="card-icon typing"><i class="fa-solid fa-keyboard"></i></div>
-          <div class="typing-header-row">
-            <h3>Typing Benchmark</h3>
-            <span class="benchmark-pill"><i class="fa-solid fa-check"></i> MonkeyType</span>
-          </div>
-          <p>Verified typing speed and accuracy test for high-efficiency programming and coursework documentation.</p>
-          <div class="typing-stats-row">
-            <div class="mini-stat">
-              <span class="val">32</span>
-              <span class="lbl">WPM</span>
+          <!-- Animated Progress Bars -->
+          <div class="skill-bars-list">
+            <div class="skill-bar-item">
+              <div class="skill-info">
+                <span><i class="fa-brands fa-python neon-purple"></i> Python (Data Structures, OOP, Scripting)</span>
+                <span class="skill-pct">75%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-python" style="width: 75%;"></div>
+              </div>
             </div>
-            <div class="mini-stat">
-              <span class="val">86%</span>
-              <span class="lbl">Accuracy</span>
-            </div>
-            <div class="mini-stat">
-              <span class="val">35</span>
-              <span class="lbl">Raw</span>
-            </div>
-            <div class="mini-stat">
-              <span class="val">68%</span>
-              <span class="lbl">Consistency</span>
-            </div>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" style="width: 86%;"></div>
-          </div>
-          <span class="progress-text">162 Correct Keystrokes • 1:00 Test</span>
-        </div>
-      </div>
-    </section>
 
-    <!-- Study Hub: Pomodoro Timer & Formula Cheat Sheets -->
-    <section id="study-hub" class="section">
-      <div class="section-header">
-        <span class="tag">Productivity & Quick Revision</span>
-        <h2><i class="fa-solid fa-stopwatch-20"></i> Pomodoro Timer & Formula Cheat Sheets</h2>
-        <p>Boost your study focus with interval timer sessions and quickly look up core 1st-year formulas and code syntax.</p>
-      </div>
-
-      <div class="study-tools-layout">
-        <!-- Left: Pomodoro Focus Timer -->
-        <div class="pomodoro-card">
-          <div class="pomo-header">
-            <h3><i class="fa-solid fa-brain"></i> Focus Study Timer</h3>
-            <div class="pomo-session-pill">
-              <span id="pomoSessionCount">0</span> Pomodoros Done
+            <div class="skill-bar-item">
+              <div class="skill-info">
+                <span><i class="fa-brands fa-html5 neon-pink"></i> Web Development (HTML5, CSS3, JavaScript)</span>
+                <span class="skill-pct">70%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-web" style="width: 70%;"></div>
+              </div>
             </div>
-          </div>
 
-          <!-- Mode Selector Tabs -->
-          <div class="pomo-modes">
-            <button class="pomo-mode-btn active" data-mode="pomodoro">
-              <i class="fa-solid fa-fire"></i> Focus (25m)
-            </button>
-            <button class="pomo-mode-btn" data-mode="shortBreak">
-              <i class="fa-solid fa-mug-hot"></i> Short (5m)
-            </button>
-            <button class="pomo-mode-btn" data-mode="longBreak">
-              <i class="fa-solid fa-couch"></i> Long (15m)
-            </button>
-          </div>
+            <div class="skill-bar-item">
+              <div class="skill-info">
+                <span><i class="fa-solid fa-brain neon-cyan"></i> AI Workflows & Prompt Engineering</span>
+                <span class="skill-pct">65%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-ai" style="width: 65%;"></div>
+              </div>
+            </div>
 
-          <!-- Circular Timer Display -->
-          <div class="pomo-timer-display">
-            <div class="pomo-circle-wrap">
-              <svg class="pomo-svg" viewBox="0 0 200 200">
-                <circle class="pomo-circle-bg" cx="100" cy="100" r="86" />
-                <circle class="pomo-circle-fill" id="pomoCircleFill" cx="100" cy="100" r="86" />
-              </svg>
-              <div class="pomo-center-content">
-                <span class="pomo-time" id="pomoTimeDisplay">25:00</span>
-                <span class="pomo-phase-label" id="pomoPhaseLabel">Focus Session</span>
+            <div class="skill-bar-item">
+              <div class="skill-info">
+                <span><i class="fa-solid fa-microchip neon-lime"></i> Engineering Fundamentals (Maths-I, BEE, Physics)</span>
+                <span class="skill-pct">80%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill fill-engg" style="width: 80%;"></div>
               </div>
             </div>
           </div>
 
-          <!-- Subject & Task Input for Focus Session -->
-          <div class="pomo-task-box">
-            <div class="pomo-subject-select-wrap">
-              <label><i class="fa-solid fa-book-open"></i> Studying Subject:</label>
-              <select id="pomoSubjectSelect">
+          <!-- Neon Skill Chips / Tags -->
+          <h4 class="chips-subtitle">Tools & Tech Stack</h4>
+          <div class="skill-chips-wrap">
+            <span class="neon-chip"><i class="fa-brands fa-python"></i> Python 3</span>
+            <span class="neon-chip"><i class="fa-brands fa-js"></i> JavaScript ES6+</span>
+            <span class="neon-chip"><i class="fa-brands fa-css3-alt"></i> Modern CSS & Grid</span>
+            <span class="neon-chip"><i class="fa-brands fa-git-alt"></i> Git & GitHub</span>
+            <span class="neon-chip"><i class="fa-solid fa-database"></i> LocalStorage API</span>
+            <span class="neon-chip"><i class="fa-solid fa-waveform"></i> Web Audio API</span>
+            <span class="neon-chip"><i class="fa-solid fa-terminal"></i> VS Code & Terminal</span>
+            <span class="neon-chip"><i class="fa-solid fa-robot"></i> AI Assistants</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cyber Typing Speed Battle Arena (Feature #6) -->
+      <div class="typing-arena-card glass-panel tilt-card" id="typingArena">
+        <div class="arena-header">
+          <div class="arena-title-wrap">
+            <span class="arena-badge"><i class="fa-solid fa-gamepad neon-pink"></i> INTERACTIVE BENCHMARK ARENA</span>
+            <h3 class="arena-title">Cyber Typing Battle: <span class="neon-gradient-text">Can You Beat Yash's 32 WPM?</span></h3>
+            <p class="arena-sub">Test your real-time typing speed on engineering logic and syntax against Yash's verified MonkeyType benchmark.</p>
+          </div>
+          <div class="arena-target-pill">
+            <span class="target-lbl">BENCHMARK RECORD:</span>
+            <span class="target-val neon-cyan">32 WPM</span>
+          </div>
+        </div>
+
+        <div class="arena-metrics-bar">
+          <div class="arena-metric-box">
+            <span class="metric-num neon-pink" id="typingTimer">30s</span>
+            <span class="metric-lbl">TIME LEFT</span>
+          </div>
+          <div class="arena-metric-box">
+            <span class="metric-num neon-lime" id="typingLiveWpm">0</span>
+            <span class="metric-lbl">CURRENT WPM</span>
+          </div>
+          <div class="arena-metric-box">
+            <span class="metric-num neon-cyan" id="typingLiveAcc">100%</span>
+            <span class="metric-lbl">ACCURACY</span>
+          </div>
+          <div class="arena-metric-box">
+            <span class="metric-num" id="typingKeystrokes">0</span>
+            <span class="metric-lbl">KEYSTROKES</span>
+          </div>
+        </div>
+
+        <!-- Words Display Box -->
+        <div class="arena-text-display" id="typingTextDisplay" tabindex="0">
+          <!-- Dynamically populated letters -->
+        </div>
+
+        <!-- Hidden input helper for typing focus across devices -->
+        <input type="text" id="typingHiddenInput" class="typing-hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+        <!-- Battle Result Banner -->
+        <div class="arena-result-banner" id="arenaResultBanner" style="display: none;">
+          <div class="result-icon-wrap" id="arenaResultIcon">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div class="result-info-wrap">
+            <h4 class="result-headline" id="arenaResultHeadline">CHALLENGE READY</h4>
+            <p class="result-detail" id="arenaResultDetail">Click "Start 30s Battle" or start typing in the box above!</p>
+          </div>
+        </div>
+
+        <div class="arena-actions-row">
+          <button id="startTypingBattleBtn" class="cyber-btn cyber-btn-primary">
+            <i class="fa-solid fa-play"></i> Start 30s Battle
+          </button>
+          <button id="resetTypingBattleBtn" class="cyber-btn cyber-btn-ghost">
+            <i class="fa-solid fa-rotate-left"></i> New Quote / Reset
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 3. PROJECTS GRID WITH HOVER PREVIEWS -->
+    <!-- ============================================================== -->
+    <section id="projects" class="section projects-section reveal">
+      <div class="section-title-wrap">
+        <div class="section-pill"><i class="fa-solid fa-folder-open"></i> PORTFOLIO WORK</div>
+        <h2 class="section-title">Featured <span class="neon-gradient-text">Projects</span></h2>
+        <p class="section-desc">Practical apps, engineering utilities, and creative software built with passion.</p>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Project 1: College Hub -->
+        <div class="project-card tilt-card">
+          <div class="project-banner banner-hub">
+            <div class="banner-overlay"></div>
+            <div class="project-icon-badge"><i class="fa-solid fa-graduation-cap"></i></div>
+            <span class="project-status-tag live">ACTIVE</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Yash's College Hub & Student OS</h3>
+            <p class="project-desc">
+              All-in-one companion web app for engineering students featuring SGPA/CGPA calculation, bunk tracking, subject notes shelves, and focus timer.
+            </p>
+            <div class="project-tags">
+              <span>JavaScript</span>
+              <span>Glassmorphism</span>
+              <span>Web Audio</span>
+              <span>LocalStorage</span>
+            </div>
+            <div class="project-links">
+              <a href="#calculator" class="btn-proj-link primary"><i class="fa-solid fa-play"></i> Live App</a>
+              <a href="https://github.com" target="_blank" class="btn-proj-link secondary"><i class="fa-brands fa-github"></i> Source</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Attendance Advisor -->
+        <div class="project-card tilt-card">
+          <div class="project-banner banner-att">
+            <div class="banner-overlay"></div>
+            <div class="project-icon-badge"><i class="fa-solid fa-chart-pie"></i></div>
+            <span class="project-status-tag live">UTILITY</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Smart Attendance & Bunk Advisor</h3>
+            <p class="project-desc">
+              Algorithmic attendance auditor that calculates safe bunks remaining above 75% or the exact consecutive classes needed to avoid university debarment.
+            </p>
+            <div class="project-tags">
+              <span>SVG Gauges</span>
+              <span>Math Logic</span>
+              <span>Responsive UI</span>
+            </div>
+            <div class="project-links">
+              <a href="#attendance" class="btn-proj-link primary"><i class="fa-solid fa-circle-check"></i> Try Tool</a>
+              <a href="https://github.com" target="_blank" class="btn-proj-link secondary"><i class="fa-brands fa-github"></i> GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Pomodoro & Formula Engine -->
+        <div class="project-card tilt-card">
+          <div class="project-banner banner-study">
+            <div class="banner-overlay"></div>
+            <div class="project-icon-badge"><i class="fa-solid fa-bolt"></i></div>
+            <span class="project-status-tag live">STUDY TOOL</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Engineering Focus Timer & Cheat Sheet</h3>
+            <p class="project-desc">
+              Interval focus timer synthesized with offline Web Audio chime and instant 1-click copy cheat sheets for SPPU Maths, Physics, and Python.
+            </p>
+            <div class="project-tags">
+              <span>Web Audio API</span>
+              <span>Timers</span>
+              <span>Live Search</span>
+            </div>
+            <div class="project-links">
+              <a href="#study-hub" class="btn-proj-link primary"><i class="fa-solid fa-stopwatch"></i> Open Timer</a>
+              <a href="https://github.com" target="_blank" class="btn-proj-link secondary"><i class="fa-brands fa-github"></i> GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Python Lab Suite -->
+        <div class="project-card tilt-card">
+          <div class="project-banner banner-python">
+            <div class="banner-overlay"></div>
+            <div class="project-icon-badge"><i class="fa-brands fa-python"></i></div>
+            <span class="project-status-tag code">CODEBASE</span>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">First Year Python Practical Repository</h3>
+            <p class="project-desc">
+              Comprehensive collection of 1st-year IT practicals, algorithm implementations (matrices, prime generators, recursion), with docstrings and unit tests.
+            </p>
+            <div class="project-tags">
+              <span>Python 3.11</span>
+              <span>Algorithms</span>
+              <span>Clean Code</span>
+            </div>
+            <div class="project-links">
+              <a href="#labs" class="btn-proj-link primary"><i class="fa-solid fa-flask"></i> View Labs</a>
+              <a href="https://github.com" target="_blank" class="btn-proj-link secondary"><i class="fa-brands fa-github"></i> GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 4. SGPA / CGPA CALCULATOR -->
+    <!-- ============================================================== -->
+    <section id="calculator" class="section calc-section reveal">
+      <div class="section-title-wrap">
+        <div class="section-pill"><i class="fa-solid fa-calculator"></i> ACADEMIC GRADES</div>
+        <h2 class="section-title">SGPA & CGPA <span class="neon-gradient-text">Calculator</span></h2>
+        <p class="section-desc">Instant credit-weighted grade calculation with SPPU grade scale, percentage conversion, and multi-semester persistence.</p>
+      </div>
+
+      <!-- Calculator Tabs -->
+      <div class="cyber-tabs">
+        <button class="cyber-tab-btn active" id="tabSgpaBtn" data-tab="sgpaTab">
+          <i class="fa-solid fa-graduation-cap"></i> Semester SGPA & Marks
+        </button>
+        <button class="cyber-tab-btn" id="tabCgpaBtn" data-tab="cgpaTab">
+          <i class="fa-solid fa-chart-line"></i> Cumulative CGPA (Multi-Sem)
+        </button>
+      </div>
+
+      <!-- Tab 1: SGPA Calculator -->
+      <div id="sgpaTab" class="calc-tab-pane active">
+        <div class="calc-grid-layout">
+          <!-- Course Rows Card -->
+          <div class="calc-table-card glass-panel">
+            <div class="table-card-top">
+              <h3 class="card-title"><i class="fa-solid fa-book neon-cyan"></i> Semester 1 Course Subjects</h3>
+              <span class="table-badge">SPPU Grading Scheme</span>
+            </div>
+
+            <div class="calc-table-header">
+              <span class="col-course">Course / Subject Name</span>
+              <span class="col-credit">Credits</span>
+              <span class="col-grade">Grade (Points)</span>
+              <span class="col-points">Earned</span>
+              <span class="col-action">Remove</span>
+            </div>
+
+            <div id="sgpaRowsList" class="calc-rows-container">
+              <!-- Dynamically populated rows -->
+            </div>
+
+            <div class="calc-card-footer">
+              <button id="addSgpaRowBtn" class="cyber-btn cyber-btn-primary">
+                <i class="fa-solid fa-plus"></i> Add Subject
+              </button>
+              <button id="resetSgpaBtn" class="cyber-btn cyber-btn-ghost">
+                <i class="fa-solid fa-rotate-left"></i> Reset Semester
+              </button>
+            </div>
+          </div>
+
+          <!-- Result Display Card -->
+          <div class="calc-result-card glass-panel">
+            <div class="result-glow-circle"></div>
+            <span class="result-header-label">SEMESTER SGPA RESULT</span>
+            
+            <div class="result-counter-wrap">
+              <span class="result-number animated-counter" id="calculatedSgpa">0.00</span>
+              <span class="result-max">/ 10.0</span>
+            </div>
+
+            <div class="result-badge-container">
+              <span class="grade-classification-badge" id="sgpaClassBadge">First Class with Distinction</span>
+            </div>
+
+            <div class="result-metrics-grid">
+              <div class="metric-box">
+                <span class="metric-label">Total Credits</span>
+                <span class="metric-val" id="totalCreditsDisplay">0</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Grade Points</span>
+                <span class="metric-val" id="totalPointsDisplay">0</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Estimated %</span>
+                <span class="metric-val neon-lime" id="equivalentPercentageDisplay">0%</span>
+              </div>
+            </div>
+
+            <div class="grade-reference-box">
+              <span class="ref-title"><i class="fa-solid fa-circle-info"></i> SPPU Grading Scale:</span>
+              <div class="ref-chips">
+                <span>O: 10</span>
+                <span>A+: 9</span>
+                <span>A: 8</span>
+                <span>B+: 7</span>
+                <span>B: 6</span>
+                <span>C: 5</span>
+                <span>P: 4</span>
+                <span>F: 0</span>
+              </div>
+              <span class="formula-caption">Percentage = (SGPA - 0.75) × 10</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Cumulative CGPA Calculator -->
+      <div id="cgpaTab" class="calc-tab-pane">
+        <div class="calc-grid-layout">
+          <!-- Multi-Sem Rows Card -->
+          <div class="calc-table-card glass-panel">
+            <div class="table-card-top">
+              <h3 class="card-title"><i class="fa-solid fa-layer-group neon-purple"></i> Degree Semesters</h3>
+              <span class="table-badge">Weighted CGPA</span>
+            </div>
+
+            <div class="calc-table-header cgpa-grid-header">
+              <span class="col-sem">Semester</span>
+              <span class="col-sgpa">SGPA</span>
+              <span class="col-credits">Credits</span>
+              <span class="col-points">Weighted Pts</span>
+              <span class="col-action">Remove</span>
+            </div>
+
+            <div id="cgpaRowsList" class="calc-rows-container">
+              <!-- Dynamically populated rows -->
+            </div>
+
+            <div class="calc-card-footer">
+              <button id="addCgpaRowBtn" class="cyber-btn cyber-btn-primary">
+                <i class="fa-solid fa-plus"></i> Add Semester
+              </button>
+              <button id="resetCgpaBtn" class="cyber-btn cyber-btn-ghost">
+                <i class="fa-solid fa-rotate-left"></i> Reset Semesters
+              </button>
+            </div>
+          </div>
+
+          <!-- CGPA Result Display Card -->
+          <div class="calc-result-card glass-panel">
+            <div class="result-glow-circle purple"></div>
+            <span class="result-header-label">CUMULATIVE CGPA</span>
+            
+            <div class="result-counter-wrap">
+              <span class="result-number animated-counter" id="calculatedCgpa">0.00</span>
+              <span class="result-max">/ 10.0</span>
+            </div>
+
+            <div class="result-badge-container">
+              <span class="grade-classification-badge" id="cgpaClassBadge">First Class with Distinction</span>
+            </div>
+
+            <div class="result-metrics-grid">
+              <div class="metric-box">
+                <span class="metric-label">Semesters</span>
+                <span class="metric-val" id="totalSemestersDisplay">0</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Total Credits</span>
+                <span class="metric-val" id="totalCgpaCreditsDisplay">0</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Degree %</span>
+                <span class="metric-val neon-cyan" id="cgpaPercentageDisplay">0%</span>
+              </div>
+            </div>
+
+            <div class="grade-reference-box">
+              <span class="ref-title"><i class="fa-solid fa-award"></i> Degree Criteria:</span>
+              <p class="ref-text">CGPA &ge; 7.75: Distinction</p>
+              <p class="ref-text">CGPA 6.75 - 7.74: First Class</p>
+              <p class="ref-text">CGPA 5.75 - 6.74: Higher Second Class</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 5. ATTENDANCE TRACKER -->
+    <!-- ============================================================== -->
+    <section id="attendance" class="section attendance-section reveal">
+      <div class="section-title-wrap">
+        <div class="section-pill"><i class="fa-solid fa-clipboard-user"></i> SMART AUDITOR</div>
+        <h2 class="section-title">College <span class="neon-gradient-text">Attendance Tracker</span></h2>
+        <p class="section-desc">Track subject presence, monitor the 75% threshold, and get instant bunk / shortage advisories.</p>
+      </div>
+
+      <!-- Overall Attendance Summary Bar -->
+      <div class="attendance-dashboard glass-panel">
+        <div class="dashboard-gauge-col">
+          <div class="circular-gauge-wrapper">
+            <svg class="circular-gauge-svg" viewBox="0 0 120 120">
+              <circle class="gauge-base" cx="60" cy="60" r="50" />
+              <circle class="gauge-progress" id="overallGaugeFill" cx="60" cy="60" r="50" />
+            </svg>
+            <div class="gauge-center-text">
+              <span class="gauge-percent-val" id="overallPercentage">0%</span>
+              <span class="gauge-label">OVERALL</span>
+            </div>
+          </div>
+
+          <div class="gauge-meta-details">
+            <h3 class="gauge-summary-title">Overall Academic Attendance</h3>
+            <p class="gauge-counts" id="overallClassesCount">0 of 0 Classes Attended</p>
+            <div id="overallStatusBadge" class="status-pill safe">
+              <i class="fa-solid fa-shield-check"></i> Safe: Above 75% Threshold
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-actions-col">
+          <button id="openAddSubjectBtn" class="cyber-btn cyber-btn-primary">
+            <i class="fa-solid fa-circle-plus"></i> Add Subject
+          </button>
+          <button id="resetAttendanceBtn" class="cyber-btn cyber-btn-ghost">
+            <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+          </button>
+        </div>
+      </div>
+
+      <!-- Subject Cards Grid -->
+      <div class="attendance-grid" id="attendanceGrid">
+        <!-- Dynamically injected subject cards -->
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 6. COLLEGE NOTES HUB & PDF SHELF -->
+    <!-- ============================================================== -->
+    <section id="notes" class="section notes-section reveal">
+      <div class="section-header-flex">
+        <div class="section-title-wrap" style="text-align: left; margin-bottom: 0;">
+          <div class="section-pill"><i class="fa-solid fa-book-open"></i> STUDY LIBRARY</div>
+          <h2 class="section-title">College Notes & <span class="neon-gradient-text">PDF Shelf</span></h2>
+          <p class="section-desc">Subject-wise curated theory handouts, question banks, and assignments with in-page viewer.</p>
+        </div>
+
+        <!-- Owner Login & Management Button -->
+        <div class="owner-control-wrap">
+          <button id="toggleOwnerBtn" class="cyber-btn cyber-btn-ghost owner-btn" title="Owner Access: Manage & Upload PDFs">
+            <i class="fa-solid fa-lock"></i> <span id="ownerBtnText">Owner Login</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Owner Active Toolbar (Visible when logged in with passcode 'yash123') -->
+      <div id="ownerToolbar" class="owner-toolbar glass-panel" style="display: none;">
+        <div class="owner-status-box">
+          <span class="owner-pill"><i class="fa-solid fa-shield-halved"></i> Owner Access Active</span>
+          <span class="owner-note">Manage PDFs, add new subject sections, update social links, or export code.</span>
+        </div>
+        <div class="owner-btn-group">
+          <button id="openAddPdfGlobalBtn" class="cyber-btn cyber-btn-primary btn-sm">
+            <i class="fa-solid fa-file-circle-plus"></i> Add PDF
+          </button>
+          <button id="openAddSectionBtn" class="cyber-btn cyber-btn-secondary btn-sm">
+            <i class="fa-solid fa-folder-plus"></i> New Section
+          </button>
+          <button id="openEditSocialBtn" class="cyber-btn cyber-btn-ghost btn-sm">
+            <i class="fa-solid fa-share-nodes"></i> Edit Socials
+          </button>
+          <button id="exportCodeBtn" class="cyber-btn cyber-btn-ghost btn-sm">
+            <i class="fa-solid fa-code"></i> Export Code
+          </button>
+          <button id="lockOwnerBtn" class="cyber-btn cyber-btn-ghost btn-sm btn-danger">
+            <i class="fa-solid fa-lock"></i> Lock
+          </button>
+        </div>
+      </div>
+
+      <!-- Notes Controls & Live Filters -->
+      <div class="notes-controls-box glass-panel">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Search by topic, keyword, or subject (e.g. Laser, Matrices, Python, BEE)...">
+        </div>
+
+        <!-- Subject Filter Pills -->
+        <div class="filter-pills-row" id="subjectPills">
+          <!-- Dynamically populated subject buttons -->
+        </div>
+
+        <!-- Material Category Filter Pills -->
+        <div class="filter-pills-row type-pills-row" id="typePills">
+          <button class="filter-pill active" data-type="all">All Documents</button>
+          <button class="filter-pill" data-type="Notes"><i class="fa-solid fa-book"></i> Notes</button>
+          <button class="filter-pill" data-type="Assignment"><i class="fa-solid fa-pen-nib"></i> Assignments</button>
+          <button class="filter-pill" data-type="Lab"><i class="fa-solid fa-flask"></i> Lab Manuals</button>
+          <button class="filter-pill" data-type="PYQ"><i class="fa-solid fa-file-lines"></i> PYQs</button>
+        </div>
+      </div>
+
+      <!-- Subject Shelves Container -->
+      <div id="notesSectionsContainer" class="notes-shelves-container">
+        <!-- Dynamically injected subject shelves -->
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 7. LABS SECTION (EXPERIMENTS & STATUS TRACKER) -->
+    <!-- ============================================================== -->
+    <section id="labs" class="section labs-section reveal">
+      <div class="section-header-flex">
+        <div class="section-title-wrap" style="text-align: left; margin-bottom: 0;">
+          <div class="section-pill"><i class="fa-solid fa-flask-vial"></i> PRACTICAL RECORD</div>
+          <h2 class="section-title">Labs & <span class="neon-gradient-text">Practical Hub</span></h2>
+          <p class="section-desc">Track college practical experiments, toggle completion status, and access code submissions.</p>
+        </div>
+
+        <div class="labs-actions-top">
+          <button id="openAddLabBtn" class="cyber-btn cyber-btn-primary">
+            <i class="fa-solid fa-plus-circle"></i> Add Lab Practical
+          </button>
+        </div>
+      </div>
+
+      <!-- Labs Overview Stats & Filter Bar -->
+      <div class="labs-controls-bar glass-panel">
+        <div class="labs-stats-summary">
+          <div class="lab-stat-item">
+            <span class="lab-stat-num" id="totalLabsCount">0</span>
+            <span class="lab-stat-lbl">Total Practicals</span>
+          </div>
+          <div class="lab-stat-item">
+            <span class="lab-stat-num neon-lime" id="doneLabsCount">0</span>
+            <span class="lab-stat-lbl">Completed (Done)</span>
+          </div>
+          <div class="lab-stat-item">
+            <span class="lab-stat-num neon-pink" id="pendingLabsCount">0</span>
+            <span class="lab-stat-lbl">Pending Submission</span>
+          </div>
+        </div>
+
+        <!-- Status Filter Buttons -->
+        <div class="labs-filter-group" id="labStatusFilters">
+          <button class="lab-filter-btn active" data-filter="all">All Labs</button>
+          <button class="lab-filter-btn" data-filter="done"><i class="fa-solid fa-circle-check neon-lime"></i> Done</button>
+          <button class="lab-filter-btn" data-filter="pending"><i class="fa-solid fa-clock neon-pink"></i> Pending</button>
+        </div>
+      </div>
+
+      <!-- Labs Cards Grid -->
+      <div class="labs-grid" id="labsGrid">
+        <!-- Dynamically injected lab cards -->
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 8. STUDY HUB: POMODORO & BINAURAL FOCUS AUDIO ENGINE (Feature #8) -->
+    <!-- ============================================================== -->
+    <section id="study-hub" class="section study-section reveal">
+      <div class="section-title-wrap">
+        <div class="section-pill"><i class="fa-solid fa-brain"></i> FOCUS & REVISION</div>
+        <h2 class="section-title">Pomodoro Timer & <span class="neon-gradient-text">Focus Audio Engine</span></h2>
+        <p class="section-desc">Deep work intervals with melodic chime, offline binaural wave generator, and quick formula lookup.</p>
+      </div>
+
+      <div class="study-tools-grid">
+        <!-- Left Column: Pomodoro Timer + Binaural Audio Engine -->
+        <div class="study-left-col">
+          <!-- Pomodoro Focus Timer -->
+          <div class="pomo-card glass-panel tilt-card">
+            <div class="pomo-header-row">
+              <div>
+                <h3 class="pomo-title"><i class="fa-solid fa-stopwatch neon-purple"></i> Cyber Focus Timer</h3>
+                <p class="pomo-sub">Deep work intervals with melodic chime</p>
+              </div>
+              <div class="pomo-done-badge">
+                <span id="pomoSessionCount">0</span> Done
+              </div>
+            </div>
+
+            <!-- Interval Modes -->
+            <div class="pomo-modes-bar">
+              <button class="pomo-mode-btn active" data-mode="pomodoro">
+                <i class="fa-solid fa-fire"></i> Focus (25m)
+              </button>
+              <button class="pomo-mode-btn" data-mode="shortBreak">
+                <i class="fa-solid fa-mug-hot"></i> Short (5m)
+              </button>
+              <button class="pomo-mode-btn" data-mode="longBreak">
+                <i class="fa-solid fa-couch"></i> Long (15m)
+              </button>
+            </div>
+
+            <!-- Circular SVG Timer -->
+            <div class="pomo-clock-container">
+              <svg class="pomo-svg" viewBox="0 0 200 200">
+                <circle class="pomo-circle-track" cx="100" cy="100" r="86" />
+                <circle class="pomo-circle-stroke" id="pomoCircleFill" cx="100" cy="100" r="86" />
+              </svg>
+              <div class="pomo-display-center">
+                <span class="pomo-digital-clock" id="pomoTimeDisplay">25:00</span>
+                <span class="pomo-phase-badge" id="pomoPhaseLabel">Focus Session</span>
+              </div>
+            </div>
+
+            <!-- Subject Target -->
+            <div class="pomo-input-box">
+              <label><i class="fa-solid fa-book-bookmark neon-cyan"></i> Studying:</label>
+              <select id="pomoSubjectSelect" class="cyber-select">
                 <option value="Physics">Engineering Physics</option>
                 <option value="Python" selected>Programming with Python</option>
                 <option value="Maths-I">Engineering Mathematics-I</option>
                 <option value="BEE">Basic Electrical & Electronics (BEE)</option>
                 <option value="SME">Systems in Mechanical Engg (SME)</option>
               </select>
+              <input type="text" id="pomoTaskInput" placeholder="Session goal (e.g. He-Ne laser working, matrix rank)..." class="cyber-input">
             </div>
-            <input type="text" id="pomoTaskInput" placeholder="Current study goal (e.g. He-Ne laser working or matrix rank)...">
+
+            <!-- Controls -->
+            <div class="pomo-actions-row">
+              <button id="pomoStartBtn" class="cyber-btn cyber-btn-primary">
+                <i class="fa-solid fa-play" id="pomoStartIcon"></i> <span id="pomoStartText">Start Focus</span>
+              </button>
+              <button id="pomoResetBtn" class="cyber-btn cyber-btn-ghost" title="Reset Timer">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+              <button id="pomoSoundBtn" class="cyber-btn cyber-btn-ghost" title="Toggle Chime Sound">
+                <i class="fa-solid fa-volume-high" id="pomoSoundIcon"></i> Chime ON
+              </button>
+            </div>
           </div>
 
-          <!-- Timer Action Controls -->
-          <div class="pomo-controls">
-            <button id="pomoStartBtn" class="btn-pomo-primary">
-              <i class="fa-solid fa-play" id="pomoStartIcon"></i> <span id="pomoStartText">Start Focus</span>
-            </button>
-            <button id="pomoResetBtn" class="btn-pomo-secondary" title="Reset Timer">
-              <i class="fa-solid fa-rotate-left"></i> Reset
-            </button>
-            <button id="pomoSoundBtn" class="btn-pomo-secondary" title="Toggle Chime Sound">
-              <i class="fa-solid fa-volume-high" id="pomoSoundIcon"></i> Sound ON
-            </button>
+          <!-- Feature #8: Binaural & Ambient Focus Audio Engine -->
+          <div class="focus-audio-card glass-panel tilt-card" id="focusAudioEngine">
+            <div class="audio-engine-header">
+              <div class="audio-engine-title-wrap">
+                <h4 class="audio-title"><i class="fa-solid fa-headphones neon-cyan"></i> Binaural Focus Audio Engine</h4>
+                <p class="audio-sub">Offline cognitive study waves & noise synthesizer (Web Audio API)</p>
+              </div>
+              <div class="audio-status-pill" id="audioStatusPill">
+                <span class="audio-pulse-dot"></span> <span id="audioStatusText">STANDBY</span>
+              </div>
+            </div>
+
+            <!-- Ambient Sound Mode Selector -->
+            <div class="audio-modes-grid" id="audioModeChips">
+              <button class="audio-mode-btn active" data-sound="rain">
+                <i class="fa-solid fa-cloud-showers-heavy neon-cyan"></i> Cyber Rain
+              </button>
+              <button class="audio-mode-btn" data-sound="binaural">
+                <i class="fa-solid fa-brain neon-purple"></i> 40Hz Gamma Wave
+              </button>
+              <button class="audio-mode-btn" data-sound="brown">
+                <i class="fa-solid fa-water neon-amber"></i> Deep Brown Noise
+              </button>
+              <button class="audio-mode-btn" data-sound="space">
+                <i class="fa-solid fa-satellite neon-pink"></i> Cosmic Synth Drone
+              </button>
+            </div>
+
+            <!-- Visualizer & Volume Bar -->
+            <div class="audio-controls-row">
+              <button id="toggleAudioBtn" class="cyber-btn cyber-btn-primary btn-sm">
+                <i class="fa-solid fa-play" id="toggleAudioIcon"></i> <span id="toggleAudioText">Start Audio</span>
+              </button>
+
+              <!-- Mini Graphic Equalizer Bars -->
+              <div class="cyber-equalizer" id="cyberEqualizer">
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+              </div>
+
+              <!-- Volume Slider -->
+              <div class="audio-volume-wrap">
+                <i class="fa-solid fa-volume-low volume-icon"></i>
+                <input type="range" id="audioVolumeSlider" min="0" max="1" step="0.05" value="0.5" class="cyber-slider" title="Volume">
+                <i class="fa-solid fa-volume-high volume-icon"></i>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Right: Formula & Syntax Quick Cheat Sheets -->
-        <div class="cheatsheet-card">
-          <div class="cheatsheet-header">
+        <!-- Right Column: Formula Cheat Sheets -->
+        <div class="cheat-card glass-panel">
+          <div class="cheat-header-box">
             <div>
-              <h3><i class="fa-solid fa-bolt"></i> Quick Formula & Syntax Reference</h3>
-              <p>Key formulas, theorems, and code templates for fast SPPU exam revision.</p>
+              <h3 class="cheat-title"><i class="fa-solid fa-bolt neon-lime"></i> SPPU Formula & Syntax Vault</h3>
+              <p class="cheat-sub">Quick reference for linear algebra, lasers, circuits, and Python logic</p>
             </div>
-            <div class="cheatsheet-search">
+            <div class="cheat-search-box">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input type="text" id="cheatSearchInput" placeholder="Search formula (e.g. Rank, Laser, Lambda, KVL)...">
             </div>
           </div>
 
-          <!-- Subject Tabs for Cheat Sheets -->
-          <div class="cheat-subject-tabs" id="cheatTabs">
+          <!-- Cheat Subject Tabs -->
+          <div class="cheat-tabs-row" id="cheatTabs">
             <button class="cheat-tab-btn active" data-subject="maths">
               <i class="fa-solid fa-square-root-variable"></i> Maths-I
             </button>
@@ -269,278 +981,52 @@
             </button>
           </div>
 
-          <!-- Formula List Container (Populated dynamically & filterable) -->
-          <div class="cheat-items-list" id="cheatItemsList">
-            <!-- Dynamic formula cards injected by JS -->
+          <!-- Cheat Cards List -->
+          <div class="cheat-list-scroll" id="cheatItemsList">
+            <!-- Dynamically populated cheat cards -->
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Attendance Tracker Section -->
-    <section id="attendance" class="section">
-      <div class="section-header">
-        <span class="tag">Academic Planner</span>
-        <h2><i class="fa-solid fa-clipboard-user"></i> College Attendance Tracker</h2>
-        <p>Monitor your subject-wise presence, stay safely above the mandatory 75% criteria, and know exactly how many bunks you have left.</p>
-      </div>
+    <!-- ============================================================== -->
+    <!-- 9. CONTACT & FOOTER -->
+    <!-- ============================================================== -->
+    <section id="contact" class="section contact-section reveal">
+      <div class="contact-card glass-panel tilt-card">
+        <div class="contact-glow"></div>
+        <div class="contact-badge"><i class="fa-solid fa-paper-plane neon-cyan"></i> GET IN TOUCH</div>
+        <h2 class="contact-headline">Let's Connect & <span class="neon-gradient-text">Collaborate!</span> 🚀</h2>
+        <p class="contact-sub">
+          Fellow engineering student at DY Patil or tech enthusiast? Let's talk code, discuss coursework, collaborate on web projects, or exchange notes!
+        </p>
 
-      <!-- Attendance Overview Dashboard -->
-      <div class="attendance-dashboard">
-        <div class="attendance-summary-card">
-          <div class="summary-left">
-            <div class="radial-gauge-container">
-              <svg class="radial-gauge" viewBox="0 0 100 100">
-                <circle class="gauge-bg" cx="50" cy="50" r="42" />
-                <circle class="gauge-fill" id="overallGaugeFill" cx="50" cy="50" r="42" />
-              </svg>
-              <div class="gauge-text">
-                <span class="gauge-pct" id="overallPercentage">0%</span>
-                <span class="gauge-sub">Overall</span>
-              </div>
-            </div>
-            <div class="summary-details">
-              <h3>Overall Attendance Status</h3>
-              <p id="overallClassesCount">0 of 0 Classes Attended</p>
-              <div id="overallStatusBadge" class="status-badge-pill safe">
-                <i class="fa-solid fa-shield-check"></i> Safe: Above 75%
-              </div>
-            </div>
-          </div>
-          <div class="summary-actions">
-            <button id="openAddSubjectBtn" class="btn-action-primary">
-              <i class="fa-solid fa-circle-plus"></i> Add Subject
-            </button>
-            <button id="resetAttendanceBtn" class="btn-action-secondary">
-              <i class="fa-solid fa-rotate-left"></i> Reset Defaults
-            </button>
-          </div>
-        </div>
-
-        <!-- Subject Cards Grid -->
-        <div class="attendance-grid" id="attendanceGrid">
-          <!-- Injected dynamically by JS -->
+        <div class="contact-btn-row">
+          <a href="mailto:yash@example.com" id="contactEmailBtn" class="cyber-btn cyber-btn-primary">
+            <i class="fa-solid fa-envelope"></i> Send Direct Email
+          </a>
+          <a href="https://github.com" target="_blank" id="contactGithubBtn" class="cyber-btn cyber-btn-secondary">
+            <i class="fa-brands fa-github"></i> GitHub Profile
+          </a>
+          <a href="https://linkedin.com" target="_blank" id="contactLinkedinBtn" class="cyber-btn cyber-btn-secondary">
+            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- CGPA & Marks Calculator Section -->
-    <section id="calculator" class="section">
-      <div class="section-header">
-        <span class="tag">Grades & Marks</span>
-        <h2><i class="fa-solid fa-calculator"></i> CGPA & SGPA Calculator</h2>
-        <p>Calculate your semester SGPA with SPPU credit points, estimate marks to grade conversion, and track cumulative CGPA.</p>
-      </div>
-
-      <!-- Calculator Tabs -->
-      <div class="calc-tabs">
-        <button class="calc-tab-btn active" id="tabSgpaBtn" data-tab="sgpaTab">
-          <i class="fa-solid fa-graduation-cap"></i> Semester SGPA & Marks
-        </button>
-        <button class="calc-tab-btn" id="tabCgpaBtn" data-tab="cgpaTab">
-          <i class="fa-solid fa-chart-line"></i> Cumulative CGPA (Multi-Sem)
-        </button>
-      </div>
-
-      <!-- SGPA Tab Content -->
-      <div id="sgpaTab" class="calc-tab-content active">
-        <div class="calc-layout">
-          <div class="calc-table-card">
-            <div class="calc-table-header">
-              <span>Course / Subject</span>
-              <span>Credits</span>
-              <span>Grade (Score)</span>
-              <span>Points</span>
-              <span>Action</span>
-            </div>
-            <div id="sgpaRowsList" class="calc-rows-list">
-              <!-- Dynamically populated rows -->
-            </div>
-            <div class="calc-actions-footer">
-              <button id="addSgpaRowBtn" class="btn-action-primary">
-                <i class="fa-solid fa-plus"></i> Add Subject
-              </button>
-              <button id="resetSgpaBtn" class="btn-action-secondary">
-                <i class="fa-solid fa-rotate-left"></i> Reset Semester
-              </button>
-            </div>
-          </div>
-
-          <!-- SGPA Summary Result Card -->
-          <div class="calc-summary-card">
-            <span class="result-label">Semester 1 SGPA</span>
-            <div class="result-number-container">
-              <span class="result-number" id="calculatedSgpa">0.00</span>
-              <span class="result-scale">/ 10.0</span>
-            </div>
-            <div class="result-class-badge" id="sgpaClassBadge">First Class with Distinction</div>
-
-            <div class="result-stats-list">
-              <div class="res-stat-item">
-                <span>Total Semester Credits</span>
-                <strong id="totalCreditsDisplay">0</strong>
-              </div>
-              <div class="res-stat-item">
-                <span>Total Grade Points</span>
-                <strong id="totalPointsDisplay">0</strong>
-              </div>
-              <div class="res-stat-item">
-                <span>Estimated Percentage</span>
-                <strong id="equivalentPercentageDisplay">0%</strong>
-              </div>
-            </div>
-
-            <div class="grade-help-box">
-              <p><strong><i class="fa-solid fa-circle-info"></i> SPPU Grade Scale:</strong></p>
-              <p>O: 10 (90-100) • A+: 9 (80-89) • A: 8 (70-79)</p>
-              <p>B+: 7 (60-69) • B: 6 (50-59) • C: 5 (40-49) • P: 4 (Pass)</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CGPA Tab Content -->
-      <div id="cgpaTab" class="calc-tab-content">
-        <div class="calc-layout">
-          <div class="calc-table-card">
-            <div class="calc-table-header cgpa-header">
-              <span>Semester</span>
-              <span>SGPA</span>
-              <span>Credits</span>
-              <span>Grade Points</span>
-              <span>Action</span>
-            </div>
-            <div id="cgpaRowsList" class="calc-rows-list">
-              <!-- Dynamically populated rows -->
-            </div>
-            <div class="calc-actions-footer">
-              <button id="addCgpaRowBtn" class="btn-action-primary">
-                <i class="fa-solid fa-plus"></i> Add Semester
-              </button>
-              <button id="resetCgpaBtn" class="btn-action-secondary">
-                <i class="fa-solid fa-rotate-left"></i> Reset Semesters
-              </button>
-            </div>
-          </div>
-
-          <!-- CGPA Summary Result Card -->
-          <div class="calc-summary-card">
-            <span class="result-label">Cumulative CGPA</span>
-            <div class="result-number-container">
-              <span class="result-number" id="calculatedCgpa">0.00</span>
-              <span class="result-scale">/ 10.0</span>
-            </div>
-            <div class="result-class-badge" id="cgpaClassBadge">Distinction</div>
-
-            <div class="result-stats-list">
-              <div class="res-stat-item">
-                <span>Total Semesters</span>
-                <strong id="totalSemestersDisplay">0</strong>
-              </div>
-              <div class="res-stat-item">
-                <span>Total Degree Credits</span>
-                <strong id="totalCgpaCreditsDisplay">0</strong>
-              </div>
-              <div class="res-stat-item">
-                <span>Approx. Degree %</span>
-                <strong id="cgpaPercentageDisplay">0%</strong>
-              </div>
-            </div>
-
-            <div class="grade-help-box">
-              <p><strong><i class="fa-solid fa-graduation-cap"></i> Degree Evaluation:</strong></p>
-              <p>CGPA &ge; 7.75: First Class with Distinction</p>
-              <p>CGPA 6.75 - 7.74: First Class</p>
-              <p>CGPA 5.75 - 6.74: Higher Second Class</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- College Notes Hub (Separated Subject Sections with Easy Owner Add System) -->
-    <section id="notes" class="section">
-      <div class="section-header-row">
-        <div class="section-header" style="margin-bottom: 0;">
-          <span class="tag">Subject-Wise Study Hub</span>
-          <h2><i class="fa-solid fa-folder-tree"></i> College Notes & PDF Library</h2>
-          <p>Curated notes, assignments, and lab manuals organized into separate subject sections.</p>
-        </div>
-        <div class="owner-access-controls">
-          <button id="toggleOwnerBtn" class="btn-owner-toggle" title="Owner Access: Add or manage PDFs">
-            <i class="fa-solid fa-lock"></i> <span id="ownerBtnText">Owner Login</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Owner Active Toolbar (Visible when Yash logs in) -->
-      <div id="ownerToolbar" class="owner-toolbar" style="display: none;">
-        <div class="owner-status">
-          <span class="owner-badge"><i class="fa-solid fa-shield-halved"></i> Owner Mode Active</span>
-          <span class="owner-tip">You can now add PDFs to any subject section, edit, delete, or export code.</span>
-        </div>
-        <div class="owner-actions">
-          <button id="openAddPdfGlobalBtn" class="btn-action-primary">
-            <i class="fa-solid fa-file-circle-plus"></i> Add PDF to Section
-          </button>
-          <button id="openAddSectionBtn" class="btn-action-secondary">
-            <i class="fa-solid fa-folder-plus"></i> New Subject Section
-          </button>
-          <button id="openEditSocialBtn" class="btn-action-secondary">
-            <i class="fa-solid fa-share-nodes"></i> Edit Social Links
-          </button>
-          <button id="exportCodeBtn" class="btn-action-secondary">
-            <i class="fa-solid fa-code"></i> Export for app.js
-          </button>
-          <button id="lockOwnerBtn" class="btn-action-secondary" style="color: #f87171;">
-            <i class="fa-solid fa-lock"></i> Lock
-          </button>
-        </div>
-      </div>
-
-      <!-- Search and Section Jump Filters -->
-      <div class="hub-controls">
-        <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" id="searchInput" placeholder="Search by topic, keyword, or subject (e.g. Laser, Pattern, Matrices, BEE)...">
-        </div>
-        
-        <!-- Subject Section Selector Tabs -->
-        <div class="section-tabs-container">
-          <div class="filter-pills" id="subjectPills">
-            <!-- Dynamically populated subject tabs -->
-          </div>
-        </div>
-
-        <!-- Material Category Filters -->
-        <div class="filter-pills type-pills" id="typePills">
-          <button class="filter-btn active" data-type="all">All Document Types</button>
-          <button class="filter-btn" data-type="Notes"><i class="fa-solid fa-book"></i> Notes</button>
-          <button class="filter-btn" data-type="Assignment"><i class="fa-solid fa-pen-to-square"></i> Assignments</button>
-          <button class="filter-btn" data-type="Lab"><i class="fa-solid fa-flask"></i> Lab Manuals</button>
-        </div>
-      </div>
-
-      <!-- Subject Sections Container (Holds separate sections for each subject) -->
-      <div id="notesSectionsContainer" class="notes-sections-wrapper">
-        <!-- Javascript will inject subject shelves here -->
-      </div>
-    </section>
-
-    <!-- Contact & Footer Section -->
-    <section id="contact" class="section contact-section">
-      <div class="contact-box">
-        <h2>Let's Connect & Study Together! 🚀</h2>
-        <p>Fellow student at DY Patil or tech enthusiast? Let's discuss Python, Web Dev, AI, or collaborate on projects.</p>
-        <a href="mailto:yash@example.com" class="btn-primary">
-          <i class="fa-solid fa-envelope"></i> Send an Email
-        </a>
-      </div>
-    </section>
   </main>
 
-  <footer class="footer">
-    <p>© 2026 Yash • Department of IT, DY Patil College of Engineering, Akurdi</p>
+  <!-- Cyber Footer -->
+  <footer class="cyber-footer">
+    <div class="footer-inner">
+      <p class="footer-copy">
+        © 2026 Yash · Department of Information Technology (IT) · DY Patil College of Engineering, Akurdi
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Back to Top <i class="fa-solid fa-arrow-up"></i></a>
+      </div>
+    </div>
   </footer>
 
   <!-- ============================================================== -->
@@ -548,28 +1034,28 @@
   <!-- ============================================================== -->
 
   <!-- Modal 1: Add Subject to Attendance Tracker -->
-  <div id="subjectModal" class="modal-overlay">
-    <div class="modal-content">
+  <div id="subjectModal" class="cyber-modal-overlay">
+    <div class="cyber-modal-card glass-panel">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-book-medical"></i> Add Subject to Attendance Tracker</h3>
-        <button id="closeSubjectModalBtn" class="modal-close">&times;</button>
+        <h3 class="modal-title"><i class="fa-solid fa-book-medical neon-cyan"></i> Add Subject to Attendance</h3>
+        <button id="closeSubjectModalBtn" class="modal-close-btn">&times;</button>
       </div>
-      <form id="addSubjectForm" class="modal-form">
+      <form id="addSubjectForm" class="modal-body-form">
         <div class="form-group">
-          <label>Subject / Lab Name</label>
-          <input type="text" id="newSubjectName" placeholder="e.g. Data Structures / Mechanics" required>
+          <label>Subject / Lab Name *</label>
+          <input type="text" id="newSubjectName" placeholder="e.g. Data Structures & Algorithms" required class="cyber-input">
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Classes Attended</label>
-            <input type="number" id="newSubjectAttended" min="0" value="0" required>
+            <input type="number" id="newSubjectAttended" min="0" value="0" required class="cyber-input">
           </div>
           <div class="form-group">
             <label>Total Classes Held</label>
-            <input type="number" id="newSubjectTotal" min="0" value="0" required>
+            <input type="number" id="newSubjectTotal" min="0" value="0" required class="cyber-input">
           </div>
         </div>
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+        <button type="submit" class="cyber-btn cyber-btn-primary btn-block">
           <i class="fa-solid fa-plus"></i> Save Subject
         </button>
       </form>
@@ -577,23 +1063,23 @@
   </div>
 
   <!-- Modal 2: Add PDF to Specific Subject Section (Owner Mode) -->
-  <div id="addPdfModal" class="modal-overlay">
-    <div class="modal-content modal-lg">
+  <div id="addPdfModal" class="cyber-modal-overlay">
+    <div class="cyber-modal-card modal-lg glass-panel">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-file-circle-plus"></i> Add PDF to Notes Section</h3>
-        <button id="closeAddPdfModalBtn" class="modal-close">&times;</button>
+        <h3 class="modal-title"><i class="fa-solid fa-file-circle-plus neon-pink"></i> Add PDF to Notes Shelf</h3>
+        <button id="closeAddPdfModalBtn" class="modal-close-btn">&times;</button>
       </div>
-      <form id="addPdfForm" class="modal-form">
+      <form id="addPdfForm" class="modal-body-form">
         <div class="form-row">
           <div class="form-group">
-            <label>Target Subject Section *</label>
-            <select id="pdfSubjectSelect" required>
+            <label>Target Subject Shelf *</label>
+            <select id="pdfSubjectSelect" required class="cyber-select">
               <!-- Dynamically populated subjects -->
             </select>
           </div>
           <div class="form-group">
-            <label>Document Type *</label>
-            <select id="pdfTypeSelect" required>
+            <label>Document Category *</label>
+            <select id="pdfTypeSelect" required class="cyber-select">
               <option value="Notes">Notes (Handout / Theory)</option>
               <option value="Assignment">Assignment (Questions & Solutions)</option>
               <option value="Lab">Lab Manual / Practical Record</option>
@@ -604,100 +1090,142 @@
 
         <div class="form-group">
           <label>Document Title *</label>
-          <input type="text" id="pdfTitleInput" placeholder="e.g. Unit 2 - Lasers & Fiber Optics Notes" required>
+          <input type="text" id="pdfTitleInput" placeholder="e.g. Unit 2 - Laser & Optics Comprehensive Notes" required class="cyber-input">
         </div>
 
-        <!-- Easy Local PDF Upload or Cloud Link Picker -->
         <div class="form-group">
-          <label>PDF File / Link *</label>
-          <div class="file-pick-helper">
-            <input type="file" id="pdfLocalFileInput" accept=".pdf,application/pdf" style="display: none;">
-            <button type="button" id="triggerFilePickBtn" class="btn-action-secondary" style="margin-bottom: 0.5rem; width: 100%; justify-content: center;">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Choose PDF From Your Computer
-            </button>
-            <input type="text" id="pdfLinkInput" placeholder="e.g. files/your_file.pdf or Google Drive link" required>
-            <small style="color: #94a3b8; font-size: 0.8rem; margin-top: 0.3rem; display: block;">
-              💡 <em>Tip:</em> Put your PDF in the <code>files/</code> folder and enter <code>files/your_filename.pdf</code>, or select it directly from your computer above.
-            </small>
-          </div>
+          <label>PDF File or Cloud Link *</label>
+          <input type="file" id="pdfLocalFileInput" accept=".pdf,application/pdf" style="display: none;">
+          <button type="button" id="triggerFilePickBtn" class="cyber-btn cyber-btn-secondary btn-block" style="margin-bottom: 0.5rem;">
+            <i class="fa-solid fa-laptop-file"></i> Choose PDF From Device
+          </button>
+          <input type="text" id="pdfLinkInput" placeholder="e.g. files/HeNe_Laser_Notes.pdf or Google Drive link" required class="cyber-input">
+          <small class="form-hint">💡 Tip: Store PDFs in <code>files/</code> folder or use Google Drive / Cloud links.</small>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Semester / Term</label>
-            <input type="text" id="pdfSemesterInput" value="Semester 1" placeholder="e.g. Semester 1">
+            <label>Semester</label>
+            <input type="text" id="pdfSemesterInput" value="Semester 1" class="cyber-input">
           </div>
           <div class="form-group">
             <label>Date Tag</label>
-            <input type="text" id="pdfDateInput" value="Nov 2026" placeholder="e.g. Nov 2026">
+            <input type="text" id="pdfDateInput" value="Nov 2026" class="cyber-input">
           </div>
         </div>
 
         <div class="form-group">
           <label>Short Description</label>
-          <textarea id="pdfDescInput" rows="2" placeholder="Brief summary of concepts, formulas, or questions covered..."></textarea>
+          <textarea id="pdfDescInput" rows="2" placeholder="Summary of topics, formulas, or practical exercises covered..." class="cyber-textarea"></textarea>
         </div>
 
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          <i class="fa-solid fa-check"></i> Add PDF to This Section
+        <button type="submit" class="cyber-btn cyber-btn-primary btn-block">
+          <i class="fa-solid fa-check"></i> Add Document to Library
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Modal 3: Create New Subject Section -->
-  <div id="addSectionModal" class="modal-overlay">
-    <div class="modal-content">
+  <!-- Modal 3: Create New Subject Section (Owner Mode) -->
+  <div id="addSectionModal" class="cyber-modal-overlay">
+    <div class="cyber-modal-card glass-panel">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-folder-plus"></i> Create New Subject Section</h3>
-        <button id="closeAddSectionModalBtn" class="modal-close">&times;</button>
+        <h3 class="modal-title"><i class="fa-solid fa-folder-plus neon-lime"></i> Create Subject Section</h3>
+        <button id="closeAddSectionModalBtn" class="modal-close-btn">&times;</button>
       </div>
-      <form id="addSectionForm" class="modal-form">
+      <form id="addSectionForm" class="modal-body-form">
         <div class="form-group">
-          <label>Subject Name *</label>
-          <input type="text" id="newSectionName" placeholder="e.g. Data Structures & Algorithms" required>
+          <label>Subject Full Name *</label>
+          <input type="text" id="newSectionName" placeholder="e.g. Data Structures & Algorithms" required class="cyber-input">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Subject Code / Key *</label>
-            <input type="text" id="newSectionKey" placeholder="e.g. DSA" required>
+            <label>Subject Key / Code *</label>
+            <input type="text" id="newSectionKey" placeholder="e.g. DSA" required class="cyber-input">
           </div>
           <div class="form-group">
-            <label>Theme Color</label>
-            <select id="newSectionColor">
-              <option value="#38bdf8">Sky Blue</option>
-              <option value="#a855f7">Purple</option>
-              <option value="#f59e0b">Amber</option>
-              <option value="#10b981">Emerald</option>
-              <option value="#ec4899">Pink</option>
-              <option value="#6366f1">Indigo</option>
+            <label>Accent Glow Color</label>
+            <select id="newSectionColor" class="cyber-select">
+              <option value="#00f3ff">Electric Cyan</option>
+              <option value="#ff007f">Hot Pink</option>
+              <option value="#39ff14">Neon Lime</option>
+              <option value="#9d4edd">Vivid Purple</option>
+              <option value="#ffaa00">Neon Amber</option>
             </select>
           </div>
         </div>
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          <i class="fa-solid fa-plus"></i> Create Subject Section
+        <button type="submit" class="cyber-btn cyber-btn-primary btn-block">
+          <i class="fa-solid fa-plus"></i> Create Shelf
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Modal 4: In-Page PDF Reader / Previewer Modal -->
-  <div id="pdfViewerModal" class="modal-overlay">
-    <div class="modal-content modal-viewer">
+  <!-- Modal 4: Add Lab Practical Experiment -->
+  <div id="addLabModal" class="cyber-modal-overlay">
+    <div class="cyber-modal-card glass-panel">
       <div class="modal-header">
-        <h3 id="pdfViewerTitle"><i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> Document Viewer</h3>
-        <div class="viewer-controls">
-          <a id="pdfViewerExternalBtn" href="#" target="_blank" class="btn-sm" style="font-size: 0.8rem; padding: 0.35rem 0.8rem;">
+        <h3 class="modal-title"><i class="fa-solid fa-flask-vial neon-cyan"></i> Add Lab Practical</h3>
+        <button id="closeAddLabModalBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="addLabForm" class="modal-body-form">
+        <div class="form-group">
+          <label>Experiment Title *</label>
+          <input type="text" id="labTitleInput" placeholder="e.g. Practical 5: Object Oriented Programming in Python" required class="cyber-input">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Subject / Course *</label>
+            <input type="text" id="labSubjectInput" placeholder="e.g. Python Lab / Physics Lab" required class="cyber-input">
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="labStatusInput" class="cyber-select">
+              <option value="pending">Pending</option>
+              <option value="done">Completed (Done)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date Conducted / Due</label>
+            <input type="text" id="labDateInput" value="Nov 2026" class="cyber-input">
+          </div>
+          <div class="form-group">
+            <label>File or Submission Link</label>
+            <input type="text" id="labLinkInput" placeholder="files/manual.pdf or github link" class="cyber-input">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Notes / Requirements</label>
+          <textarea id="labNotesInput" rows="2" placeholder="Viva questions, required outputs, or remarks..." class="cyber-textarea"></textarea>
+        </div>
+        <button type="submit" class="cyber-btn cyber-btn-primary btn-block">
+          <i class="fa-solid fa-plus"></i> Save Lab Practical
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: In-Page PDF Reader / Previewer Modal -->
+  <div id="pdfViewerModal" class="cyber-modal-overlay">
+    <div class="cyber-modal-card modal-viewer glass-panel">
+      <div class="modal-header">
+        <h3 id="pdfViewerTitle" class="modal-title"><i class="fa-solid fa-file-pdf neon-pink"></i> Document Viewer</h3>
+        <div class="viewer-actions">
+          <a id="pdfViewerExternalBtn" href="#" target="_blank" class="cyber-btn cyber-btn-ghost btn-sm">
             <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Tab
           </a>
-          <button id="closePdfViewerBtn" class="modal-close" style="font-size: 1.6rem; margin-left: 0.8rem;">&times;</button>
+          <button id="closePdfViewerBtn" class="modal-close-btn">&times;</button>
         </div>
       </div>
-      <div class="pdf-viewer-frame-wrap">
+      <div class="pdf-frame-container">
         <iframe id="pdfViewerFrame" src="about:blank" title="PDF Document Viewer"></iframe>
-        <div id="pdfFallbackNotice" style="display: none; padding: 2.5rem; text-align: center;">
-          <p style="margin-bottom: 1rem; color: #cbd5e1;">This link cannot be embedded directly in an iframe (e.g. external repository or cloud viewer).</p>
-          <a id="pdfFallbackLink" href="#" target="_blank" class="btn-primary">
+        <div id="pdfFallbackNotice" style="display: none; padding: 3rem; text-align: center;">
+          <p style="margin-bottom: 1.5rem; color: var(--text-muted);">
+            This link cannot be embedded directly in an iframe (e.g. external repository or cloud viewer).
+          </p>
+          <a id="pdfFallbackLink" href="#" target="_blank" class="cyber-btn cyber-btn-primary">
             <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in New Tab
           </a>
         </div>
@@ -705,58 +1233,57 @@
     </div>
   </div>
 
-  <!-- Modal 5: Export Code for app.js (For permanent GitHub/Vercel deployment) -->
-  <div id="exportModal" class="modal-overlay">
-    <div class="modal-content modal-lg">
+  <!-- Modal 6: Export Code for deployment (Owner Mode) -->
+  <div id="exportModal" class="cyber-modal-overlay">
+    <div class="cyber-modal-card modal-lg glass-panel">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-code"></i> Export Curated Code for app.js</h3>
-        <button id="closeExportModalBtn" class="modal-close">&times;</button>
+        <h3 class="modal-title"><i class="fa-solid fa-code neon-cyan"></i> Export Code for Deployment</h3>
+        <button id="closeExportModalBtn" class="modal-close-btn">&times;</button>
       </div>
-      <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">
-        Copy this code and replace the <code>collegeMaterials</code> array in <code>app.js</code> whenever you want to commit your newly added PDFs permanently to GitHub Pages or Vercel:
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Copy this JSON data block to permanently commit your uploaded notes and profile updates:
       </p>
-      <div class="code-export-box">
-        <textarea id="exportCodeTextarea" rows="12" readonly style="width: 100%; background: #070a13; border: 1px solid var(--border-color); color: #a5b4fc; font-family: monospace; font-size: 0.85rem; padding: 1rem; border-radius: 8px; resize: vertical;"></textarea>
-      </div>
-      <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1rem;">
-        <button id="copyExportCodeBtn" class="btn-action-primary">
+      <textarea id="exportCodeTextarea" rows="12" readonly class="cyber-textarea monospace-text"></textarea>
+      <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+        <button id="copyExportCodeBtn" class="cyber-btn cyber-btn-primary">
           <i class="fa-solid fa-copy"></i> Copy to Clipboard
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Modal 6: Edit Social Handles (Owner Only) -->
-  <div id="socialModal" class="modal-overlay">
-    <div class="modal-content">
+  <!-- Modal 7: Edit Social Handles (Owner Mode) -->
+  <div id="socialModal" class="cyber-modal-overlay">
+    <div class="cyber-modal-card glass-panel">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-share-nodes"></i> Edit Your Social Links</h3>
-        <button id="closeSocialModalBtn" class="modal-close">&times;</button>
+        <h3 class="modal-title"><i class="fa-solid fa-share-nodes neon-purple"></i> Edit Social Profiles</h3>
+        <button id="closeSocialModalBtn" class="modal-close-btn">&times;</button>
       </div>
-      <form id="editSocialForm" class="modal-form">
+      <form id="editSocialForm" class="modal-body-form">
         <div class="form-group">
-          <label><i class="fa-brands fa-github"></i> GitHub URL or Username</label>
-          <input type="text" id="socialGithubInput" placeholder="e.g. https://github.com/your-username or your-username">
+          <label><i class="fa-brands fa-github"></i> GitHub Profile or Handle</label>
+          <input type="text" id="socialGithubInput" placeholder="https://github.com/your-username or username" class="cyber-input">
         </div>
         <div class="form-group">
-          <label><i class="fa-brands fa-linkedin" style="color: #38bdf8;"></i> LinkedIn Profile URL</label>
-          <input type="text" id="socialLinkedinInput" placeholder="e.g. https://linkedin.com/in/your-profile">
+          <label><i class="fa-brands fa-linkedin neon-cyan"></i> LinkedIn Profile URL</label>
+          <input type="text" id="socialLinkedinInput" placeholder="https://linkedin.com/in/your-profile" class="cyber-input">
         </div>
         <div class="form-group">
-          <label><i class="fa-brands fa-instagram" style="color: #ec4899;"></i> Instagram Handle or Link</label>
-          <input type="text" id="socialInstagramInput" placeholder="e.g. @your_instagram or https://instagram.com/your_handle">
+          <label><i class="fa-brands fa-instagram neon-pink"></i> Instagram Handle</label>
+          <input type="text" id="socialInstagramInput" placeholder="@username or https://instagram.com/username" class="cyber-input">
         </div>
         <div class="form-group">
           <label><i class="fa-solid fa-envelope"></i> Contact Email</label>
-          <input type="email" id="socialEmailInput" placeholder="e.g. yash@example.com">
+          <input type="email" id="socialEmailInput" placeholder="yash@example.com" class="cyber-input">
         </div>
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          <i class="fa-solid fa-floppy-disk"></i> Save Social Links
+        <button type="submit" class="cyber-btn cyber-btn-primary btn-block">
+          <i class="fa-solid fa-floppy-disk"></i> Save Social Profiles
         </button>
       </form>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- Main JavaScript File -->
+  <script src="script.js"></script>
 </body>
 </html>
