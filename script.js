@@ -433,7 +433,7 @@ const formulaDatabase = {
 };
 
 // ================================================================
-// 2. DATA PERSISTENCE HELPERS (LOCALSTORAGE)
+// 2. DATA PERSISTENCE HELPERS (LOCALSTORAGE & SESSIONSTORAGE)
 // ================================================================
 function loadLocal(key, fallback) {
   try {
@@ -451,6 +451,30 @@ function saveLocal(key, data) {
   } catch (e) {
     console.error("Error writing to localStorage:", key, e);
   }
+}
+
+// Resilient Safe Storage Wrappers (edge-cases: disabled cookies, private browsing)
+function safeLocalStorageGet(key, fallback) {
+  return loadLocal(key, fallback);
+}
+
+function safeLocalStorageSet(key, data) {
+  saveLocal(key, data);
+}
+
+function safeSessionStorageGet(key, fallback) {
+  try {
+    const val = sessionStorage.getItem(key);
+    return val !== null ? JSON.parse(val) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function safeSessionStorageSet(key, data) {
+  try {
+    sessionStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {}
 }
 
 // Global App States & Curriculum PDF Versioning
@@ -501,32 +525,42 @@ function showToast(msg) {
 // 3. APP INITIALIZATION ON DOM READY
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  initCustomCursor();
+  initFunModeEngine();        // Global Requirement: Fun Mode Toggle & Default Detector
+  initThemeEngine();          // Feature 5: Dark / Light Mode with Circle Wipe
+  initSoundFXEngine();        // Feature 3: Web Audio Sound FX Engine
+  initTerminalBootLoader();    // Feature 1: Terminal Boot Loading Screen (2s)
+  initScrollProgressBar();    // Feature 8: Fixed Gradient Scroll Progress Bar
+  initCustomCursor();         // Feature 4: Custom Animated Cursor & Fading Particle Trail
   initCyberCanvas();
   initTypewriter();
   initScrollRevealAndNav();
-  initTiltEffect();
+  initTiltEffect();           // Feature 2: 3D Tilt Project Cards & Moving Glare
+  initFooterClockAndTicker(); // Feature 7: Live Local Timezone Clock & Quotes Ticker
   initSocialLinks();
-  initCalculator();
-  initAttendanceTracker();
+  initCalculator();           // Feature 6: CGPA Confetti Threshold Crossing
+  initAttendanceTracker();    // Feature 6: Attendance 75% Confetti Threshold Crossing
   initNotesHub();
   initLabsHub();
   initStudyHub();
-  initTypingBattle();     // Feature #6: 30s Live Cyber Typing Battle
-  initFocusAudioEngine(); // Feature #8: Offline Binaural Focus Audio Engine
+  initTypingBattle();         // Feature #6: 30s Live Cyber Typing Battle
+  initFocusAudioEngine();     // Feature #8: Offline Binaural Focus Audio Engine
+  initJarvisVoiceHUD();       // Feature #1: Sci-Fi JARVIS / Cyber AI Voice HUD (Web Speech API)
 });
 
 // ================================================================
-// 4. CUSTOM ANIMATED NEON CURSOR
+// 4. CUSTOM ANIMATED CURSOR & FADING PARTICLE TRAIL (FEATURE 4)
 // ================================================================
 function initCustomCursor() {
   const dot = document.getElementById("cursorDot");
   const ring = document.getElementById("cursorRing");
+  const trailCanvas = document.getElementById("cursorTrailCanvas");
   if (!dot || !ring) return;
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.matchMedia("(pointer: coarse)").matches) {
+  const isTouchDevice = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+  if (isTouchDevice || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     dot.style.display = "none";
     ring.style.display = "none";
+    if (trailCanvas) trailCanvas.style.display = "none";
     return;
   }
 
@@ -534,22 +568,75 @@ function initCustomCursor() {
   let mouseY = window.innerHeight / 2;
   let ringX = mouseX;
   let ringY = mouseY;
+  let trailParticles = [];
+  const MAX_TRAIL_PARTICLES = 20;
+
+  let ctx = null;
+  if (trailCanvas) {
+    ctx = trailCanvas.getContext("2d");
+    trailCanvas.width = window.innerWidth;
+    trailCanvas.height = window.innerHeight;
+    window.addEventListener("resize", () => {
+      trailCanvas.width = window.innerWidth;
+      trailCanvas.height = window.innerHeight;
+    });
+  }
 
   window.addEventListener("mousemove", (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+
+    if (isFunMode() && ctx) {
+      const currentTheme = document.documentElement.getAttribute("data-theme") || "cyber";
+      let colorBase = "rgba(0, 243, 255, ";
+      if (currentTheme === "obsidian") colorBase = "rgba(99, 102, 241, ";
+      else if (currentTheme === "frost") colorBase = "rgba(56, 189, 248, ";
+      else if (currentTheme === "academic") colorBase = "rgba(212, 175, 55, ";
+      else if (currentTheme === "light") colorBase = "rgba(2, 132, 199, ";
+
+      trailParticles.push({
+        x: mouseX,
+        y: mouseY,
+        radius: 4,
+        alpha: 0.7,
+        colorBase: colorBase
+      });
+      if (trailParticles.length > MAX_TRAIL_PARTICLES) {
+        trailParticles.shift();
+      }
+    }
   });
 
-  function animateRing() {
+  function animateCursorAndTrail() {
     ringX += (mouseX - ringX) * 0.18;
     ringY += (mouseY - ringY) * 0.18;
     ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
-    requestAnimationFrame(animateRing);
-  }
-  requestAnimationFrame(animateRing);
 
-  const hoverTargets = "a, button, input, select, textarea, .tilt-card, .pdf-card, .att-card, .lab-card, .cyber-tab-btn, .filter-pill, .arena-text-display, .audio-mode-btn";
+    if (ctx && isFunMode()) {
+      ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+      for (let i = 0; i < trailParticles.length; i++) {
+        const p = trailParticles[i];
+        p.radius *= 0.93;
+        p.alpha *= 0.92;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, Math.max(0.5, p.radius), 0, Math.PI * 2);
+        ctx.fillStyle = p.colorBase + p.alpha + ")";
+        ctx.shadowColor = p.colorBase + "0.75)";
+        ctx.shadowBlur = 6;
+        ctx.fill();
+      }
+      trailParticles = trailParticles.filter(p => p.alpha > 0.05);
+    } else if (ctx) {
+      ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+    }
+
+    requestAnimationFrame(animateCursorAndTrail);
+  }
+  requestAnimationFrame(animateCursorAndTrail);
+
+  const hoverTargets = "a, button, input, select, textarea, .tilt-card, .project-card, .pdf-card, .att-card, .lab-card, .cyber-tab-btn, .filter-pill, .arena-text-display, .audio-mode-btn, .nav-control-pill, .nav-icon-btn, .mobile-control-chip";
   document.addEventListener("mouseover", (e) => {
     if (e.target.closest(hoverTargets)) {
       document.body.classList.add("cursor-hover");
@@ -566,6 +653,44 @@ function initCustomCursor() {
 // ================================================================
 // 5. ANIMATED BACKGROUND CANVAS (FLOATING PARTICLES & CYBER GRID)
 // ================================================================
+const THEME_CANVAS_PALETTES = {
+  cyber: {
+    p1: "rgba(0, 243, 255, 0.4)",
+    p2: "rgba(255, 0, 127, 0.35)",
+    linePrefix: "rgba(0, 243, 255, "
+  },
+  obsidian: {
+    p1: "rgba(99, 102, 241, 0.4)",
+    p2: "rgba(16, 185, 129, 0.35)",
+    linePrefix: "rgba(99, 102, 241, "
+  },
+  frost: {
+    p1: "rgba(56, 189, 248, 0.45)",
+    p2: "rgba(45, 212, 191, 0.4)",
+    linePrefix: "rgba(56, 189, 248, "
+  },
+  academic: {
+    p1: "rgba(212, 175, 55, 0.45)",
+    p2: "rgba(16, 185, 129, 0.35)",
+    linePrefix: "rgba(212, 175, 55, "
+  },
+  light: {
+    p1: "rgba(2, 132, 199, 0.35)",
+    p2: "rgba(100, 116, 139, 0.25)",
+    linePrefix: "rgba(2, 132, 199, "
+  }
+};
+
+let currentCanvasThemePalette = THEME_CANVAS_PALETTES.cyber;
+let cyberParticlesList = [];
+
+function updateCyberCanvasColors(themeId) {
+  currentCanvasThemePalette = THEME_CANVAS_PALETTES[themeId] || THEME_CANVAS_PALETTES.cyber;
+  cyberParticlesList.forEach(p => {
+    p.color = Math.random() > 0.5 ? currentCanvasThemePalette.p1 : currentCanvasThemePalette.p2;
+  });
+}
+
 function initCyberCanvas() {
   const canvas = document.getElementById("cyberCanvas");
   if (!canvas) return;
@@ -584,17 +709,20 @@ function initCyberCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
+  const curTheme = document.documentElement.getAttribute("data-theme") || "cyber";
+  currentCanvasThemePalette = THEME_CANVAS_PALETTES[curTheme] || THEME_CANVAS_PALETTES.cyber;
+
   const particleCount = Math.min(65, Math.floor((width * height) / 18000));
-  const particles = [];
+  cyberParticlesList = [];
 
   for (let i = 0; i < particleCount; i++) {
-    particles.push({
+    cyberParticlesList.push({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.45,
       vy: (Math.random() - 0.5) * 0.45,
       radius: Math.random() * 1.8 + 0.8,
-      color: Math.random() > 0.5 ? "rgba(0, 243, 255, 0.4)" : "rgba(255, 0, 127, 0.35)"
+      color: Math.random() > 0.5 ? currentCanvasThemePalette.p1 : currentCanvasThemePalette.p2
     });
   }
 
@@ -608,8 +736,8 @@ function initCyberCanvas() {
   function draw() {
     ctx.clearRect(0, 0, width, height);
 
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
+    for (let i = 0; i < cyberParticlesList.length; i++) {
+      const p = cyberParticlesList[i];
       p.x += p.vx;
       p.y += p.vy;
 
@@ -631,14 +759,14 @@ function initCyberCanvas() {
       ctx.fillStyle = p.color;
       ctx.fill();
 
-      for (let j = i + 1; j < particles.length; j++) {
-        const p2 = particles[j];
+      for (let j = i + 1; j < cyberParticlesList.length; j++) {
+        const p2 = cyberParticlesList[j];
         const dist2 = Math.hypot(p.x - p2.x, p.y - p2.y);
         if (dist2 < 110) {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(0, 243, 255, ${0.12 * (1 - dist2 / 110)})`;
+          ctx.strokeStyle = `${currentCanvasThemePalette.linePrefix}${0.14 * (1 - dist2 / 110)})`;
           ctx.lineWidth = 0.6;
           ctx.stroke();
         }
@@ -754,28 +882,59 @@ function initScrollRevealAndNav() {
 }
 
 // ================================================================
-// 8. 3D TILT EFFECT ON CARDS
+// 8. 3D TILT EFFECT ON CARDS WITH MOVING GLARE (FEATURE 2)
 // ================================================================
 function initTiltEffect() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cards = document.querySelectorAll(".project-card, .tilt-card");
 
-  const tiltCards = document.querySelectorAll(".tilt-card");
-  tiltCards.forEach(card => {
+  cards.forEach(card => {
+    // Dynamically insert glare overlay if not present
+    let glare = card.querySelector(".card-glare");
+    if (!glare) {
+      glare = document.createElement("div");
+      glare.className = "card-glare";
+      card.appendChild(glare);
+    }
+
+    let rafId = null;
+
     card.addEventListener("mousemove", (e) => {
+      if (!isFunMode() || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        card.style.transform = "none";
+        if (glare) glare.style.opacity = "0";
+        return;
+      }
+
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -7;
-      const rotateY = ((x - centerX) / centerX) * 7;
+      // Max ~12 degrees rotation as required
+      const maxTilt = 12;
+      const rotateX = -((y - centerY) / centerY) * maxTilt;
+      const rotateY = ((x - centerX) / centerX) * maxTilt;
 
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+      const glareX = (x / rect.width) * 100;
+      const glareY = (y / rect.height) * 100;
+
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+        if (glare) {
+          glare.style.opacity = "1";
+          glare.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.32) 0%, transparent 65%)`;
+        }
+      });
     });
 
     card.addEventListener("mouseleave", () => {
-      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+        if (glare) glare.style.opacity = "0";
+      });
     });
   });
 }
@@ -1066,6 +1225,7 @@ function initCalculator() {
   const cgpaClassBadge = document.getElementById("cgpaClassBadge");
 
   let prevCgpaVal = 0;
+  let hasCgpaInitialComputed = false;
 
   function renderCgpaRows() {
     if (!cgpaRowsList) return;
@@ -1104,6 +1264,17 @@ function initCalculator() {
 
     const cgpaNum = totalCredits > 0 ? (totalWeightedPoints / totalCredits) : 0;
     const percentage = cgpaNum > 0 ? Math.max(0, (cgpaNum - 0.75) * 10) : 0;
+
+    // Feature 6: Confetti burst when calculated CGPA is 9.0 or higher (only once per threshold crossing)
+    if (hasCgpaInitialComputed) {
+      if (prevCgpaVal < CONFETTI_CONFIG.cgpaThreshold && cgpaNum >= CONFETTI_CONFIG.cgpaThreshold) {
+        triggerConfettiBurst("cgpa", cgpaNum.toFixed(2));
+        playBleepSound("celebrate");
+        showToast(`🎓 Outstanding Academic Goal! CGPA reached ${cgpaNum.toFixed(2)} (>= ${CONFETTI_CONFIG.cgpaThreshold.toFixed(1)})!`);
+      }
+    } else {
+      hasCgpaInitialComputed = true;
+    }
 
     animateValue(calculatedCgpa, prevCgpaVal, cgpaNum, 500, true);
     prevCgpaVal = cgpaNum;
@@ -1311,6 +1482,10 @@ function initAttendanceTracker() {
     const sub = attendanceSubjects.find(s => s.id === id);
     if (!sub) return;
 
+    const prevAttended = Number(sub.attended) || 0;
+    const prevTotal = Number(sub.total) || 0;
+    const prevPct = prevTotal > 0 ? (prevAttended / prevTotal) * 100 : 0;
+
     if (action === 'present') {
       sub.attended = (Number(sub.attended) || 0) + 1;
       sub.total = (Number(sub.total) || 0) + 1;
@@ -1321,6 +1496,17 @@ function initAttendanceTracker() {
         if (sub.attended > 0) sub.attended -= 1;
         sub.total -= 1;
       }
+    }
+
+    const newAttended = Number(sub.attended) || 0;
+    const newTotal = Number(sub.total) || 0;
+    const newPct = newTotal > 0 ? (newAttended / newTotal) * 100 : 0;
+
+    // Feature 6: Confetti burst when subject attendance crosses 75% threshold (from below to above)
+    if (prevPct < CONFETTI_CONFIG.attendanceThreshold && newPct >= CONFETTI_CONFIG.attendanceThreshold) {
+      triggerConfettiBurst("attendance", sub.name);
+      playBleepSound("celebrate");
+      showToast(`🎉 Attendance Goal Achieved! ${sub.name} is now ${Math.round(newPct)}% (Above ${CONFETTI_CONFIG.attendanceThreshold}%)!`);
     }
 
     saveLocal("yash_attendance_tracker", attendanceSubjects);
@@ -2729,3 +2915,1553 @@ function initFocusAudioEngine() {
     });
   }
 }
+
+// ================================================================
+// 17. 🎙️ SCI-FI JARVIS / CYBER AI VOICE HUD (Feature #1)
+// Interactive Cyberpunk AI Assistant using native Web Speech API
+// SpeechRecognition & SpeechSynthesis + Web Audio Synthesizer (0 External APIs)
+// ================================================================
+function initJarvisVoiceHUD() {
+  const hudRoot = document.getElementById("jarvisVoiceHud");
+  const orbBtn = document.getElementById("jarvisOrbBtn");
+  const orbWrapper = document.getElementById("jarvisOrbWrapper");
+  const hudPanel = document.getElementById("jarvisHudPanel");
+  const closeHudBtn = document.getElementById("hudCloseBtn");
+  const muteBtn = document.getElementById("hudVoiceMuteBtn");
+  const muteIcon = document.getElementById("hudVoiceMuteIcon");
+  const listenToggleBtn = document.getElementById("hudListenToggleBtn");
+  const listenText = document.getElementById("hudListenText");
+  const listenIcon = document.getElementById("hudListenIcon");
+
+  const ledStatus = document.getElementById("hudLedStatus");
+  const subState = document.getElementById("hudSubState");
+  const statePill = document.getElementById("hudStatePill");
+  const beaconDot = document.getElementById("jarvisBeaconDot");
+  const beaconText = document.getElementById("jarvisBeaconText");
+  const userTranscript = document.getElementById("hudUserTranscript");
+  const aiTranscript = document.getElementById("hudAiTranscript");
+
+  const navTrigger = document.getElementById("navJarvisBtn");
+  const mobileNavTrigger = document.getElementById("mobileNavJarvisBtn");
+  const heroTrigger = document.getElementById("heroJarvisBtn");
+  const commandChips = document.querySelectorAll(".hud-command-chip");
+
+  if (!hudRoot || !orbBtn || !hudPanel) return;
+
+  // Speech Recognition & Synthesis Availability
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const hasSpeechRec = !!SpeechRecognition;
+  const hasSpeechSynth = "speechSynthesis" in window;
+
+  let recognition = null;
+  let isListeningExplicitly = false;
+  let isVoiceMuted = localStorage.getItem("yash_jarvis_voice_muted") === "true";
+  let jarvisState = "idle"; // 'idle' | 'listening' | 'speaking' | 'processing'
+  let cachedVoices = [];
+
+  // Update Mute Button UI
+  function updateMuteButtonUI() {
+    if (!muteIcon) return;
+    if (isVoiceMuted) {
+      muteIcon.className = "fa-solid fa-volume-xmark";
+      muteIcon.style.color = "var(--neon-pink)";
+      if (muteBtn) muteBtn.title = "Unmute Synthetic Voice Audio";
+    } else {
+      muteIcon.className = "fa-solid fa-volume-high";
+      muteIcon.style.color = "var(--neon-cyan)";
+      if (muteBtn) muteBtn.title = "Mute Synthetic Voice Audio";
+    }
+  }
+  updateMuteButtonUI();
+
+  if (muteBtn) {
+    muteBtn.addEventListener("click", () => {
+      isVoiceMuted = !isVoiceMuted;
+      localStorage.setItem("yash_jarvis_voice_muted", isVoiceMuted);
+      updateMuteButtonUI();
+      if (isVoiceMuted && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      showToast(isVoiceMuted ? "JARVIS Voice Audio Muted" : "JARVIS Voice Audio Online");
+    });
+  }
+
+  // Load SpeechSynthesis Voices
+  function loadVoices() {
+    if (hasSpeechSynth) {
+      cachedVoices = window.speechSynthesis.getVoices();
+    }
+  }
+  loadVoices();
+  if (hasSpeechSynth && window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  // Native Web Audio Synthesizer for Sci-Fi Sound FX (Zero External Files/APIs)
+  function playJarvisSound(type) {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+
+      if (type === "activate") {
+        // High-tech sci-fi activation chirp
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(1174.66, ctx.currentTime + 0.14); // D6
+        gain.gain.setValueAtTime(0.18, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+      } else if (type === "command") {
+        // Futuristic acknowledgment triad ping
+        [880, 1318.51, 1760].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.07);
+          gain.gain.setValueAtTime(0.12, ctx.currentTime + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.07 + 0.22);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.07);
+          osc.stop(ctx.currentTime + idx * 0.07 + 0.23);
+        });
+      } else if (type === "focus") {
+        // Deep sub-bass cyber warp drop + resonant chime
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = "sawtooth";
+        osc1.frequency.setValueAtTime(160, ctx.currentTime);
+        osc1.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.4);
+        gain1.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start();
+        osc1.stop(ctx.currentTime + 0.46);
+
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(987.77, ctx.currentTime + 0.1);
+        gain2.gain.setValueAtTime(0.15, ctx.currentTime + 0.1);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(ctx.currentTime + 0.1);
+        osc2.stop(ctx.currentTime + 0.46);
+      } else if (type === "error") {
+        // Sci-fi warning alert
+        [220, 185].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.12);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.12 + 0.15);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.12);
+          osc.stop(ctx.currentTime + idx * 0.12 + 0.16);
+        });
+      }
+    } catch (e) {
+      console.warn("JARVIS Web Audio effect warning:", e);
+    }
+  }
+
+  // Update State Machine & Visual HUD Displays
+  function setJarvisState(newState) {
+    jarvisState = newState;
+    hudRoot.setAttribute("data-state", newState);
+
+    if (ledStatus) {
+      ledStatus.className = "hud-led-status " + newState;
+    }
+
+    if (statePill) {
+      statePill.textContent = newState.toUpperCase();
+    }
+
+    if (beaconText) {
+      if (newState === "listening") beaconText.textContent = "LISTENING...";
+      else if (newState === "speaking") beaconText.textContent = "SPEAKING...";
+      else if (newState === "processing") beaconText.textContent = "PROCESSING...";
+      else beaconText.textContent = "JARVIS AI";
+    }
+
+    if (subState) {
+      if (newState === "listening") subState.textContent = "MICROPHONE ACTIVE · LISTENING FOR PROTOCOLS...";
+      else if (newState === "speaking") subState.textContent = "TRANSMITTING SYNTHETIC AUDIO FEED...";
+      else if (newState === "processing") subState.textContent = "EXECUTING SYSTEM PROTOCOL...";
+      else subState.textContent = hasSpeechRec ? "SYSTEM ONLINE · VOICE READY" : "AUDIO READY · PROTOCOLS ONLINE";
+    }
+
+    if (listenToggleBtn && listenText && listenIcon) {
+      if (newState === "listening") {
+        listenToggleBtn.classList.add("active");
+        listenText.textContent = "Stop Listening";
+        listenIcon.className = "fa-solid fa-stop";
+      } else if (newState === "idle") {
+        listenToggleBtn.classList.remove("active");
+        listenText.textContent = "Start Listening";
+        listenIcon.className = "fa-solid fa-microphone";
+      }
+    }
+  }
+
+  // Synthetic Sci-Fi Voice Readout (Zero External APIs)
+  function speakJarvis(text, onComplete) {
+    if (!hasSpeechSynth || isVoiceMuted) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    if (!cachedVoices.length) cachedVoices = window.speechSynthesis.getVoices();
+
+    // Select optimal crisp, robotic / sci-fi English voice
+    const preferredVoice = cachedVoices.find(v =>
+      v.lang.startsWith("en") && (
+        v.name.includes("Google UK English Male") ||
+        v.name.includes("Google UK English Female") ||
+        v.name.includes("Daniel") ||
+        v.name.includes("David") ||
+        v.name.includes("George") ||
+        v.name.includes("Oliver") ||
+        v.name.includes("Zira") ||
+        v.name.includes("Samantha") ||
+        v.name.includes("Natural")
+      )
+    ) || cachedVoices.find(v => v.lang.startsWith("en")) || cachedVoices[0];
+
+    if (preferredVoice) utterance.voice = preferredVoice;
+
+    // Pitch & rate tuned for high-tech AI timbre
+    utterance.pitch = 1.08;
+    utterance.rate = 1.04;
+
+    utterance.onstart = () => {
+      setJarvisState("speaking");
+    };
+
+    utterance.onend = () => {
+      setJarvisState(isListeningExplicitly ? "listening" : "idle");
+      if (onComplete) onComplete();
+    };
+
+    utterance.onerror = (e) => {
+      console.warn("SpeechSynthesis error:", e);
+      setJarvisState(isListeningExplicitly ? "listening" : "idle");
+      if (onComplete) onComplete();
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // Update Dialogue Transcript in HUD
+  function setHudDialogue(userText, aiText, customHtml = null) {
+    if (userTranscript && userText) {
+      userTranscript.textContent = `"${userText}"`;
+    }
+    if (aiTranscript && aiText) {
+      aiTranscript.textContent = `"${aiText}"`;
+      const existingCards = aiTranscript.parentElement.querySelectorAll(".jarvis-creator-banner, .jarvis-suggestion-card");
+      existingCards.forEach(c => c.remove());
+      if (customHtml) {
+        aiTranscript.parentElement.insertAdjacentHTML("beforeend", customHtml);
+      }
+    }
+  }
+
+  // Open & Close HUD Console
+  function openHudPanel() {
+    hudPanel.classList.add("active");
+    orbBtn.setAttribute("aria-expanded", "true");
+  }
+
+  function closeHudPanel() {
+    hudPanel.classList.remove("active");
+    orbBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleHudPanel() {
+    if (hudPanel.classList.contains("active")) {
+      closeHudPanel();
+    } else {
+      openHudPanel();
+      playJarvisSound("activate");
+    }
+  }
+
+  // Setup Web Speech Recognition
+  if (hasSpeechRec) {
+    try {
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      recognition.onstart = () => {
+        setJarvisState("listening");
+      };
+
+      recognition.onresult = (event) => {
+        let interimTranscript = "";
+        let finalTranscript = "";
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const trans = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += trans;
+          } else {
+            interimTranscript += trans;
+          }
+        }
+
+        const candidateText = (finalTranscript || interimTranscript).trim();
+        if (candidateText && userTranscript) {
+          userTranscript.textContent = `"${candidateText}"`;
+        }
+
+        if (finalTranscript) {
+          processVoiceCommand(finalTranscript);
+        } else if (interimTranscript) {
+          // Check for quick keyword matches even on interim results
+          const lower = interimTranscript.toLowerCase();
+          if (
+            lower.includes("calculate attendance") ||
+            lower.includes("open python notes") ||
+            lower.includes("engage focus mode") ||
+            lower.includes("who made this")
+          ) {
+            processVoiceCommand(interimTranscript);
+          }
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.warn("SpeechRecognition error:", event.error);
+        if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+          isListeningExplicitly = false;
+          setJarvisState("idle");
+          setHudDialogue(
+            "Microphone blocked",
+            "Microphone permission is required for live voice. You can still click any protocol chip below to execute commands instantly!"
+          );
+          showToast("Microphone access denied. Click chips to run commands.");
+        } else if (event.error === "no-speech") {
+          if (!isListeningExplicitly) {
+            setJarvisState("idle");
+          }
+        }
+      };
+
+      recognition.onend = () => {
+        // If user wants listening active and we are not speaking, gracefully restart
+        if (isListeningExplicitly && jarvisState !== "speaking" && jarvisState !== "processing") {
+          setTimeout(() => {
+            if (isListeningExplicitly) {
+              try {
+                recognition.start();
+              } catch (e) {
+                // already running or transient error
+              }
+            }
+          }, 250);
+        } else if (!isListeningExplicitly && jarvisState !== "speaking") {
+          setJarvisState("idle");
+        }
+      };
+    } catch (err) {
+      console.warn("SpeechRecognition init exception:", err);
+    }
+  } else {
+    // Unsupported browser fallback message
+    if (subState) {
+      subState.textContent = "BROWSER NOTE: Click chips to run protocols";
+    }
+  }
+
+  // Toggle Voice Listening Active / Inactive
+  function startListening() {
+    openHudPanel();
+    if (!hasSpeechRec) {
+      showToast("Web Speech Recognition requires Chrome/Edge/Safari. Use clickable protocol chips!");
+      setHudDialogue(
+        "Voice input unsupported in this browser",
+        "SpeechRecognition API is not enabled in this browser. Click any of the protocol command chips below to experience JARVIS!"
+      );
+      playJarvisSound("activate");
+      return;
+    }
+
+    isListeningExplicitly = true;
+    playJarvisSound("activate");
+    try {
+      recognition.start();
+      setJarvisState("listening");
+      showToast("🎙️ JARVIS is listening for commands...");
+    } catch (e) {
+      // If already started, update state
+      setJarvisState("listening");
+    }
+  }
+
+  function stopListening() {
+    isListeningExplicitly = false;
+    if (recognition) {
+      try {
+        recognition.stop();
+      } catch (e) {}
+    }
+    setJarvisState("idle");
+    showToast("JARVIS voice listening paused");
+  }
+
+  function toggleListening() {
+    if (isListeningExplicitly && jarvisState === "listening") {
+      stopListening();
+    } else {
+      startListening();
+    }
+  }
+
+  // ==============================================================
+  // PROTOCOL COMMAND EXECUTORS
+  // ==============================================================
+
+  // 1. "Hey Yash, calculate attendance" -> Auto-scrolls and highlights the Bunk Advisor
+  function executeAttendanceCommand(rawText = "Hey Yash, calculate attendance") {
+    setJarvisState("processing");
+    playJarvisSound("command");
+    openHudPanel();
+
+    const attendanceSec = document.getElementById("attendance");
+    const dashboard = document.querySelector(".attendance-dashboard");
+    const cards = document.querySelectorAll(".att-card");
+    const overallPctElem = document.getElementById("overallPercentage");
+    const overallStatusElem = document.getElementById("overallStatusBadge");
+
+    const overallPct = overallPctElem ? overallPctElem.textContent.trim() : "82%";
+    const isSafe = !overallStatusElem || overallStatusElem.classList.contains("safe");
+
+    // Auto-scroll to Attendance Section
+    if (attendanceSec) {
+      attendanceSec.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      // Clean existing target banner if any
+      const existingBanner = document.getElementById("jarvisAttTargetBanner");
+      if (existingBanner) existingBanner.remove();
+
+      // Inject Cyber HUD Target Banner
+      const banner = document.createElement("div");
+      banner.id = "jarvisAttTargetBanner";
+      banner.className = "jarvis-targeting-banner";
+      banner.innerHTML = `<i class="fa-solid fa-crosshairs fa-spin"></i> JARVIS AUDIT: BUNK ADVISOR TARGETED // RECALCULATING ATTENDANCE PARAMETERS`;
+      attendanceSec.insertBefore(banner, attendanceSec.querySelector(".section-title-wrap").nextSibling);
+
+      // Add Highlighting Pulse
+      if (dashboard) dashboard.classList.add("jarvis-highlight-bunk");
+      cards.forEach(card => card.classList.add("jarvis-highlight-card"));
+
+      // Clean up highlights after 6 seconds
+      setTimeout(() => {
+        if (banner) banner.remove();
+        if (dashboard) dashboard.classList.remove("jarvis-highlight-bunk");
+        cards.forEach(card => card.classList.remove("jarvis-highlight-card"));
+      }, 6000);
+    }
+
+    const voiceResponse = isSafe
+      ? `Calculating attendance parameters. Bunk advisor online. Current overall attendance is ${overallPct}. Safe bunk thresholds have been targeted and highlighted on your console.`
+      : `Calculating attendance parameters. Bunk advisor online. Current attendance is ${overallPct}. Shortage advisory active. Consecutive attendances targeted.`;
+
+    const hudResponse = `Calculating attendance parameters. Bunk advisor online. Overall Attendance: ${overallPct}. Safe bunk margins audited and highlighted on screen.`;
+
+    setHudDialogue(rawText, hudResponse);
+    speakJarvis(voiceResponse);
+    showToast(`🎯 Bunk Advisor targeted: Overall ${overallPct}`);
+  }
+
+  // 2. "Open Python notes" -> Pops up the Python Lab Manual PDF modal
+  function executePythonNotesCommand(rawText = "Open Python notes") {
+    setJarvisState("processing");
+    playJarvisSound("command");
+    openHudPanel();
+
+    const pythonManualPath = "files/Python_Programming_Lab_Manual.pdf";
+    const pythonManualTitle = "Python Programming Lab Manual - SPPU IT";
+
+    // Launch PDF Modal
+    if (typeof window.previewPdf === "function") {
+      window.previewPdf(pythonManualPath, pythonManualTitle);
+    } else {
+      const modal = document.getElementById("pdfViewerModal");
+      const frame = document.getElementById("pdfViewerFrame");
+      const title = document.getElementById("pdfViewerTitle");
+      if (title) title.innerHTML = `<i class="fa-solid fa-file-pdf neon-pink"></i> ${pythonManualTitle}`;
+      if (frame) frame.src = pythonManualPath;
+      if (modal) modal.classList.add("active");
+    }
+
+    const voiceResponse = "Accessing Python notes and lab manual. Holographic document viewer initialized.";
+    const hudResponse = "Access granted. Launching Python Programming Lab Manual in holographic document viewer modal.";
+
+    setHudDialogue(rawText, hudResponse);
+    speakJarvis(voiceResponse);
+    showToast("📘 Opening Python Lab Manual PDF modal");
+  }
+
+  // 3. "Engage focus mode" -> Triggers 25-min Pomodoro timer and fires up 40Hz Gamma Focus Audio
+  function executeFocusModeCommand(rawText = "Engage focus mode") {
+    setJarvisState("processing");
+    playJarvisSound("focus");
+    openHudPanel();
+
+    const studyHubSec = document.getElementById("study-hub");
+
+    // Auto-scroll to Study Hub
+    if (studyHubSec) {
+      studyHubSec.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      const existingFocusBanner = document.getElementById("jarvisFocusBanner");
+      if (existingFocusBanner) existingFocusBanner.remove();
+
+      const banner = document.createElement("div");
+      banner.id = "jarvisFocusBanner";
+      banner.className = "jarvis-focus-banner";
+      banner.innerHTML = `<i class="fa-solid fa-brain fa-beat"></i> FOCUS MODE ENGAGED // 25:00 POMODORO TIMER + 40Hz GAMMA WAVE ACTIVE`;
+      studyHubSec.insertBefore(banner, studyHubSec.querySelector(".study-tools-grid"));
+
+      setTimeout(() => {
+        if (banner) banner.remove();
+      }, 6000);
+    }
+
+    // Step A: Trigger 25-min Pomodoro Timer
+    const pomoBtn = document.querySelector('.pomo-mode-btn[data-mode="pomodoro"]');
+    if (pomoBtn) pomoBtn.click();
+
+    const pomoStartBtn = document.getElementById("pomoStartBtn");
+    const pomoStartText = document.getElementById("pomoStartText");
+    if (
+      pomoStartBtn &&
+      pomoStartText &&
+      (pomoStartText.textContent.includes("Start") || pomoStartText.textContent.includes("Resume"))
+    ) {
+      pomoStartBtn.click();
+    }
+
+    // Step B: Fire up 40Hz Gamma Focus Audio
+    const gammaBtn = document.querySelector('.audio-mode-btn[data-sound="binaural"]');
+    if (gammaBtn) gammaBtn.click();
+
+    const audioStatusPill = document.getElementById("audioStatusPill");
+    const toggleAudioBtn = document.getElementById("toggleAudioBtn");
+    if (toggleAudioBtn && audioStatusPill && !audioStatusPill.classList.contains("playing")) {
+      toggleAudioBtn.click();
+    }
+
+    const voiceResponse =
+      "Focus mode engaged. 25-minute Pomodoro timer initialized. 40Hz Gamma wave focus audio activated.";
+    const hudResponse =
+      "Focus mode engaged. 25-min Pomodoro timer running. 40Hz Gamma concentration binaural beat engine online.";
+
+    setHudDialogue(rawText, hudResponse);
+    speakJarvis(voiceResponse);
+    showToast("⚡ Focus Mode Engaged: 25m Timer + 40Hz Gamma Wave");
+  }
+
+  // 4. "Who made this?" -> Synthetic sci-fi voice: "Designed and engineered by Yash, IT Department, DY Patil Akurdi."
+  function executeWhoMadeThisCommand(rawText = "Who made this?") {
+    setJarvisState("processing");
+    playJarvisSound("command");
+    openHudPanel();
+
+    const exactResponse = "Designed and engineered by Yash, IT Department, DY Patil Akurdi.";
+
+    const customCard = `
+      <div class="jarvis-creator-banner">
+        <div class="jarvis-creator-badge"><i class="fa-solid fa-code neon-cyan"></i> Yash · IT Department</div>
+        <div class="jarvis-creator-meta">DY Patil College of Engineering, Akurdi · First Year IT Undergraduate</div>
+      </div>
+    `;
+
+    setHudDialogue(rawText, exactResponse, customCard);
+
+    // Scroll towards Profile Card / About section
+    const profileCard = document.getElementById("profileHoloCard") || document.getElementById("about");
+    if (profileCard) {
+      profileCard.scrollIntoView({ behavior: "smooth", block: "center" });
+      profileCard.classList.add("jarvis-highlight-card");
+      setTimeout(() => profileCard.classList.remove("jarvis-highlight-card"), 5000);
+    }
+
+    speakJarvis(exactResponse);
+    showToast("👤 Yash, IT Department, DY Patil Akurdi");
+  }
+
+  // Helper Command: Help & Suggestions
+  function executeHelpCommand(rawText = "Help / Suggestions") {
+    playJarvisSound("command");
+    openHudPanel();
+    const helpMsg =
+      "Active voice protocols: 'Hey Yash, calculate attendance', 'Open Python notes', 'Engage focus mode', or 'Who made this?'. You can also change the website theme anytime: 'Switch theme to Obsidian', 'Nordic Frost', 'Ivy Academic', 'Clean Light', or 'Cyber Neon'.";
+
+    const themeSuggestionsCard = `
+      <div class="jarvis-suggestion-card">
+        <div class="jarvis-suggestion-title"><i class="fa-solid fa-palette neon-cyan"></i> THEME PALETTE SUGGESTIONS (CLICK TO SWITCH):</div>
+        <div class="jarvis-suggestion-chips">
+          <button class="hud-command-chip mini" data-command="Switch theme to Obsidian" type="button" title="Switch to Obsidian Tech"><span>🌑</span> Obsidian Tech</button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Nordic Frost" type="button" title="Switch to Nordic Frost"><span>🧊</span> Nordic Frost</button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Ivy Academic" type="button" title="Switch to Ivy Academic"><span>🏛️</span> Ivy Academic</button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Clean Light" type="button" title="Switch to Clean Light"><span>☀️</span> Clean Light</button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Cyber Neon" type="button" title="Switch to Cyber Neon"><span>⚡</span> Cyber Neon</button>
+        </div>
+      </div>
+    `;
+
+    setHudDialogue(rawText, helpMsg, themeSuggestionsCard);
+    speakJarvis("Active voice protocols online. You can calculate attendance, open notes, engage focus mode, or switch between Obsidian, Nordic Frost, Ivy Academic, Clean Light, and Cyber Neon themes.");
+  }
+
+  // Helper Command: Stop Audio
+  function executeStopAudioCommand(rawText = "Stop audio") {
+    playJarvisSound("command");
+    const audioStatusPill = document.getElementById("audioStatusPill");
+    const toggleAudioBtn = document.getElementById("toggleAudioBtn");
+    if (toggleAudioBtn && audioStatusPill && audioStatusPill.classList.contains("playing")) {
+      toggleAudioBtn.click();
+    }
+    const msg = "Focus audio engine deactivated.";
+    setHudDialogue(rawText, msg);
+    speakJarvis("Focus audio engines muted.");
+    showToast("Focus audio stopped");
+  }
+
+  // Master Voice Command Parser
+  function processVoiceCommand(rawTranscript) {
+    if (!rawTranscript) return;
+    const text = rawTranscript.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+
+    // 1. Calculate Attendance / Bunk Advisor
+    if (
+      text.includes("calculate attendance") ||
+      text.includes("attendance") ||
+      text.includes("bunk advisor") ||
+      text.includes("how many bunks") ||
+      text.includes("check attendance") ||
+      text.includes("bunk")
+    ) {
+      executeAttendanceCommand(rawTranscript);
+    }
+    // 2. Open Python Notes / Lab Manual
+    else if (
+      text.includes("python note") ||
+      text.includes("python manual") ||
+      text.includes("python handbook") ||
+      text.includes("python lab") ||
+      text.includes("open python")
+    ) {
+      executePythonNotesCommand(rawTranscript);
+    }
+    // 3. Engage Focus Mode / 40Hz Gamma Audio
+    else if (
+      text.includes("focus mode") ||
+      text.includes("engage focus") ||
+      text.includes("start focus") ||
+      text.includes("pomodoro") ||
+      text.includes("gamma focus") ||
+      text.includes("gamma wave") ||
+      text.includes("gamma")
+    ) {
+      executeFocusModeCommand(rawTranscript);
+    }
+    // 4. Who Made This?
+    else if (
+      text.includes("who made this") ||
+      text.includes("who built this") ||
+      text.includes("who created this") ||
+      text.includes("who developed this") ||
+      text.includes("who is yash") ||
+      text.includes("who made you") ||
+      text.includes("who designed this") ||
+      text.includes("creator") ||
+      text.includes("author")
+    ) {
+      executeWhoMadeThisCommand(rawTranscript);
+    }
+    // Helper: Stop Audio
+    else if (
+      text.includes("stop audio") ||
+      text.includes("pause audio") ||
+      text.includes("mute audio") ||
+      text.includes("stop music")
+    ) {
+      executeStopAudioCommand(rawTranscript);
+    }
+    // Helper: Help / Protocols / Suggestions
+    else if (
+      text.includes("help") ||
+      text.includes("commands") ||
+      text.includes("command") ||
+      text.includes("suggestion") ||
+      text.includes("suggest") ||
+      text.includes("what can you do") ||
+      text.includes("options") ||
+      text.includes("protocols")
+    ) {
+      executeHelpCommand(rawTranscript);
+    }
+    // Helper: Scroll to top
+    else if (text.includes("scroll to top") || text.includes("go to top") || text.includes("home")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setHudDialogue(rawTranscript, "Navigating to top of workstation console.");
+      speakJarvis("Navigating to top of workstation.");
+    }
+    // Helper: Close modal
+    else if (text.includes("close modal") || text.includes("close viewer") || text.includes("close reader")) {
+      const pdfModal = document.getElementById("pdfViewerModal");
+      if (pdfModal) pdfModal.classList.remove("active");
+      setHudDialogue(rawTranscript, "Holographic document viewer closed.");
+      speakJarvis("Holographic viewer closed.");
+    }
+    // 5. Change Theme Palette Voice Protocol
+    else if (text.includes("theme") || text.includes("palette")) {
+      let matchedTheme = null;
+      let matchedName = "";
+      if (text.includes("obsidian")) {
+        matchedTheme = "obsidian";
+        matchedName = "Obsidian Tech";
+      } else if (text.includes("frost") || text.includes("ice") || text.includes("nordic")) {
+        matchedTheme = "frost";
+        matchedName = "Nordic Frost";
+      } else if (text.includes("academic") || text.includes("ivy") || text.includes("oxford")) {
+        matchedTheme = "academic";
+        matchedName = "Ivy Academic";
+      } else if (text.includes("light")) {
+        matchedTheme = "light";
+        matchedName = "Clean Light";
+      } else if (text.includes("cyber") || text.includes("neon") || text.includes("dark")) {
+        matchedTheme = "cyber";
+        matchedName = "Cyber Neon";
+      }
+
+      if (matchedTheme && typeof switchThemeWithTransition === "function") {
+        switchThemeWithTransition(matchedTheme);
+        setHudDialogue(rawTranscript, `Theme successfully switched to ${matchedName}.`);
+        speakJarvis(`Theme switched to ${matchedName}, Sir.`);
+      } else {
+        setHudDialogue(rawTranscript, "Available themes: Cyber Neon, Obsidian Tech, Nordic Frost, Ivy Academic, and Clean Light.");
+        speakJarvis("Which theme would you like? You can choose Cyber Neon, Obsidian Tech, Nordic Frost, Ivy Academic, or Clean Light.");
+      }
+    }
+    // Unrecognized Command
+    else {
+      playJarvisSound("error");
+      const unrecMsg =
+        "Protocol unrecognized. Try: 'Hey Yash, calculate attendance', 'Open Python notes', 'Engage focus mode', 'Who made this?', or 'Switch theme to Obsidian / Nordic Frost / Ivy Academic / Clean Light / Cyber Neon'.";
+      setHudDialogue(rawTranscript, unrecMsg);
+      speakJarvis("Command not recognized. Say: calculate attendance, open notes, engage focus mode, who made this, or switch theme.");
+    }
+  }
+
+  // ==============================================================
+  // EVENT LISTENERS & TRIGGERS
+  // ==============================================================
+
+  // Central Orb Button Click: Open HUD and Toggle Listening
+  orbBtn.addEventListener("click", () => {
+    if (!hudPanel.classList.contains("active")) {
+      openHudPanel();
+      playJarvisSound("activate");
+      startListening();
+    } else {
+      toggleListening();
+    }
+  });
+
+  // Close HUD Button
+  if (closeHudBtn) {
+    closeHudBtn.addEventListener("click", () => {
+      closeHudPanel();
+      if (isListeningExplicitly) stopListening();
+    });
+  }
+
+  // Listen Toggle Button inside HUD
+  if (listenToggleBtn) {
+    listenToggleBtn.addEventListener("click", () => {
+      toggleListening();
+    });
+  }
+
+  // Clickable Protocol Command Chips (Event Delegation to support static & suggestion chips)
+  hudPanel.addEventListener("click", (e) => {
+    const chip = e.target.closest(".hud-command-chip");
+    if (!chip) return;
+    const cmd = chip.dataset.command;
+    if (!cmd) return;
+    if (cmd === "Hey Yash, calculate attendance") {
+      executeAttendanceCommand(cmd);
+    } else if (cmd === "Open Python notes") {
+      executePythonNotesCommand(cmd);
+    } else if (cmd === "Engage focus mode") {
+      executeFocusModeCommand(cmd);
+    } else if (cmd === "Who made this?") {
+      executeWhoMadeThisCommand(cmd);
+    } else {
+      processVoiceCommand(cmd);
+    }
+  });
+
+  // External Navigation & Hero Triggers
+  if (navTrigger) {
+    navTrigger.addEventListener("click", () => {
+      openHudPanel();
+      playJarvisSound("activate");
+      startListening();
+    });
+  }
+
+  if (mobileNavTrigger) {
+    mobileNavTrigger.addEventListener("click", () => {
+      const mobileDrawer = document.getElementById("mobileDrawer");
+      if (mobileDrawer) mobileDrawer.classList.remove("active");
+      openHudPanel();
+      playJarvisSound("activate");
+      startListening();
+    });
+  }
+
+  if (heroTrigger) {
+    heroTrigger.addEventListener("click", () => {
+      openHudPanel();
+      playJarvisSound("activate");
+      startListening();
+    });
+  }
+
+  // Keyboard Shortcut: Alt + J or Alt + V to toggle Voice HUD
+  window.addEventListener("keydown", (e) => {
+    if (e.altKey && (e.key === "j" || e.key === "J" || e.key === "v" || e.key === "V")) {
+      e.preventDefault();
+      toggleHudPanel();
+      if (!isListeningExplicitly) startListening();
+    }
+  });
+}
+
+/* ================================================================
+   NEW MODULAR FEATURES ADDITIONS
+   ----------------------------------------------------------------
+   1. GLOBAL REQUIREMENT: FUN MODE CONTROLLER
+   2. FEATURE 1: TERMINAL BOOT LOADING SCREEN (2 SECONDS)
+   3. FEATURE 3: WEB AUDIO SOUND FX ENGINE (ZERO AUDIO FILES)
+   4. FEATURE 5: DARK / LIGHT MODE ENGINE WITH CIRCLE WIPE
+   5. FEATURE 6: NATIVE CANVAS CONFETTI ENGINE (GOAL CELEBRATIONS)
+   6. FEATURE 7: LIVE LOCAL TIMEZONE CLOCK & QUOTES TICKER (FOOTER)
+   7. FEATURE 8: FIXED GRADIENT SCROLL PROGRESS BAR
+   ================================================================ */
+
+// ================================================================
+// CONFIGURATION CONSTANTS (CUSTOMIZE THRESHOLDS & QUOTES HERE)
+// ================================================================
+
+/**
+ * 🎯 CONFETTI THRESHOLDS CONFIGURATION
+ * Edit these values to adjust when celebrations fire.
+ */
+const CONFETTI_CONFIG = {
+  attendanceThreshold: 75,  // Attendance percentage threshold (default: 75%)
+  cgpaThreshold: 9.0,       // CGPA distinction threshold (default: 9.0)
+  particleCount: 150,       // Number of confetti particles (default: 150)
+  durationMs: 3000          // Duration before canvas disappears (default: 3000ms)
+};
+
+/**
+ * 💬 MOTIVATIONAL & PROGRAMMING QUOTES LIST (FOOTER TICKER)
+ * Edit or add any quotes to this array.
+ */
+const TICKER_QUOTES = [
+  "“Talk is cheap. Show me the code.” — Linus Torvalds",
+  "“First, solve the problem. Then, write the code.” — John Johnson",
+  "“Consistency in engineering logic transforms curiosity into breakthrough solutions.”",
+  "“Simplicity is prerequisite for reliability.” — Edsger W. Dijkstra",
+  "“The only way to learn a new programming language is by writing programs in it.” — Dennis Ritchie",
+  "“Attendance is the foundation; curiosity is the engine; perseverance is the degree.”",
+  "“Code is like humor. When you have to explain it, it’s bad.” — Cory House",
+  "“Every great developer was once a beginner who refused to quit.”"
+];
+
+// ================================================================
+// GLOBAL REQUIREMENT: FUN MODE CONTROLLER
+// ================================================================
+let isFunModeActive = true;
+
+function initFunModeEngine() {
+  const savedState = safeLocalStorageGet("college_hub_fun_mode", null);
+  const isMobile = window.innerWidth < 768;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Defaults: Turn Fun Mode OFF on mobile (< 768px) and on prefers-reduced-motion; ON otherwise
+  if (savedState !== null) {
+    isFunModeActive = (savedState === true || savedState === "true");
+  } else {
+    isFunModeActive = !(isMobile || prefersReducedMotion);
+  }
+
+  updateFunModeUI(isFunModeActive);
+
+  const funBtn = document.getElementById("funModeToggleBtn");
+  const mobileFunBtn = document.getElementById("mobileFunModeToggleBtn");
+
+  function handleFunToggle() {
+    isFunModeActive = !isFunModeActive;
+    safeLocalStorageSet("college_hub_fun_mode", isFunModeActive);
+    updateFunModeUI(isFunModeActive);
+    playBleepSound("click");
+    showToast(isFunModeActive ? "🚀 Fun Mode Activated! (3D Tilt, SFX & Trails)" : "⚡ Fun Mode Deactivated (Minimal / Accessible UI)");
+  }
+
+  if (funBtn) funBtn.addEventListener("click", handleFunToggle);
+  if (mobileFunBtn) mobileFunBtn.addEventListener("click", handleFunToggle);
+
+  // Auto-adapt if user resizes across mobile threshold and hasn't saved explicit preference
+  window.addEventListener("resize", () => {
+    if (safeLocalStorageGet("college_hub_fun_mode", null) === null) {
+      const nowMobile = window.innerWidth < 768;
+      if (nowMobile && isFunModeActive) {
+        isFunModeActive = false;
+        updateFunModeUI(false);
+      }
+    }
+  });
+}
+
+function isFunMode() {
+  return isFunModeActive;
+}
+
+function updateFunModeUI(active) {
+  document.body.classList.toggle("fun-mode-off", !active);
+
+  const funBtn = document.getElementById("funModeToggleBtn");
+  const mobileLabel = document.getElementById("mobileFunModeLabel");
+
+  if (funBtn) {
+    funBtn.classList.toggle("active", active);
+    funBtn.setAttribute("aria-pressed", active ? "true" : "false");
+  }
+  if (mobileLabel) {
+    mobileLabel.textContent = active ? "Fun: ON" : "Fun: OFF";
+  }
+}
+
+// ================================================================
+// FEATURE 1: FULLSCREEN TERMINAL BOOT LOADER (2 SECONDS)
+// ================================================================
+function initTerminalBootLoader() {
+  const loader = document.getElementById("terminalLoader");
+  if (!loader) return;
+
+  const bootAlreadyShown = safeSessionStorageGet("college_hub_boot_shown", false);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Skip loader if Fun Mode is OFF, already shown in this session, or reduced motion
+  if (!isFunMode() || bootAlreadyShown || reducedMotion) {
+    loader.style.display = "none";
+    return;
+  }
+
+  safeSessionStorageSet("college_hub_boot_shown", true);
+
+  const historyEl = document.getElementById("terminalHistory");
+  const typingEl = document.getElementById("terminalTypingText");
+  const skipPrompt = document.getElementById("terminalSkipPrompt");
+
+  const bootLines = [
+    "Initializing portfolio...",
+    "Loading projects... OK",
+    "Loading SGPA engine... OK",
+    "Welcome."
+  ];
+
+  let currentLineIndex = 0;
+  let currentCharIndex = 0;
+  let isLoaderFinished = false;
+
+  function dismissLoader() {
+    if (isLoaderFinished) return;
+    isLoaderFinished = true;
+    loader.classList.add("fade-out");
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 550);
+  }
+
+  if (skipPrompt) skipPrompt.addEventListener("click", dismissLoader);
+  loader.addEventListener("click", dismissLoader);
+  window.addEventListener("keydown", dismissLoader, { once: true });
+
+  function typeBootCharacter() {
+    if (isLoaderFinished) return;
+
+    if (currentLineIndex >= bootLines.length) {
+      setTimeout(dismissLoader, 350);
+      return;
+    }
+
+    const currentText = bootLines[currentLineIndex];
+
+    if (currentCharIndex < currentText.length) {
+      if (typingEl) typingEl.textContent += currentText.charAt(currentCharIndex);
+      currentCharIndex++;
+      setTimeout(typeBootCharacter, 20);
+    } else {
+      // Completed current line
+      if (historyEl) {
+        const lineRow = document.createElement("div");
+        lineRow.className = "terminal-log-line";
+        lineRow.innerHTML = `<span class="prompt-green">&gt;</span> ${escapeHtml(currentText)}`;
+        historyEl.appendChild(lineRow);
+      }
+      if (typingEl) typingEl.textContent = "";
+      currentLineIndex++;
+      currentCharIndex = 0;
+      setTimeout(typeBootCharacter, 120);
+    }
+  }
+
+  // Start typing
+  setTimeout(typeBootCharacter, 100);
+}
+
+// ================================================================
+// FEATURE 3: WEB AUDIO SOUND FX ENGINE (ZERO EXTERNAL AUDIO FILES)
+// ================================================================
+let webAudioCtx = null;
+let isAudioMuted = safeLocalStorageGet("college_hub_sound_muted", false);
+
+function getWebAudioContext() {
+  if (!webAudioCtx && (window.AudioContext || window.webkitAudioContext)) {
+    const CtxClass = window.AudioContext || window.webkitAudioContext;
+    try {
+      webAudioCtx = new CtxClass();
+    } catch (e) {
+      console.warn("Web Audio not supported:", e);
+    }
+  }
+  if (webAudioCtx && webAudioCtx.state === "suspended") {
+    webAudioCtx.resume().catch(() => {});
+  }
+  return webAudioCtx;
+}
+
+function playBleepSound(type = "click") {
+  if (!isFunMode() || isAudioMuted) return;
+
+  try {
+    const ctx = getWebAudioContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (type === "tab" || type === "section") {
+      // Gentle twin pitch chime for section/tab switch
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(587.33, now); // D5
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.08); // A5
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.06, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      osc.start(now);
+      osc.stop(now + 0.12);
+    } else if (type === "celebrate" || type === "confetti") {
+      // Major chord ascending arpeggio for goal celebrations
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "triangle";
+        o.frequency.setValueAtTime(freq, now + idx * 0.06);
+        g.gain.setValueAtTime(0.001, now + idx * 0.06);
+        g.gain.linearRampToValueAtTime(0.07, now + idx * 0.06 + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.06 + 0.2);
+        o.connect(g);
+        g.connect(ctx.destination);
+        o.start(now + idx * 0.06);
+        o.stop(now + idx * 0.06 + 0.22);
+      });
+    } else {
+      // High-tech crisp click bleep
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(680, now);
+      osc.frequency.exponentialRampToValueAtTime(1050, now + 0.04);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.05, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+      osc.start(now);
+      osc.stop(now + 0.055);
+    }
+  } catch (err) {
+    // Non-blocking catch
+  }
+}
+
+function initSoundFXEngine() {
+  updateSoundUI();
+
+  // Unlock AudioContext on first user interaction (browser autoplay rules)
+  const unlockAudio = () => {
+    getWebAudioContext();
+    window.removeEventListener("click", unlockAudio);
+    window.removeEventListener("keydown", unlockAudio);
+  };
+  window.addEventListener("click", unlockAudio);
+  window.addEventListener("keydown", unlockAudio);
+
+  const soundBtn = document.getElementById("soundToggleBtn");
+  const mobileSoundBtn = document.getElementById("mobileSoundToggleBtn");
+
+  function handleSoundToggle() {
+    isAudioMuted = !isAudioMuted;
+    safeLocalStorageSet("college_hub_sound_muted", isAudioMuted);
+    updateSoundUI();
+    if (!isAudioMuted) playBleepSound("click");
+    showToast(isAudioMuted ? "🔇 Audio Effects Muted" : "🔊 Audio Effects Enabled");
+  }
+
+  if (soundBtn) soundBtn.addEventListener("click", handleSoundToggle);
+  if (mobileSoundBtn) mobileSoundBtn.addEventListener("click", handleSoundToggle);
+
+  // Global button & tab click sound handler
+  document.addEventListener("click", (e) => {
+    const tabTarget = e.target.closest(".nav-item, .mobile-nav-item, .cyber-tab-btn, .filter-pill, .cheat-tab-btn");
+    const btnTarget = e.target.closest("button, .btn-proj-link, .btn-connect, .hud-command-chip, .audio-mode-btn");
+
+    if (tabTarget) {
+      playBleepSound("tab");
+    } else if (btnTarget && !btnTarget.closest("#soundToggleBtn, #mobileSoundToggleBtn")) {
+      playBleepSound("click");
+    }
+  });
+}
+
+function updateSoundUI() {
+  const soundBtn = document.getElementById("soundToggleBtn");
+  const soundIcon = document.getElementById("soundIcon");
+  const mobileSoundLabel = document.getElementById("mobileSoundLabel");
+  const mobileSoundIcon = document.getElementById("mobileSoundIcon");
+
+  if (soundBtn) soundBtn.classList.toggle("muted", isAudioMuted);
+  if (soundIcon) soundIcon.className = isAudioMuted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high";
+  if (mobileSoundLabel) mobileSoundLabel.textContent = isAudioMuted ? "Sound: OFF" : "Sound: ON";
+  if (mobileSoundIcon) mobileSoundIcon.className = isAudioMuted ? "fa-solid fa-volume-xmark neon-pink" : "fa-solid fa-volume-high neon-pink";
+}
+
+// ================================================================
+// FEATURE 5: DYNAMIC MULTI-THEME ENGINE (5 CURATED PALETTES)
+// ================================================================
+const THEMES_CONFIG = {
+  cyber: {
+    id: "cyber",
+    name: "Cyber Neon",
+    emoji: "⚡",
+    icon: "fa-solid fa-bolt",
+    isLight: false,
+    wipeBg: "#060913"
+  },
+  obsidian: {
+    id: "obsidian",
+    name: "Obsidian Tech",
+    emoji: "🌑",
+    icon: "fa-solid fa-cube",
+    isLight: false,
+    wipeBg: "#090a0f"
+  },
+  frost: {
+    id: "frost",
+    name: "Nordic Frost",
+    emoji: "🧊",
+    icon: "fa-solid fa-snowflake",
+    isLight: false,
+    wipeBg: "#070e1c"
+  },
+  academic: {
+    id: "academic",
+    name: "Ivy Academic",
+    emoji: "🏛️",
+    icon: "fa-solid fa-landmark-dome",
+    isLight: false,
+    wipeBg: "#05130d"
+  },
+  light: {
+    id: "light",
+    name: "Clean Light",
+    emoji: "☀️",
+    icon: "fa-solid fa-sun",
+    isLight: true,
+    wipeBg: "#f8fafc"
+  }
+};
+
+function initThemeEngine() {
+  const savedTheme = safeLocalStorageGet("college_hub_theme", null);
+  const systemPrefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  let initialTheme = savedTheme || (systemPrefersLight ? "light" : "cyber");
+  if (initialTheme === "dark") initialTheme = "cyber";
+  if (!THEMES_CONFIG[initialTheme]) initialTheme = "cyber";
+
+  applyTheme(initialTheme, false);
+
+  const themePaletteBtn = document.getElementById("themePaletteBtn");
+  const themeDropdownMenu = document.getElementById("themeDropdownMenu");
+  const themePaletteWrapper = document.getElementById("themePaletteWrapper");
+
+  // Toggle Dropdown Menu
+  if (themePaletteBtn && themeDropdownMenu) {
+    themePaletteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isExpanded = themePaletteBtn.getAttribute("aria-expanded") === "true";
+      toggleThemeDropdown(!isExpanded);
+    });
+
+    // Close on click outside
+    document.addEventListener("click", (e) => {
+      if (themePaletteWrapper && !themePaletteWrapper.contains(e.target)) {
+        toggleThemeDropdown(false);
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        toggleThemeDropdown(false);
+      }
+    });
+  }
+
+  function toggleThemeDropdown(show) {
+    if (!themePaletteBtn || !themeDropdownMenu) return;
+    themePaletteBtn.setAttribute("aria-expanded", show ? "true" : "false");
+    themeDropdownMenu.classList.toggle("show", show);
+  }
+
+  // Desktop Dropdown Option Clicks
+  const themeOptions = document.querySelectorAll(".theme-option-item");
+  themeOptions.forEach(opt => {
+    opt.addEventListener("click", (e) => {
+      const themeId = opt.getAttribute("data-theme-id");
+      if (themeId) {
+        toggleThemeDropdown(false);
+        switchThemeWithTransition(themeId, e);
+      }
+    });
+  });
+
+  // Mobile Drawer Theme Grid Clicks
+  const mobileThemeBtns = document.querySelectorAll(".mobile-theme-btn");
+  mobileThemeBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const themeId = btn.getAttribute("data-theme-id");
+      if (themeId) {
+        switchThemeWithTransition(themeId, e);
+      }
+    });
+  });
+}
+
+function switchThemeWithTransition(themeId, e = null) {
+  if (!THEMES_CONFIG[themeId]) return;
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "cyber";
+  if (currentTheme === themeId) return;
+
+  const clickX = e ? (e.clientX || window.innerWidth / 2) : window.innerWidth / 2;
+  const clickY = e ? (e.clientY || 40) : 40;
+
+  const maxRadius = Math.hypot(
+    Math.max(clickX, window.innerWidth - clickX),
+    Math.max(clickY, window.innerHeight - clickY)
+  );
+
+  playBleepSound("click");
+
+  // Use View Transitions API if supported and Fun Mode is ON and no reduced motion
+  if (document.startViewTransition && isFunMode() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.style.setProperty("--theme-wipe-x", `${clickX}px`);
+    document.documentElement.style.setProperty("--theme-wipe-y", `${clickY}px`);
+    document.documentElement.style.setProperty("--theme-wipe-r", `${maxRadius}px`);
+
+    const transition = document.startViewTransition(() => {
+      applyTheme(themeId, true);
+    });
+
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${clickX}px ${clickY}px)`,
+            `circle(${maxRadius}px at ${clickX}px ${clickY}px)`
+          ]
+        },
+        {
+          duration: 520,
+          easing: "cubic-bezier(0.2, 0, 0, 1)",
+          pseudoElement: "::view-transition-new(root)"
+        }
+      );
+    }).catch(() => {
+      applyTheme(themeId, true);
+    });
+  } else {
+    triggerCircularWipeFallback(themeId, clickX, clickY, maxRadius);
+  }
+}
+
+function applyTheme(themeId, save = true) {
+  if (themeId === "dark") themeId = "cyber";
+  if (!THEMES_CONFIG[themeId]) themeId = "cyber";
+
+  const cfg = THEMES_CONFIG[themeId];
+  document.documentElement.setAttribute("data-theme", themeId);
+  document.body.classList.toggle("theme-light", cfg.isLight);
+  document.body.classList.toggle("cyber-theme", !cfg.isLight);
+
+  // Set theme-* class on body
+  Object.keys(THEMES_CONFIG).forEach(t => {
+    document.body.classList.toggle(`theme-${t}`, t === themeId);
+  });
+
+  // Update navbar button label & icon
+  const themeBtnLabel = document.getElementById("themeBtnLabel");
+  const themePaletteIcon = document.getElementById("themePaletteIcon");
+  if (themeBtnLabel) themeBtnLabel.textContent = `${cfg.emoji} ${cfg.name}`;
+  if (themePaletteIcon) {
+    themePaletteIcon.className = `${cfg.icon} neon-cyan`;
+  }
+
+  // Update active state in desktop dropdown
+  document.querySelectorAll(".theme-option-item").forEach(item => {
+    const isAct = item.getAttribute("data-theme-id") === themeId;
+    item.classList.toggle("active", isAct);
+    item.setAttribute("aria-selected", isAct ? "true" : "false");
+  });
+
+  // Update active state in mobile drawer
+  document.querySelectorAll(".mobile-theme-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-theme-id") === themeId);
+  });
+
+  // Update cyberCanvas particle colors
+  if (typeof updateCyberCanvasColors === "function") {
+    updateCyberCanvasColors(themeId);
+  }
+
+  if (save) {
+    safeLocalStorageSet("college_hub_theme", themeId);
+    showToast(`Theme switched to ${cfg.emoji} ${cfg.name}`);
+  }
+}
+
+function triggerCircularWipeFallback(themeId, x, y, radius) {
+  if (!isFunMode() || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    applyTheme(themeId, true);
+    return;
+  }
+
+  const cfg = THEMES_CONFIG[themeId] || THEMES_CONFIG.cyber;
+  const ripple = document.createElement("div");
+  ripple.className = "theme-wipe-overlay";
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+  ripple.style.width = `${radius * 2}px`;
+  ripple.style.height = `${radius * 2}px`;
+  ripple.style.background = cfg.wipeBg;
+  document.body.appendChild(ripple);
+
+  requestAnimationFrame(() => {
+    ripple.classList.add("active");
+    setTimeout(() => {
+      applyTheme(themeId, true);
+      ripple.style.opacity = "0";
+      setTimeout(() => ripple.remove(), 350);
+    }, 280);
+  });
+}
+
+// ================================================================
+// FEATURE 6: NATIVE CANVAS CONFETTI ENGINE (NO EXTERNAL LIBS)
+// ================================================================
+function triggerConfettiBurst(type = "goal", detail = "") {
+  if (!isFunMode()) return;
+  const canvas = document.getElementById("confettiCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.display = "block";
+
+  const colors = ["#00f3ff", "#ff007f", "#39ff14", "#ffaa00", "#9d4edd", "#ffffff", "#ffd700"];
+  const particles = [];
+  const startX = window.innerWidth / 2;
+  const startY = window.innerHeight * 0.35;
+
+  for (let i = 0; i < CONFETTI_CONFIG.particleCount; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 11 + 4;
+    particles.push({
+      x: startX + (Math.random() - 0.5) * 80,
+      y: startY + (Math.random() - 0.5) * 40,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 5,
+      size: Math.random() * 7 + 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 10,
+      shape: Math.random() > 0.4 ? "rect" : "circle",
+      gravity: 0.26,
+      drag: 0.98,
+      opacity: 1
+    });
+  }
+
+  const startTime = performance.now();
+
+  function renderConfetti(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = elapsed / CONFETTI_CONFIG.durationMs;
+
+    if (progress >= 1) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.style.display = "none";
+      return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const fade = progress > 0.7 ? (1 - progress) / 0.3 : 1;
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += p.gravity;
+      p.vx *= p.drag;
+      p.rotation += p.rotationSpeed;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.globalAlpha = Math.max(0, p.opacity * fade);
+      ctx.fillStyle = p.color;
+
+      if (p.shape === "rect") {
+        ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      } else {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    requestAnimationFrame(renderConfetti);
+  }
+
+  requestAnimationFrame(renderConfetti);
+}
+
+// ================================================================
+// FEATURE 7: LIVE LOCAL TIMEZONE CLOCK & MOTIVATIONAL QUOTES TICKER
+// ================================================================
+function initFooterClockAndTicker() {
+  // 1. Live Local Timezone Clock
+  function updateLiveClock() {
+    const timeEl = document.getElementById("liveClockTime");
+    const dateEl = document.getElementById("liveClockDate");
+    const tzEl = document.getElementById("liveClockTz");
+
+    const now = new Date();
+
+    const timeStr = now.toLocaleTimeString(undefined, {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    });
+
+    const dateStr = now.toLocaleDateString(undefined, {
+      weekday: "long",
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    });
+
+    // Determine resolved local timezone abbreviation / name
+    let tzStr = "";
+    try {
+      tzStr = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    } catch (e) {}
+
+    if (timeEl) timeEl.textContent = timeStr;
+    if (dateEl) dateEl.textContent = dateStr;
+    if (tzEl) tzEl.textContent = tzStr;
+  }
+
+  updateLiveClock();
+  setInterval(updateLiveClock, 1000);
+
+  // 2. Horizontally Scrolling Quotes Ticker
+  const track = document.getElementById("quoteTickerTrack");
+  if (track && TICKER_QUOTES && TICKER_QUOTES.length > 0) {
+    // Duplicate quotes array for seamless endless scroll animation
+    const duplicatedQuotes = [...TICKER_QUOTES, ...TICKER_QUOTES];
+    track.innerHTML = duplicatedQuotes.map(quote => `
+      <span class="quote-ticker-item">
+        <i class="fa-solid fa-code neon-cyan"></i>
+        <span>${escapeHtml(quote)}</span>
+      </span>
+    `).join("");
+  }
+}
+
+// ================================================================
+// FEATURE 8: FIXED GRADIENT SCROLL PROGRESS BAR
+// ================================================================
+function initScrollProgressBar() {
+  const bar = document.getElementById("scrollProgressBar");
+  if (!bar) return;
+
+  let isTicking = false;
+  function updateScrollProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+    bar.style.width = `${scrollPercent.toFixed(2)}%`;
+    isTicking = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!isTicking) {
+      requestAnimationFrame(updateScrollProgress);
+      isTicking = true;
+    }
+  }, { passive: true });
+
+  updateScrollProgress();
+}
+

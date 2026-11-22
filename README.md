@@ -7,6 +7,18 @@ A bold, cyber-themed student portfolio and academic operating system with a dark
 
 ## 🚀 Sections Overview
 
+0. **🎙️ Sci-Fi JARVIS / Cyber AI Voice HUD (Zero External APIs)**:
+   - **Interactive Cyberpunk Voice HUD:** Floating glowing holographic orb in the bottom-right corner with multi-layered rotating radar rings and animated sound wave ripples.
+   - **Zero External APIs:** Built 100% with the browser's native Web Speech API (`SpeechRecognition` & `SpeechSynthesis`) and offline Web Audio synthesizer. No paid API keys or external servers required.
+   - **Voice Commands Supported:**
+     - 🎯 *"Hey Yash, calculate attendance"* → Smoothly auto-scrolls to the Attendance Tracker, triggers live recalculation, and highlights the Bunk Advisor with an animated cyber HUD target reticle.
+     - 📘 *"Open Python notes"* → Pops up the authentic Python Lab Manual (`files/Python_Programming_Lab_Manual.pdf`) in the holographic in-page PDF reader modal.
+     - ⚡ *"Engage focus mode"* → Auto-scrolls to the Study Hub, triggers the 25-minute Pomodoro timer countdown, and fires up the synthesized 40Hz Gamma Focus Audio engine.
+     - 👤 *"Who made this?"* → Answers with a synthetic sci-fi AI voice: *"Designed and engineered by Yash, IT Department, DY Patil Akurdi."*
+   - **Microphone & Click Protocols:** Includes 1-click fallback chips in the HUD console so all protocols run instantly in any environment or browser.
+   - **Pure Web Audio Sound Effects:** Synthesized sci-fi activation chirp, protocol execution chime, and focus warp sound.
+   - **Keyboard Shortcut:** `Alt + J` or `Alt + V` toggles JARVIS HUD instantly.
+
 1. **👨‍💻 Portfolio (Hero, About Me, Skills, Projects, Contact)**:
    - **Animated Cyber Typewriter:** Dynamic title cycling ("Hi, I'm Yash · Student · Developer", "First Year IT @ DY Patil Akurdi", etc.).
    - **Hologram Profile Visual:** Interactive 3D tilt card with live stats (Total Notes, Attendance %, Current SGPA, and verified MonkeyType 32 WPM benchmark).
@@ -75,28 +87,30 @@ A bold, cyber-themed student portfolio and academic operating system with a dark
    - **Cosmic Synth Drone:** Dual detuned oscillators with harmonic resonance.
    - Master volume slider and interactive animated sound equalizer bars.
 
+9. **🎬 CyberReel AI Studio (100% Free 9:16 Video Generator)**:
+   - Accessible via [`reel_studio.html`](reel_studio.html).
+   - Generates automated viral Instagram Reels/TikToks with zero Canva Pro subscription needed!
+   - Loaded with all 30 storytelling scripts from `reels_30_viral_scripts.csv`.
+   - Real-time 1080x1920 mobile canvas rendering with kinetic captions (Hormozi/MrBeast style word highlights).
+   - Dynamic animated backgrounds (Matrix Code Rain, Cyber Grid, Deep Galaxy, Dark Horizon).
+   - Built-in speech synthesis engine with natural voice and speed tuning.
+   - 1-click **Record & Download Reel (.webm/.mp4)** using native browser `MediaRecorder`.
+
 ---
 
 ## 🎨 How to Customize
 
 All files use plain HTML, CSS, and JavaScript with **zero build tools** required.
 
-### 1. Customize Colors & Visual Theme
-Open **`style.css`** and find the root variables at the top:
-```css
-:root {
-  /* Neon Accent Palette */
-  --neon-cyan: #00f3ff;    /* Change main accent */
-  --neon-pink: #ff007f;    /* Change secondary highlight */
-  --neon-lime: #39ff14;    /* Change success/done color */
-  --neon-purple: #9d4edd;  /* Change tertiary accent */
-  --neon-amber: #ffaa00;   /* Change warning color */
+### 1. Dynamic Multi-Theme Switcher (5 Curated Themes)
+The site includes an on-the-fly **Theme Palette Switcher** in the top navbar and mobile drawer with smooth View Transitions API / circle wipe animation:
+1. ⚡ **Cyber Neon:** Original sci-fi dark neon with cyan `#00f3ff`, pink `#ff007f`, lime `#39ff14`, and Orbitron typography.
+2. 🌑 **Obsidian Tech:** Linear / Vercel modern developer aesthetic with deep obsidian `#090a0f`, electric indigo `#6366f1`, emerald `#10b981`, and Inter typography.
+3. 🧊 **Nordic Frost:** Arctic icy aesthetic with glacial blue `#38bdf8`, mint aquamarine `#2dd4bf`, and deep arctic navy `#070e1c`.
+4. 🏛️ **Ivy Academic:** Prestigious university library aesthetic with deep forest green `#05130d`, antique gold `#d4af37`, and Cinzel editorial serif typography.
+5. ☀️ **Clean Light:** Crisp high-contrast daylight mode with royal blue `#0284c7`, rose `#e11d48`, and clean slate background `#f8fafc`.
 
-  /* Cyber Backgrounds */
-  --bg-space: #060913;     /* Main background */
-  --bg-card: rgba(14, 22, 43, 0.72); /* Glass card background */
-}
-```
+*Voice Command Support:* You can also say *"Switch theme to Obsidian"* or *"Change theme to Nordic Frost"* directly into the JARVIS HUD!
 
 ### 2. Customize Name, College, and Typing Phrases
 Open **`script.js`** and modify the `PORTFOLIO_CONFIG` block at lines 12–30:

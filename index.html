@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yash | Futuristic Student Portfolio & College Hub</title>
   
-  <!-- Google Fonts: Space Grotesk, Orbitron, Plus Jakarta Sans, JetBrains Mono -->
+  <!-- Google Fonts: Space Grotesk, Orbitron, Plus Jakarta Sans, JetBrains Mono, Cinzel, Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -18,7 +18,41 @@
 </head>
 <body class="cyber-theme">
 
-  <!-- Custom Animated Cursor Elements -->
+  <!-- Feature 8: Scroll Progress Bar -->
+  <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
+
+  <!-- Feature 1: Terminal Boot Loading Screen -->
+  <div id="terminalLoader" class="terminal-loader" aria-live="polite">
+    <div class="terminal-window">
+      <div class="terminal-topbar">
+        <div class="terminal-traffic-lights">
+          <span class="light red"></span>
+          <span class="light yellow"></span>
+          <span class="light green"></span>
+        </div>
+        <span class="terminal-title">SYSTEM_BOOT.sh // v2.6.4</span>
+        <span class="terminal-badge">LIVE_KERNEL</span>
+      </div>
+      <div class="terminal-console">
+        <div class="terminal-history" id="terminalHistory"></div>
+        <div class="terminal-typing-row">
+          <span class="terminal-prompt">&gt;</span>
+          <span class="terminal-typing-text" id="terminalTypingText"></span>
+          <span class="terminal-cursor-blink">▋</span>
+        </div>
+      </div>
+      <div class="terminal-bottom-bar" id="terminalSkipPrompt">
+        <span>[PRESS ANY KEY OR CLICK TO SKIP BOOT]</span>
+        <span>STATUS: OK</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature 6: Confetti Canvas Overlay -->
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+  <!-- Feature 4: Custom Cursor Trail Canvas & Elements -->
+  <canvas id="cursorTrailCanvas" class="cursor-trail-canvas"></canvas>
   <div class="custom-cursor-dot" id="cursorDot"></div>
   <div class="custom-cursor-ring" id="cursorRing"></div>
 
@@ -52,8 +86,129 @@
         <a href="#notes" class="nav-item"><i class="fa-solid fa-book-bookmark"></i> Notes</a>
         <a href="#labs" class="nav-item"><i class="fa-solid fa-flask-vial"></i> Labs</a>
         <a href="#study-hub" class="nav-item"><i class="fa-solid fa-headphones"></i> Focus Hub</a>
+        <a href="reel_studio.html" class="nav-item" style="color: var(--neon-pink); border-color: rgba(255, 0, 127, 0.4);"><i class="fa-solid fa-clapperboard"></i> Reel Studio</a>
+        <button id="navJarvisBtn" class="nav-item nav-jarvis-btn" type="button" title="Launch JARVIS Cyber AI Voice HUD">
+          <i class="fa-solid fa-microphone-lines neon-cyan"></i> <span>JARVIS AI</span>
+        </button>
         <a href="#contact" class="btn-connect"><i class="fa-solid fa-paper-plane"></i> Connect</a>
       </nav>
+
+      <!-- Nav Interactive Features Controls Group -->
+      <div class="nav-controls-group">
+        <!-- Global Feature: Fun Mode Toggle Switch -->
+        <button id="funModeToggleBtn" class="nav-control-pill fun-mode-toggle" type="button" title="Toggle Fun Mode (Animations, 3D Tilt, Particle Trails, Sounds)" aria-pressed="true">
+          <i class="fa-solid fa-wand-magic-sparkles neon-cyan"></i>
+          <span class="control-label">Fun Mode</span>
+          <span class="pill-switch" id="funModeSwitch"><span class="pill-slider"></span></span>
+        </button>
+
+        <!-- Feature 5: Dynamic Multi-Theme Switcher Dropdown -->
+        <div class="theme-palette-wrapper" id="themePaletteWrapper">
+          <button id="themePaletteBtn" class="nav-control-pill theme-palette-btn" type="button" aria-expanded="false" aria-haspopup="true" title="Switch Theme Palette">
+            <i class="fa-solid fa-palette neon-cyan" id="themePaletteIcon"></i>
+            <span class="theme-btn-label" id="themeBtnLabel">⚡ Cyber Neon</span>
+            <i class="fa-solid fa-chevron-down theme-chevron" id="themeChevron"></i>
+          </button>
+
+          <!-- Dropdown Palette Menu -->
+          <div class="theme-dropdown-menu" id="themeDropdownMenu" role="menu" aria-label="Select Theme Palette">
+            <div class="theme-dropdown-header">
+              <span class="theme-dropdown-title"><i class="fa-solid fa-swatchbook"></i> SELECT THEME PALETTE</span>
+            </div>
+            <div class="theme-options-list">
+              <!-- 1. Cyber Neon -->
+              <button class="theme-option-item active" data-theme-id="cyber" role="menuitem" type="button">
+                <div class="theme-option-info">
+                  <div class="theme-option-top">
+                    <span class="theme-option-name"><span class="theme-emoji">⚡</span> Cyber Neon</span>
+                    <span class="theme-check-badge"><i class="fa-solid fa-check"></i></span>
+                  </div>
+                  <span class="theme-option-desc">Original Sci-Fi Glow & Neon HUD</span>
+                </div>
+                <div class="theme-swatches" aria-hidden="true">
+                  <span class="theme-dot" style="background: #00f3ff;" title="Neon Cyan"></span>
+                  <span class="theme-dot" style="background: #ff007f;" title="Neon Pink"></span>
+                  <span class="theme-dot" style="background: #39ff14;" title="Neon Lime"></span>
+                  <span class="theme-dot" style="background: #060913; border: 1px solid rgba(255,255,255,0.25);" title="Deep Space"></span>
+                </div>
+              </button>
+
+              <!-- 2. Obsidian Tech -->
+              <button class="theme-option-item" data-theme-id="obsidian" role="menuitem" type="button">
+                <div class="theme-option-info">
+                  <div class="theme-option-top">
+                    <span class="theme-option-name"><span class="theme-emoji">🌑</span> Obsidian Tech</span>
+                    <span class="theme-check-badge"><i class="fa-solid fa-check"></i></span>
+                  </div>
+                  <span class="theme-option-desc">Linear & Vercel Minimalist Developer</span>
+                </div>
+                <div class="theme-swatches" aria-hidden="true">
+                  <span class="theme-dot" style="background: #6366f1;" title="Indigo"></span>
+                  <span class="theme-dot" style="background: #10b981;" title="Emerald"></span>
+                  <span class="theme-dot" style="background: #ec4899;" title="Rose"></span>
+                  <span class="theme-dot" style="background: #090a0f; border: 1px solid rgba(255,255,255,0.25);" title="Carbon Black"></span>
+                </div>
+              </button>
+
+              <!-- 3. Nordic Frost -->
+              <button class="theme-option-item" data-theme-id="frost" role="menuitem" type="button">
+                <div class="theme-option-info">
+                  <div class="theme-option-top">
+                    <span class="theme-option-name"><span class="theme-emoji">🧊</span> Nordic Frost</span>
+                    <span class="theme-check-badge"><i class="fa-solid fa-check"></i></span>
+                  </div>
+                  <span class="theme-option-desc">Arctic Glacial Blue & Icy Mint</span>
+                </div>
+                <div class="theme-swatches" aria-hidden="true">
+                  <span class="theme-dot" style="background: #38bdf8;" title="Ice Blue"></span>
+                  <span class="theme-dot" style="background: #2dd4bf;" title="Mint Aquamarine"></span>
+                  <span class="theme-dot" style="background: #818cf8;" title="Icy Lavender"></span>
+                  <span class="theme-dot" style="background: #070e1c; border: 1px solid rgba(255,255,255,0.25);" title="Arctic Navy"></span>
+                </div>
+              </button>
+
+              <!-- 4. Ivy Academic -->
+              <button class="theme-option-item" data-theme-id="academic" role="menuitem" type="button">
+                <div class="theme-option-info">
+                  <div class="theme-option-top">
+                    <span class="theme-option-name"><span class="theme-emoji">🏛️</span> Ivy Academic</span>
+                    <span class="theme-check-badge"><i class="fa-solid fa-check"></i></span>
+                  </div>
+                  <span class="theme-option-desc">British Forest Green & Antique Gold</span>
+                </div>
+                <div class="theme-swatches" aria-hidden="true">
+                  <span class="theme-dot" style="background: #d4af37;" title="Antique Gold"></span>
+                  <span class="theme-dot" style="background: #10b981;" title="Emerald Green"></span>
+                  <span class="theme-dot" style="background: #f43f5e;" title="Crimson Rose"></span>
+                  <span class="theme-dot" style="background: #05130d; border: 1px solid rgba(255,255,255,0.25);" title="Forest Green"></span>
+                </div>
+              </button>
+
+              <!-- 5. Clean Light -->
+              <button class="theme-option-item" data-theme-id="light" role="menuitem" type="button">
+                <div class="theme-option-info">
+                  <div class="theme-option-top">
+                    <span class="theme-option-name"><span class="theme-emoji">☀️</span> Clean Light</span>
+                    <span class="theme-check-badge"><i class="fa-solid fa-check"></i></span>
+                  </div>
+                  <span class="theme-option-desc">Crisp High-Contrast Slate White</span>
+                </div>
+                <div class="theme-swatches" aria-hidden="true">
+                  <span class="theme-dot" style="background: #0284c7;" title="Royal Blue"></span>
+                  <span class="theme-dot" style="background: #e11d48;" title="Rose Red"></span>
+                  <span class="theme-dot" style="background: #16a34a;" title="Emerald Green"></span>
+                  <span class="theme-dot" style="background: #f8fafc; border: 1px solid rgba(15,23,42,0.2);" title="Clean Slate"></span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3: Web Audio Sound FX Toggle -->
+        <button id="soundToggleBtn" class="nav-icon-btn sound-toggle" type="button" title="Toggle Sound FX (Bleeps & Chimes)" aria-label="Toggle Sound Effects">
+          <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+        </button>
+      </div>
 
       <!-- Mobile Hamburger Button -->
       <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle Navigation Menu">
@@ -69,6 +224,49 @@
         <span class="drawer-title">CYBER NAVIGATION</span>
         <button class="drawer-close" id="drawerCloseBtn">&times;</button>
       </div>
+
+      <!-- Mobile Quick Controls (Fun Mode, Theme, Sound) -->
+      <div class="mobile-quick-controls">
+        <button id="mobileFunModeToggleBtn" class="mobile-control-chip" type="button" title="Toggle Fun Mode">
+          <i class="fa-solid fa-wand-magic-sparkles neon-cyan"></i>
+          <span id="mobileFunModeLabel">Fun: ON</span>
+        </button>
+        <button id="mobileSoundToggleBtn" class="mobile-control-chip" type="button" title="Toggle Sound FX">
+          <i class="fa-solid fa-volume-high neon-pink" id="mobileSoundIcon"></i>
+          <span id="mobileSoundLabel">Sound: ON</span>
+        </button>
+      </div>
+
+      <!-- Mobile Multi-Theme Palette Selector -->
+      <div class="mobile-theme-section">
+        <div class="mobile-theme-header">
+          <i class="fa-solid fa-swatchbook neon-cyan"></i>
+          <span>THEME PALETTE</span>
+        </div>
+        <div class="mobile-theme-grid">
+          <button class="mobile-theme-btn active" data-theme-id="cyber" type="button" title="Cyber Neon">
+            <span class="mobile-theme-icon">⚡</span>
+            <span>Cyber</span>
+          </button>
+          <button class="mobile-theme-btn" data-theme-id="obsidian" type="button" title="Obsidian Tech">
+            <span class="mobile-theme-icon">🌑</span>
+            <span>Obsidian</span>
+          </button>
+          <button class="mobile-theme-btn" data-theme-id="frost" type="button" title="Nordic Frost">
+            <span class="mobile-theme-icon">🧊</span>
+            <span>Frost</span>
+          </button>
+          <button class="mobile-theme-btn" data-theme-id="academic" type="button" title="Ivy Academic">
+            <span class="mobile-theme-icon">🏛️</span>
+            <span>Academic</span>
+          </button>
+          <button class="mobile-theme-btn" data-theme-id="light" type="button" title="Clean Light">
+            <span class="mobile-theme-icon">☀️</span>
+            <span>Light</span>
+          </button>
+        </div>
+      </div>
+
       <nav class="mobile-nav-links">
         <a href="#hero" class="mobile-nav-item"><i class="fa-solid fa-house"></i> Home</a>
         <a href="#about" class="mobile-nav-item"><i class="fa-solid fa-user-astronaut"></i> About & Skills</a>
@@ -79,6 +277,10 @@
         <a href="#notes" class="mobile-nav-item"><i class="fa-solid fa-book-bookmark"></i> College Notes</a>
         <a href="#labs" class="mobile-nav-item"><i class="fa-solid fa-flask-vial"></i> Labs Practical Hub</a>
         <a href="#study-hub" class="mobile-nav-item"><i class="fa-solid fa-headphones"></i> Focus Timer & Audio Engine</a>
+        <a href="reel_studio.html" class="mobile-nav-item" style="color: var(--neon-pink);"><i class="fa-solid fa-clapperboard"></i> 9:16 Reel AI Studio</a>
+        <button id="mobileNavJarvisBtn" class="mobile-nav-item mobile-nav-jarvis-btn" type="button">
+          <i class="fa-solid fa-microphone-lines neon-cyan"></i> Launch JARVIS Voice HUD
+        </button>
         <a href="#contact" class="mobile-nav-item"><i class="fa-solid fa-paper-plane"></i> Connect With Me</a>
       </nav>
       <div class="drawer-footer">
@@ -127,6 +329,10 @@
           <a href="#notes" class="cyber-btn cyber-btn-ghost">
             <i class="fa-solid fa-file-pdf"></i> College Notes
           </a>
+          <button id="heroJarvisBtn" class="cyber-btn hero-jarvis-btn" type="button" title="Activate JARVIS Cyber AI Voice Assistant">
+            <span class="hero-voice-glow"></span>
+            <i class="fa-solid fa-microphone-lines neon-cyan"></i> <span>JARVIS Voice HUD: <em>"Hey Yash..."</em></span>
+          </button>
         </div>
 
         <!-- Social Profiles Bar (Owner editable) -->
@@ -1017,14 +1223,42 @@
 
   </main>
 
-  <!-- Cyber Footer -->
+  <!-- Cyber Footer with Live Clock & Quotes Ticker -->
   <footer class="cyber-footer">
     <div class="footer-inner">
-      <p class="footer-copy">
-        © 2026 Yash · Department of Information Technology (IT) · DY Patil College of Engineering, Akurdi
-      </p>
-      <div class="footer-links">
-        <a href="#hero">Back to Top <i class="fa-solid fa-arrow-up"></i></a>
+      <!-- Feature 7: Live Date & Time in Local Timezone -->
+      <div class="footer-clock-card" id="footerClockCard">
+        <div class="clock-display">
+          <i class="fa-regular fa-clock clock-icon neon-cyan"></i>
+          <span class="live-clock-time" id="liveClockTime">--:--:--</span>
+          <span class="live-clock-tz" id="liveClockTz">LOCAL</span>
+        </div>
+        <div class="live-clock-date" id="liveClockDate">Loading local date...</div>
+      </div>
+
+      <!-- Feature 7: Horizontally Scrolling Motivational & Programming Quotes Ticker -->
+      <div class="footer-ticker-card" id="footerTickerCard">
+        <div class="ticker-header-badge">
+          <div class="ticker-badge-left">
+            <i class="fa-solid fa-terminal neon-pink"></i>
+            <span>DEV_QUOTES // DAILY INSPIRATION</span>
+          </div>
+          <span class="ticker-pause-hint"><i class="fa-solid fa-pause"></i> Hover to pause</span>
+        </div>
+        <div class="quote-ticker-viewport" id="quoteTickerViewport">
+          <div class="quote-ticker-track" id="quoteTickerTrack">
+            <!-- Populated via script.js TICKER_QUOTES array -->
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <p class="footer-copy">
+          © 2026 Yash · Department of Information Technology (IT) · DY Patil College of Engineering, Akurdi
+        </p>
+        <div class="footer-links">
+          <a href="#hero">Back to Top <i class="fa-solid fa-arrow-up"></i></a>
+        </div>
       </div>
     </div>
   </footer>
@@ -1282,6 +1516,150 @@
       </form>
     </div>
   </div>
+
+  <!-- ============================================================== -->
+  <!-- 🎙️ SCI-FI JARVIS / CYBER AI VOICE HUD (Zero External APIs) -->
+  <!-- ============================================================== -->
+  <aside id="jarvisVoiceHud" class="jarvis-voice-hud" aria-label="JARVIS Cyber AI Voice HUD">
+    <!-- Ambient Holographic Aura Behind Floating Orb -->
+    <div class="jarvis-hologram-aura"></div>
+
+    <!-- Holographic Sound Rings & Floating Orb -->
+    <div class="jarvis-orb-wrapper" id="jarvisOrbWrapper">
+      <!-- Rotating SVG Tech / Sound Rings -->
+      <svg class="jarvis-rings-svg" viewBox="0 0 160 160" aria-hidden="true">
+        <!-- Sound ripples that pulse when active/listening/speaking -->
+        <circle class="jarvis-sound-wave wave-1" cx="80" cy="80" r="76" />
+        <circle class="jarvis-sound-wave wave-2" cx="80" cy="80" r="66" />
+        <circle class="jarvis-sound-wave wave-3" cx="80" cy="80" r="56" />
+
+        <!-- Rotating holographic tech rings -->
+        <circle class="jarvis-ring-dashed ring-cw" cx="80" cy="80" r="54" stroke-dasharray="16 10 4 10" />
+        <circle class="jarvis-ring-dashed ring-ccw" cx="80" cy="80" r="46" stroke-dasharray="8 6 22 6" />
+        <circle class="jarvis-ring-ticks" cx="80" cy="80" r="38" stroke-dasharray="2 6" />
+      </svg>
+
+      <!-- Center Glowing Holographic Orb Button -->
+      <button id="jarvisOrbBtn" class="jarvis-orb-btn" type="button" title="JARVIS Cyber AI Voice Assistant (Click to Listen / Open HUD)" aria-expanded="false" aria-controls="jarvisHudPanel">
+        <div class="jarvis-orb-glow"></div>
+        <div class="jarvis-orb-core">
+          <i class="fa-solid fa-microphone-lines jarvis-orb-icon" id="jarvisOrbIcon"></i>
+          <!-- Micro equalizer inside orb -->
+          <div class="jarvis-orb-eq" id="jarvisOrbEq">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </button>
+
+      <!-- Floating Status Beacon Pill -->
+      <div class="jarvis-status-pill" id="jarvisStatusPill">
+        <span class="jarvis-beacon-dot" id="jarvisBeaconDot"></span>
+        <span class="jarvis-beacon-text" id="jarvisBeaconText">JARVIS AI</span>
+      </div>
+    </div>
+
+    <!-- Collapsible Cyber HUD Glass Panel -->
+    <div class="jarvis-hud-panel glass-panel" id="jarvisHudPanel">
+      <!-- HUD Header -->
+      <div class="hud-header">
+        <div class="hud-brand-wrap">
+          <div class="hud-led-status idle" id="hudLedStatus"></div>
+          <div>
+            <div class="hud-terminal-title">JARVIS AI // CYBER HUD</div>
+            <div class="hud-sub-state" id="hudSubState">SYSTEM ONLINE · VOICE READY</div>
+          </div>
+        </div>
+        <div class="hud-actions">
+          <button id="hudVoiceMuteBtn" class="hud-icon-btn" type="button" title="Toggle Synthetic Voice Audio Output">
+            <i class="fa-solid fa-volume-high" id="hudVoiceMuteIcon"></i>
+          </button>
+          <button id="hudCloseBtn" class="hud-icon-btn" type="button" title="Minimize Voice HUD">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Real-Time Frequency Spectrum Visualizer -->
+      <div class="hud-spectrum-container">
+        <div class="hud-spectrum-meta">
+          <span class="hud-mono-label"><i class="fa-solid fa-wave-square neon-cyan"></i> AUDIO FREQ SPECTRUM</span>
+          <span class="hud-state-pill" id="hudStatePill">STANDBY</span>
+        </div>
+        <div class="hud-spectrum-bars" id="hudSpectrumBars">
+          <span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span>
+          <span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span>
+          <span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span>
+          <span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span><span class="spec-bar"></span>
+        </div>
+      </div>
+
+      <!-- Dialogue & Transcript Log -->
+      <div class="hud-dialogue-console">
+        <div class="hud-message user-msg" id="hudUserMsg">
+          <span class="msg-speaker"><i class="fa-solid fa-user-astronaut"></i> YOU:</span>
+          <span class="msg-content" id="hudUserTranscript">"Hey Yash, calculate attendance"</span>
+        </div>
+        <div class="hud-message ai-msg" id="hudAiMsg">
+          <span class="msg-speaker"><i class="fa-solid fa-atom neon-cyan"></i> JARVIS:</span>
+          <span class="msg-content" id="hudAiTranscript">"Neural voice HUD online. Click the mic or choose a protocol below."</span>
+        </div>
+      </div>
+
+      <!-- Clickable Voice Protocols -->
+      <div class="hud-protocols-section">
+        <div class="hud-protocols-header">
+          <i class="fa-solid fa-terminal neon-pink"></i> ACADEMIC & FOCUS PROTOCOLS
+        </div>
+        <div class="hud-chips-grid">
+          <button class="hud-command-chip" data-command="Hey Yash, calculate attendance" type="button" title="Run Attendance Protocol">
+            <i class="fa-solid fa-clipboard-check neon-lime"></i> "Hey Yash, calculate attendance"
+          </button>
+          <button class="hud-command-chip" data-command="Open Python notes" type="button" title="Run Python Notes Protocol">
+            <i class="fa-solid fa-book-bookmark neon-pink"></i> "Open Python notes"
+          </button>
+          <button class="hud-command-chip" data-command="Engage focus mode" type="button" title="Run Focus Mode Protocol">
+            <i class="fa-solid fa-brain neon-purple"></i> "Engage focus mode"
+          </button>
+          <button class="hud-command-chip" data-command="Who made this?" type="button" title="Run Creator Identification Protocol">
+            <i class="fa-solid fa-id-card neon-cyan"></i> "Who made this?"
+          </button>
+        </div>
+
+        <!-- Theme Switching Voice Protocols -->
+        <div class="hud-protocols-sub-header">
+          <i class="fa-solid fa-palette neon-cyan"></i> THEME PALETTE COMMANDS
+        </div>
+        <div class="hud-chips-grid hud-theme-chips-grid">
+          <button class="hud-command-chip mini" data-command="Switch theme to Obsidian" type="button" title="Switch to Obsidian Tech Theme">
+            <span>🌑</span> "Switch theme to Obsidian"
+          </button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Nordic Frost" type="button" title="Switch to Nordic Frost Theme">
+            <span>🧊</span> "Switch theme to Nordic Frost"
+          </button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Ivy Academic" type="button" title="Switch to Ivy Academic Theme">
+            <span>🏛️</span> "Switch theme to Ivy Academic"
+          </button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Clean Light" type="button" title="Switch to Clean Light Theme">
+            <span>☀️</span> "Switch theme to Clean Light"
+          </button>
+          <button class="hud-command-chip mini" data-command="Switch theme to Cyber Neon" type="button" title="Switch to Cyber Neon Theme">
+            <span>⚡</span> "Switch theme to Cyber Neon"
+          </button>
+        </div>
+      </div>
+
+      <!-- HUD Bottom Controls -->
+      <div class="hud-footer-row">
+        <button id="hudListenToggleBtn" class="cyber-btn cyber-btn-primary btn-sm hud-listen-btn" type="button">
+          <i class="fa-solid fa-microphone" id="hudListenIcon"></i>
+          <span id="hudListenText">Start Listening</span>
+        </button>
+        <span class="hud-native-badge">
+          <i class="fa-solid fa-shield-halved neon-cyan"></i> Web Speech API (0 APIs)
+        </span>
+      </div>
+    </div>
+  </aside>
 
   <!-- Main JavaScript File -->
   <script src="script.js"></script>
