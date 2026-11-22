@@ -873,11 +873,20 @@ function initScrollRevealAndNav() {
     });
   }
 
-  document.querySelectorAll(".mobile-nav-item").forEach(link => {
+  // Ensure mobile drawer closes on clicking any nav link or interactive navigation item
+  document.querySelectorAll(".mobile-drawer a, .mobile-nav-item").forEach(link => {
     link.addEventListener("click", () => {
       if (hamburgerBtn) hamburgerBtn.classList.remove("active");
       if (mobileDrawer) mobileDrawer.classList.remove("open");
     });
+  });
+
+  // Close drawer on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mobileDrawer && mobileDrawer.classList.contains("open")) {
+      if (hamburgerBtn) hamburgerBtn.classList.remove("active");
+      mobileDrawer.classList.remove("open");
+    }
   });
 }
 
@@ -3736,7 +3745,9 @@ function initJarvisVoiceHUD() {
   if (mobileNavTrigger) {
     mobileNavTrigger.addEventListener("click", () => {
       const mobileDrawer = document.getElementById("mobileDrawer");
-      if (mobileDrawer) mobileDrawer.classList.remove("active");
+      const hamburgerBtn = document.getElementById("hamburgerBtn");
+      if (mobileDrawer) mobileDrawer.classList.remove("open");
+      if (hamburgerBtn) hamburgerBtn.classList.remove("active");
       openHudPanel();
       playJarvisSound("activate");
       startListening();

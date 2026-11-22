@@ -67,10 +67,23 @@
 /* ----------------------------------------------------------------
    2. GLOBAL RESETS & BASE STYLES
    ---------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+body, html {
+  overflow-x: hidden;
+}
+
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
 }
 
 html {
@@ -171,10 +184,9 @@ body.cursor-hover .custom-cursor-dot {
    ---------------------------------------------------------------- */
 #cyberCanvas {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
   opacity: 0.65;
@@ -240,11 +252,13 @@ body.cursor-hover .custom-cursor-dot {
 
 .nav-container {
   max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
   padding: 0.85rem 1.8rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 /* Brand Logo */
@@ -405,8 +419,10 @@ body.cursor-hover .custom-cursor-dot {
   position: fixed;
   top: 0;
   right: -100%;
-  width: 310px;
+  width: 100%;
+  max-width: 380px;
   height: 100vh;
+  height: 100dvh;
   background: rgba(8, 12, 26, 0.96);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
@@ -417,6 +433,9 @@ body.cursor-hover .custom-cursor-dot {
   z-index: 1001;
   transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 1.5rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-drawer.open {
@@ -506,10 +525,12 @@ body.cursor-hover .custom-cursor-dot {
    ---------------------------------------------------------------- */
 .page-container {
   max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem 1.8rem 5rem;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 .section {
@@ -3410,7 +3431,9 @@ body.cursor-hover .custom-cursor-dot {
   position: relative;
   overflow: hidden;
   max-width: 860px;
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .contact-glow {
@@ -3468,12 +3491,14 @@ body.cursor-hover .custom-cursor-dot {
 
 .footer-inner {
   max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
+  box-sizing: border-box;
 }
 
 .footer-copy {
@@ -3717,12 +3742,6 @@ body.cursor-hover .custom-cursor-dot {
   .hamburger-btn {
     display: flex;
   }
-  .hero-headline {
-    font-size: 2.5rem;
-  }
-  .section-title {
-    font-size: 2rem;
-  }
   .dashboard-gauge-col {
     flex-direction: column;
     text-align: center;
@@ -3757,39 +3776,678 @@ body.cursor-hover .custom-cursor-dot {
   }
 }
 
+/* ================================================================
+   RESPONSIVE MEDIA QUERIES FOR SCREENS UNDER 768px
+   Mobile & Small Tablet Comprehensive Responsive Architecture
+   ================================================================ */
+@media (max-width: 768px) {
+  /* 1. Global Viewport, Container & Layout Resets */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  body.cyber-theme {
+    padding-bottom: 75px !important; /* Prevent floating JARVIS Voice HUD from covering content */
+  }
+
+  .page-container {
+    padding: 1.2rem 1rem 4.5rem !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-container {
+    padding: 0.75rem 1rem !important;
+    max-width: 100% !important;
+  }
+
+  .section {
+    padding: 2.2rem 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* 2. Cyber Navigation Panel: Full-Width / Full-Screen Hamburger Drawer */
+  .nav-links {
+    display: none !important;
+  }
+
+  .nav-controls-group {
+    display: none !important;
+  }
+
+  .hamburger-btn {
+    display: flex !important;
+    z-index: 1002;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .mobile-drawer {
+    position: fixed !important;
+    top: 0 !important;
+    left: auto !important;
+    right: -100% !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    padding: 1.25rem 1.25rem 2.5rem !important;
+    background: rgba(6, 10, 22, 0.98) !important;
+    backdrop-filter: blur(28px) !important;
+    -webkit-backdrop-filter: blur(28px) !important;
+    border-left: none !important;
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 10001 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-drawer.open {
+    right: 0 !important;
+    left: 0 !important;
+  }
+
+  .drawer-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-bottom: 1rem !important;
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+  }
+
+  .drawer-close {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 2rem !important;
+    cursor: pointer !important;
+  }
+
+  .mobile-quick-controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.65rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .mobile-control-chip {
+    min-height: 44px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .mobile-theme-grid {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+
+  .mobile-theme-btn {
+    min-height: 44px !important;
+    padding: 0.5rem 0.25rem !important;
+  }
+
+  .mobile-nav-links {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    overflow-y: visible !important;
+  }
+
+  .mobile-nav-item {
+    width: 100% !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* 3. Single-Column Multi-Column Sections Stacking */
+  /* Hero Section */
+  .hero-section {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 1.5rem 0 2.5rem !important;
+    width: 100% !important;
+  }
+
+  .hero-visual {
+    order: -1 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .hologram-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 1.5rem 1.1rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .holo-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.6rem !important;
+  }
+
+  /* Skills & About Section */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.8rem !important;
+    width: 100% !important;
+  }
+
+  .skills-card,
+  .terminal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 1.4rem 1.1rem !important;
+  }
+
+  .arena-metrics-bar {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.6rem !important;
+  }
+
+  .typing-arena-card {
+    padding: 1.4rem 1.1rem !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Projects Grid */
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+  }
+
+  .project-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Calculator Section */
+  .calc-grid-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.6rem !important;
+    width: 100% !important;
+  }
+
+  .calc-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 1.4rem 1.1rem !important;
+  }
+
+  .calc-table-header {
+    display: none !important;
+  }
+
+  .calc-row-item {
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .cgpa-row-item {
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .result-metrics-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem !important;
+  }
+
+  /* Attendance Section */
+  .attendance-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.4rem !important;
+    width: 100% !important;
+  }
+
+  .att-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .dashboard-gauge-col {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 1rem !important;
+  }
+
+  .att-button-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.6rem !important;
+  }
+
+  .att-btn {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .btn-undo {
+    grid-column: span 2 !important;
+  }
+
+  /* Notes & Labs Sections */
+  .notes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem !important;
+    width: 100% !important;
+  }
+
+  .labs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem !important;
+    width: 100% !important;
+  }
+
+  .labs-controls-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    padding: 1.2rem 1rem !important;
+  }
+
+  .labs-stats-summary {
+    flex-direction: column !important;
+    gap: 0.6rem !important;
+    width: 100% !important;
+  }
+
+  .labs-filter-group {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+  }
+
+  .lab-filter-btn {
+    flex: 1 1 auto !important;
+    min-height: 44px !important;
+    justify-content: center !important;
+  }
+
+  .section-header-flex {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .notes-controls-box {
+    padding: 1.2rem 1rem !important;
+  }
+
+  .owner-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    padding: 1.2rem 1rem !important;
+  }
+
+  .owner-btn-group {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  /* Study Hub Section */
+  .study-tools-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.6rem !important;
+    width: 100% !important;
+  }
+
+  .audio-modes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.8rem !important;
+  }
+
+  .audio-controls-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  /* Contact Card & Footer Single Column */
+  .contact-card {
+    padding: 2.2rem 1.1rem !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-glow {
+    display: none !important;
+  }
+
+  .footer-inner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: center !important;
+    gap: 1.2rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 0.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .footer-clock-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.6rem !important;
+    width: 100% !important;
+    padding: 1rem 1.1rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .footer-ticker-card {
+    width: 100% !important;
+    padding: 0.75rem 1rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 0.8rem !important;
+    width: 100% !important;
+  }
+
+  .footer-links {
+    justify-content: center !important;
+  }
+
+  /* 4. Font Size & Padding Reductions */
+  .hero-headline {
+    font-size: 2.1rem !important;
+    letter-spacing: -0.5px !important;
+    line-height: 1.2 !important;
+  }
+
+  .headline-prefix {
+    font-size: 1.15rem !important;
+  }
+
+  .typing-container {
+    min-height: 2.8rem !important;
+  }
+
+  .hero-subtext {
+    font-size: 0.94rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.6rem !important;
+  }
+
+  .section-title {
+    font-size: 1.85rem !important;
+  }
+
+  .section-desc {
+    font-size: 0.9rem !important;
+  }
+
+  .contact-headline {
+    font-size: 1.85rem !important;
+  }
+
+  .contact-sub {
+    font-size: 0.94rem !important;
+    margin-bottom: 1.6rem !important;
+  }
+
+  .result-number {
+    font-size: 2.5rem !important;
+  }
+
+  .arena-title {
+    font-size: 1.25rem !important;
+  }
+
+  .arena-text-display {
+    font-size: 1rem !important;
+    padding: 1.1rem 1rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .metric-num {
+    font-size: 1.35rem !important;
+  }
+
+  .target-val {
+    font-size: 1.2rem !important;
+  }
+
+  .pomo-time-huge {
+    font-size: 3.5rem !important;
+  }
+
+  /* 5. Fixed Widgets (JARVIS Voice HUD, Toasts, Ambient Backgrounds) Fitting Viewport */
+  .jarvis-voice-hud {
+    position: fixed !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    max-width: calc(100vw - 32px) !important;
+    z-index: 9999 !important;
+  }
+
+  .jarvis-orb-wrapper {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .jarvis-orb-btn {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .jarvis-orb-icon {
+    font-size: 1.1rem !important;
+  }
+
+  .jarvis-rings-svg {
+    width: 110px !important;
+    height: 110px !important;
+    pointer-events: none !important;
+  }
+
+  .jarvis-hologram-aura {
+    width: 90px !important;
+    height: 90px !important;
+    bottom: -8px !important;
+    right: -8px !important;
+  }
+
+  .jarvis-status-pill {
+    display: none !important;
+  }
+
+  .jarvis-hud-panel {
+    bottom: 72px !important;
+    right: 0 !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 350px !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .ambient-glow {
+    display: none !important;
+  }
+
+  .site-toast {
+    bottom: 80px !important;
+    right: 16px !important;
+    left: 16px !important;
+    max-width: calc(100vw - 32px) !important;
+    box-sizing: border-box !important;
+  }
+
+  .cyber-modal-card {
+    padding: 1.4rem 1.1rem !important;
+    max-width: 100% !important;
+    margin: 0.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 6. Code & Terminal Blocks Horizontal Scrolling */
+  pre, code, .terminal-window, .terminal-console, .terminal-history,
+  .terminal-body, .terminal-card, .term-line, .term-output,
+  .syntax-box, .code-preview, .code-snippet, .formula-content,
+  .hud-terminal-logs, textarea, #exportCodeTextarea {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+
+  .term-output {
+    margin-left: 0.4rem !important;
+    word-break: break-word !important;
+  }
+
+  .term-list {
+    margin-left: 0.4rem !important;
+  }
+
+  .term-badge-row {
+    margin-left: 0.4rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* 7. Full-Width & At Least 44px Tall Buttons for Touch Accessibility */
+  .cyber-btn,
+  .btn-connect,
+  .hero-cta-group .cyber-btn,
+  .arena-actions-row .cyber-btn,
+  .calc-actions-row .cyber-btn,
+  .labs-actions-top .cyber-btn,
+  .contact-btn-row .cyber-btn,
+  .modal-actions-row .cyber-btn,
+  .modal-footer .cyber-btn,
+  .audio-mode-btn,
+  .btn-calc-action {
+    width: 100% !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    padding: 0.75rem 1.2rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  .hero-cta-group,
+  .arena-actions-row,
+  .calc-actions-row,
+  .contact-btn-row,
+  .modal-actions-row,
+  .modal-footer,
+  .timer-controls-row,
+  .audio-controls-row {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.75rem !important;
+  }
+
+  .social-btn {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.6rem 1rem !important;
+  }
+
+  .hero-social-bar {
+    justify-content: center !important;
+  }
+
+  .btn-del-calc {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 0, 127, 0.12) !important;
+    border: 1px solid rgba(255, 0, 127, 0.3) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--neon-pink) !important;
+    width: 100% !important;
+  }
+
+  .calc-input, .calc-select {
+    min-height: 44px !important;
+    font-size: 0.95rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .filter-pill {
+    min-height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+}
+
+/* Extra Compact Devices (Phones under 480px) */
 @media (max-width: 480px) {
   .page-container {
-    padding: 1.2rem 1rem 3.5rem;
+    padding: 1rem 0.85rem 4rem !important;
   }
+
   .hero-headline {
-    font-size: 2.1rem;
+    font-size: 1.95rem !important;
   }
+
+  .section-title {
+    font-size: 1.7rem !important;
+  }
+
   .hologram-card {
-    padding: 1.5rem 1.2rem;
+    padding: 1.25rem 0.95rem !important;
   }
+
   .holo-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.45rem !important;
   }
-  .hero-cta-group {
-    flex-direction: column;
-  }
-  .hero-cta-group .cyber-btn {
-    width: 100%;
-  }
+
   .result-number {
-    font-size: 2.8rem;
+    font-size: 2.3rem !important;
   }
-  .att-button-group {
-    grid-template-columns: 1fr 1fr;
-  }
-  .btn-undo {
-    grid-column: span 2;
-  }
-  .arena-actions-row {
-    flex-direction: column;
-  }
-  .arena-actions-row .cyber-btn {
-    width: 100%;
+
+  .jarvis-hud-panel {
+    width: calc(100vw - 24px) !important;
   }
 }
 
@@ -4717,40 +5375,6 @@ body.cursor-hover .custom-cursor-dot {
   }
 }
 
-/* Mobile Responsive Adjustments */
-@media (max-width: 640px) {
-  .jarvis-voice-hud {
-    bottom: 18px;
-    right: 18px;
-  }
-  .jarvis-orb-wrapper {
-    width: 68px;
-    height: 68px;
-  }
-  .jarvis-orb-btn {
-    width: 58px;
-    height: 58px;
-  }
-  .jarvis-rings-svg {
-    width: 145px;
-    height: 145px;
-  }
-  .jarvis-orb-icon {
-    font-size: 1.25rem;
-  }
-  .jarvis-hud-panel {
-    bottom: 84px;
-    width: 320px;
-    max-width: calc(100vw - 28px);
-    padding: 1rem;
-  }
-  .site-toast {
-    bottom: 96px;
-    right: 18px;
-    max-width: calc(100vw - 36px);
-  }
-}
-
 /* ================================================================
    NEW FEATURES ADDITIONS (ORGANIZED & EASILY TOGGLEABLE)
    1. GLOBAL REQUIREMENT: FUN MODE TOGGLE
@@ -5491,6 +6115,7 @@ body.theme-light .drawer-title {
   top: calc(100% + 10px);
   right: 0;
   min-width: 295px;
+  max-width: calc(100vw - 24px);
   background: var(--bg-card);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -5743,8 +6368,8 @@ body.theme-light .drawer-title {
 .confetti-canvas {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 99998;
   display: none;
@@ -5759,14 +6384,17 @@ body.theme-light .drawer-title {
   padding: 2.5rem 1.8rem 2rem;
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .footer-inner {
   max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  box-sizing: border-box;
 }
 
 .footer-clock-card {
